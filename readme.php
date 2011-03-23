@@ -23,12 +23,12 @@
 
     }
 
-    # $dll(php,1,test,helloworld)
+    # $dll(php,1,readme,helloworld)
     function helloworld () {
         echo "hello, world!";
     }
 
-    # $dll(php,1,test,puts#foo;bar;baz)
+    # $dll(php,1,readme,puts#foo;bar;baz)
     function puts ($param1, $param2, $param3) {
         echo "$param1 + $param2 = $param3\n";
     }
