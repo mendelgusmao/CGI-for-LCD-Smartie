@@ -64,3 +64,5 @@
     The first usage doesn't require your script to include "main.php" but the others do,
     because it need parsing of the parameters to know what will be evaluated and what
     parameters will be used to do that.
+
+    Any question or suggestions? mendelsongusmao+github@gmail.com
