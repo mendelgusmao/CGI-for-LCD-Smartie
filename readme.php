@@ -8,11 +8,11 @@
 
         $params = explode("#", $argv[1]);
 
-        if ($params[0])
-            if (function_exists($params[0]))
+        if ($function = $params[0])
+            if (function_exists($function))
                 die(
                     call_user_func_array(
-                        $params[0],
+                        $function,
                         1 == count($params)
                            ? array()
                            : explode(";", $params[1])
