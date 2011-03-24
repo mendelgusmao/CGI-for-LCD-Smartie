@@ -9,17 +9,16 @@
         $params = explode("#", $argv[1]);
 
         if ($function = $params[0])
-	    die(
+            die(
                 function_exists($function)?
                     call_user_func_array(
                         $function,
                         1 == count($params)?
-			    array()
+                            array()
                             : explode(";", $params[1])
                     )
-		    : "[php] function '{$params[0]}' doesn't exists\n"
+                    : "[php] function '{$params[0]}' doesn't exists\n"
                 );
-
     }
 
 ?>
