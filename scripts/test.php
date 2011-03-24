@@ -14,6 +14,6 @@
 
     main();
 
-    echo "-> normal execution";
+    echo "normal execution";
 
 ?>
