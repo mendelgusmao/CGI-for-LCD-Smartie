@@ -1,0 +1,5 @@
+mdlMain = 22, 25, 1407, 640, Z
+mdlRuntimeInit = 0, 0, 0, 0, C
+clsRuntimeInit = 0, 0, 0, 0, C
+mdlCGI = 0, 0, 0, 0, C
+DOSOutputs = 0, 0, 0, 0, C

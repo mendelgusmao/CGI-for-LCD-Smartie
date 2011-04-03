@@ -1,0 +1,56 @@
+Type=OleDll
+Reference=*\G{00020430-0000-0000-C000-000000000046}#2.0#0#C:\WINDOWS\system32\stdole2.tlb#OLE Automation
+Reference=*\G{FF4BDFC0-C1F9-42F2-A0F8-6BADA08E8B98}#1.0#0#C:\Program Files\vbAdvance\vbAdvance.tlb#vbAdvance Type Library
+Module=mdlMain; mdlMain.bas
+Module=mdlRuntimeInit; mdlRuntimeInit.bas
+Class=clsRuntimeInit; clsRuntimeInit.cls
+Module=mdlCGI; mdlCGI.bas
+Class=DOSOutputs; DOSOutputs.cls
+Startup="(None)"
+HelpFile=""
+NoControlUpgrade=1
+Title="PHPforLCDSmartie"
+ExeName32="php.dll"
+Path32="..\plugins"
+Command32=""
+Name="PHPforLCDSmartie"
+HelpContextID="0"
+CompatibleMode="0"
+CompatibleEXE32="exports.cmp"
+MajorVer=1
+MinorVer=0
+RevisionVer=39
+AutoIncrementVer=1
+ServerSupportFiles=0
+VersionCompanyName="@MendelGusmao"
+CompilationType=0
+OptimizationType=0
+FavorPentiumPro(tm)=0
+CodeViewDebugInfo=0
+NoAliasing=0
+BoundsCheck=0
+OverflowCheck=0
+FlPointCheck=0
+FDIVCheck=0
+UnroundedFP=0
+StartMode=1
+Unattended=0
+Retained=0
+ThreadPerObject=0
+MaxNumberOfThreads=1
+
+[vbAdvance]
+Exports=function2=function2=True;function1=function1=True;GetMinRefreshInterval=GetMinRefreshInterval=True;SmartieInit=SmartieInit=True;DllMain=DllMain=True;InitDelegator=InitDelegator=True;RuntimeInitialize=RuntimeInitialize=True;RunCGI=RunCGI=True;
+IsConsole=0
+HasStubFile=0
+GenerateMap=0
+TSAware=0
+XPManifest=0
+ResBuildName=.\exports.dll
+ReplaceIcon=0
+SendCommandArgs=0
+SymbDbgPref=0
+RevisionVersion=0
+
+[MS Transaction Server]
+AutoRefresh=1
