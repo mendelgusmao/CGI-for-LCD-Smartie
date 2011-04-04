@@ -1,0 +1,96 @@
+PHP FOR LCD SMARTIE
+
+    This document describes the basic concept and usage of PHP for LCD Smartie.
+
+    The plugin acts as a gateway between LCD Smartie and PHP. Every time it's
+    called, it executes the PHP interpreter and returns the data to LCD Smartie
+    to show on display. Optionally you can call a function wrote in a script instead
+    of executing the entire file. This feature helps you to keep your codes organized
+    in just one place.
+
+    It's made in Visual Basic 6.0 but I'm planning to port it to C++ when my knowledge allow.
+
+CONFIGURING
+
+    The first step of configuration is to copy the directory called "scripts" to LCD Smartie
+    directory. Inside are two files, main.php and test.php. The first is the most important,
+    because it contains the code necessary to parse the incoming data from $dll and
+    perform what it was asked to do. The second is a testfile with some silly functions to
+    test if everything's OK.
+
+    The second step is to configure, setting the PHP interpreter (usually php.exe)
+    and the timeout in config.ini, adding this entry:
+
+        [PHP]
+        interpreter="c:\php\bin\php.exe"
+        timeout=5
+
+    Of course, replace the path above by the path of the PHP interpreter on your machine.
+
+USING
+
+    The $dll parameters are 2:
+
+        - filename (mandatory)
+        - function (optional) and arguments, also optional
+
+        > $dll(php,1,filename[.php],[function[#arg1;arg2;...]])
+
+    - For now, there's just one internal plugin function.
+      * Maybe I add one more to show PHP's version by getting
+        the output of "php.exe -v".
+    - The extension in filename is optional.
+
+    Until it's not done, there are three possible usages for the plugin in LCD Smartie
+
+        1 - Executing a PHP file
+
+            $dll(php,1,file[.php],)
+
+        2 - Executing a function of a PHP file without arguments
+
+            $dll(php,1,file[.php],function)
+
+        3 - Executing a function of a PHP file with arguments
+
+            $dll(php,1,file[.php],function#arg1;arg2;argX)
+
+    The first usage doesn't require your script to include "main.php" but the others do,
+    because it needs parsing of the parameters to know what will be evaluated and what
+    parameters will be used to do that.
+
+WRITING SCRIPTS
+
+    Create a .php file in scripts directory with the following lines
+
+    <?php
+
+        include 'main.php';
+
+	// your code here
+
+	main();
+
+    ?>
+
+ISSUES
+
+    Due to a bug (it's not a bug, it's a feature!) of LCD Smartie, the program awaits
+    for the end of the execution of the plugin code before showing any data on the display.
+    If a programming error, race condition, infinite loop or something else causes freezing
+    of the PHP interpreter, the plugin will freeze, waiting for PHP process to terminate and
+    then, LCD Smartie will be freezing too. My plan is to implement a watchdog timer, then, in
+    case the PHP process take more time than the chosen value of timeout, it will be instantly
+    killed and the plugin will return an empty string.
+
+    I'm not sure if it's a problem of PHP interpreter, of the plugin or LCD Smartie,
+    but when using the plugin, the LCD Smartie goes slow. For a test with a script
+    that contains 4 functions (monitoring of some bot applications), it was really slow and
+    sometimes the screen appeared for just 1 second before the next screen.
+
+FINALLY
+
+    Any questions or suggestions  ? mendelsongusmao+github@gmail.com
+
+    (Text corrections are welcome too, since english is not my native language).
+
