@@ -19,7 +19,11 @@ CompatibleMode="0"
 CompatibleEXE32="exports.cmp"
 MajorVer=1
 MinorVer=0
+<<<<<<< HEAD
 RevisionVer=14
+=======
+RevisionVer=39
+>>>>>>> 07cff39be2603d1af10bf80a6d8b9061e68388cd
 AutoIncrementVer=1
 ServerSupportFiles=0
 VersionCompanyName="@MendelGusmao"
@@ -40,7 +44,11 @@ ThreadPerObject=0
 MaxNumberOfThreads=1
 
 [vbAdvance]
+<<<<<<< HEAD
 Exports=function1=function1=True;GetMinRefreshInterval=GetMinRefreshInterval=True;SmartieInit=SmartieInit=True;DllMain=DllMain=True;InitDelegator=InitDelegator=True;RuntimeInitialize=RuntimeInitialize=True;RunCGI=RunCGI=True;
+=======
+Exports=function2=function2=True;function1=function1=True;GetMinRefreshInterval=GetMinRefreshInterval=True;SmartieInit=SmartieInit=True;DllMain=DllMain=True;InitDelegator=InitDelegator=True;RuntimeInitialize=RuntimeInitialize=True;RunCGI=RunCGI=True;
+>>>>>>> 07cff39be2603d1af10bf80a6d8b9061e68388cd
 IsConsole=0
 HasStubFile=0
 GenerateMap=0
