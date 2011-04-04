@@ -14,7 +14,7 @@ Option Explicit
 '
 ' PHP for LCD Smartie developed by @MendelGusmao 23/03/2011
 ' using:
-'        el coco's template
+'        el coco's template [ http://forums.lcdsmartie.org/viewtopic.php?f=2&t=1963 ]
 '        wonderful DOSOutputs from someone I don't remember
 '        mdlCGI, from an HTTPd I was coding in 2004
 '
@@ -38,7 +38,11 @@ Private m_lngLastLenght As Long
 
 Private Declare Function GetPrivateProfileString Lib "kernel32" Alias "GetPrivateProfileStringA" (ByVal lpApplicationName As String, ByVal lpKeyName As String, ByVal lpDefault As String, ByVal lpReturnedString As String, ByVal nSize As Long, ByVal lpFileName As String) As Long
 
+Public strScriptsPath As String
+Public strMainPHP As String
+
 Public strPHPInterpreter As String
+Public strPHPIni As String
 Public intExecutionTimeout As Integer
 Public intMinRefreshInterval As Integer
 
@@ -68,9 +72,13 @@ End Function
 
 Public Sub SmartieInit()
 
-    strPHPInterpreter = ReadINI(App.Path & "\config.ini", "PHP", "interpreter", "")
-    intExecutionTimeout = Int(ReadINI(App.Path & "\config.ini", "PHP", "timeout", 5))
-    intMinRefreshInterval = Int(ReadINI(App.Path & "\config.ini", "PHP", "refresh", 3000))
+    strScriptsPath = App.Path & "\scripts\"
+    strPHPIni = strScriptsPath & "php.ini"
+    strMainPHP = strScriptsPath & "main.php"
+
+    strPHPInterpreter = ReadINI(strPHPIni, "smartie", "interpreter", "")
+    intExecutionTimeout = Int(ReadINI(strPHPIni, "smartie", "timeout", 5))
+    intMinRefreshInterval = Int(ReadINI(strPHPIni, "smartie", "refresh", 3000))
 
 End Sub
 
@@ -88,36 +96,69 @@ Public Function function1(ByVal strParam1 As String, ByVal strParam2 As String) 
     Dim strParameters As String
     Dim strCommand As String
     
-    strScript = App.Path & "\scripts\" & ConvertParam(strParam1)
+    strScript = strScriptsPath & ConvertParam(strParam1)
     strParameters = ConvertParam(strParam2)
     
-    If Mid(strScript, Len(strScript) - 4) <> ".php" Then
+    If Dir(strPHPInterpreter, vbNormal) = "" Then
+        
+        strBuff = "[PHP] interpreter not found"
+        GoTo display
+        
+    End If
     
+    If Dir(strPHPIni, vbNormal) = "" Then
+        
+        strBuff = "[PHP] php.ini not found"
+        GoTo display
+        
+    End If
+    
+    If Not strScript Like "*.php" Then: _
         strScript = strScript & ".php"
-        
+    
+    If Dir(strScript, vbNormal) = "" Then
+
+        strBuff = "[PHP] script not found"
+        GoTo display
+    
     End If
     
-    If Dir(strPHPInterpreter) = "" Then
-        
-        strBuff = "[PHP] php interpreter not found"
-        
-    Else
-    
-        If Dir(strScript) = "" Then
-    
-            strBuff = "[PHP] script not found"
-    
-        Else
-        
-            strCommand = FormatCommand(strPHPInterpreter, strScript, strParameters)
-            strBuff = mdlCGI.RunCGI(strCommand)
-        
-        End If
-        
-    End If
+    strCommand = FormatCommand(strPHPInterpreter, strMainPHP, strPHPIni, strScript, strParameters)
+
+    strBuff = mdlCGI.RunCGI(strCommand)
    
+display:
+
     function1 = CreateReturn(strBuff)
     
+End Function
+
+Public Function function2(ByVal strParam1 As String, ByVal strParam2 As String) As Long
+
+    Dim strBuff As String
+    Dim strCommand As String
+
+    If Dir(strPHPIni, vbNormal) = "" Then
+        
+        strBuff = "[PHP] php.ini not found"
+        GoTo display
+        
+    End If
+
+    If Dir(strPHPInterpreter, vbNormal) = "" Then
+        
+        strBuff = "[PHP] interpreter not found"
+        GoTo display
+        
+    End If
+        
+    strCommand = strPHPInterpreter & " -v"
+    strBuff = mdlCGI.RunCGI(strCommand)
+    
+display:
+
+    function2 = CreateReturn(strBuff)
+
 End Function
 
 '=============================================================================================
@@ -125,9 +166,17 @@ End Function
 ' you must not modify those
 '=============================================================================================
 
-Private Function FormatCommand(ByVal strExecutable As String, ByVal strScript As String, ByVal strParameters As String) As String
+Private Function FormatCommand(ByVal strInterpreter, strMain, strIni, strScript, strParams)
+
+    FormatCommand = "%interpreter -d auto_prepend_file='%main' -c '%ini' '%script' '%params'"
     
-    FormatCommand = strExecutable & " """ & strScript & """" & IIf(strParameters = "", "", " """ & strParameters & """")
+    FormatCommand = Replace(FormatCommand, "%interpreter", strInterpreter)
+    FormatCommand = Replace(FormatCommand, "%main", strMain)
+    FormatCommand = Replace(FormatCommand, "%ini", strIni)
+    FormatCommand = Replace(FormatCommand, "%script", strScript)
+    FormatCommand = Replace(FormatCommand, "%params", strParams)
+    
+    FormatCommand = Replace(FormatCommand, "'", """")
 
 End Function
 
@@ -174,6 +223,7 @@ Private Function SetString(ByVal sData As String, ByVal lMem As Long)
 End Function
 
 Private Function ReadINI(inifile As String, topic As String, subtopic As String, default As String)
+
     Dim sData As String
     Dim lDataLen As Long
     Dim inidados As String
