@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 mdlMain = 0, 0, 0, 0, C
+=======
+mdlMain = 22, 25, 1407, 640, Z
+>>>>>>> 07cff39be2603d1af10bf80a6d8b9061e68388cd
 mdlRuntimeInit = 0, 0, 0, 0, C
 clsRuntimeInit = 0, 0, 0, 0, C
 mdlCGI = 0, 0, 0, 0, C
