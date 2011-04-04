@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< HEAD
+    error_reporting (E_ERROR | E_PARSE);
+
+=======
+>>>>>>> 07cff39be2603d1af10bf80a6d8b9061e68388cd
     function main () {
 
         global $argv;
@@ -15,7 +20,11 @@
                             array()
                             : explode(";", $params[1])
                     )
+<<<<<<< HEAD
+                    : "[php] function '{$params[0]}' doesn't exists\n"
+=======
                     : "[php] function '{$function}' doesn't exists\n"
+>>>>>>> 07cff39be2603d1af10bf80a6d8b9061e68388cd
                 );
     }
 
