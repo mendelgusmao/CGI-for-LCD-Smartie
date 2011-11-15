@@ -1,0 +1,3 @@
+VBGROUP 5.0
+StartupProject=Server\PHPforLCDSmartie_Server.vbp
+Project=Plugin\PHPForLCDSmartie_Plugin.vbp
