@@ -1,6 +1,6 @@
 Attribute VB_Name = "Protocol"
 Private Const DELIMITER = vbCrLf
-Private Const HEADER = "cgi4lcd" & vbCrLf
+Private Const HEADER = "cgi4lcd" & DELIMITER
 
 Public Function Parse(ByVal data As String, ByRef objCommand As Command)
     
