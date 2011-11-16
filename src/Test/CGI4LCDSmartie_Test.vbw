@@ -1,0 +1,8 @@
+frmMain = 110, 155, 1266, 790, C, 88, 124, 1244, 759, C
+Ini = 110, 155, 1265, 816, C
+mdlSocketMaster = 132, 186, 1287, 847, C
+Command = 0, 0, 0, 0, C
+SocketMaster = 0, 0, 1266, 575, 
+TimerEx = 0, 0, 0, 0, C
+Client = 44, 62, 1199, 723, 
+Protocol = 66, 93, 1221, 728, 
