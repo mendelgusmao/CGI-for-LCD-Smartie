@@ -12,11 +12,11 @@
                     call_user_func_array(
                         $function,
                         1 == count($params)?
-                            array()
-                            : explode(";", $params[1])
+                          array()
+                          : explode(";", $params[1])
                     )
                     : "[php] function '{$function}' doesn't exists\n"
-                );
+            );
     }
 
 ?>
