@@ -23,12 +23,12 @@ Private Sub Class_Terminate()
     Set Calls = Nothing
 End Sub
 
-Public Sub AddFunction(objPHPFunction As Command)
+Public Sub AddFunction(Command As Command)
 
-    If TypeOf Calls(objPHPFunction.Line) Is Command Then
-        Calls(objPHPFunction.Line).CleanupTimer = 0
+    If TypeOf Calls(Command.Line) Is Command Then
+        Calls(Command.Line).CleanupTimer = 0
     Else
-        Calls.Add objPHPFunction, objPHPFunction.Line
+        Calls.Add Command, Command.Line
     End If
     
 End Sub
@@ -40,6 +40,8 @@ Public Sub ExecuteQueue()
     Dim objCall As Command
     
     For I = 0 To Calls.Count() - 1
+        
+        Debug.Print Calls(I).Line
         
         Calls(I).Timer = Calls(I).Timer + 1
         Calls(I).CleanupTimer = Calls(I).CleanupTimer + 1
