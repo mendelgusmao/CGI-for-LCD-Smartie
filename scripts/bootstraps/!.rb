@@ -5,7 +5,7 @@ def main
     params = ARGV[0].split "#"
 
     if function = params[0]
-      if respond_to? function.to_sym
+      if Kernel.respond_to? function.to_s
         puts send(function, *(params.size == 1 ? {} : params[1].to_s.split(";")))
       else
         puts "[CGI4LCD] Function '" + function + "' not found"
