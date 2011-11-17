@@ -77,8 +77,8 @@ Public Sub SmartieInit()
     
     ' Local and remote ports are swapped in client
     Client.Start _
-        Ini.Read(iniFile, "cgi4lcd", "remote_port", 6543), _
-        Ini.Read(iniFile, "cgi4lcd", "local_port", 6542), _
+        Ini.Read(iniFile, "cgi4lcd", "remote_port", 65433), _
+        Ini.Read(iniFile, "cgi4lcd", "local_port", 65432), _
         iniFile, ScriptsPath
     
     ExecutionTimeout = Int(Ini.Read(iniFile, "smartie", "timeout", 60000))
