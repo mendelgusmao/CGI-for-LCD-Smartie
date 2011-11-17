@@ -1,19 +1,21 @@
 <?php
 
-    require "main.php";
-
-    # $dll(php,1,test,hello)
+    # $dll(cgi,1,test.php,hello)
     function hello () {
-        echo "Hello, world!";
+        return "Hello, world!\n";
     }
 
-    # $dll(php,1,test,do_some_math#3;2;1)
-    function do_some_math ($param1, $param2, $param3) {
-        echo $param1 * $param2 + $param3;
+    function say_hi ($name) {
+	return "Hi, {$name}\n";
+    }
+
+    # $dll(cgi,1,test.php,do_some_math#3;2;1)
+    function do_some_math ($a, $b, $c) {
+        return ($a * $b + $c) . "\n";
     }
 
     main();
 
-    echo "normal execution";
+    echo "this can't be shown";
 
 ?>
