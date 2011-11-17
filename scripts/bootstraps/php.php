@@ -15,7 +15,7 @@
                           array()
                           : explode(";", $params[1])
                     )
-                    : "[php] function '{$function}' doesn't exists\n"
+                    : "[CGI4LCD] Function '{$function}' not found\n"
             );
     }
 
