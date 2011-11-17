@@ -1,9 +1,10 @@
 def foo
-  "foobar"
+    "foobar"
 end
 
 def bar(baz)
   "bar: " + baz.to_s
 end
   
-main
+#main
+puts defined?("foox")
