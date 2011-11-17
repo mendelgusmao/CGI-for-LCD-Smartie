@@ -93,6 +93,9 @@ Public Function GetMinRefreshInterval() As Integer
     
 End Function
 
+' Execute through server
+' strParam1 - Filename
+' strParam2 - Function name and function parameters
 Public Function function1(ByVal strParam1 As String, ByVal strParam2 As String) As Long
     
     Dim Buffer As String
@@ -109,7 +112,22 @@ Public Function function1(ByVal strParam1 As String, ByVal strParam2 As String) 
     
 End Function
 
+' Execute directly
+' strParam1 - Filename
+' strParam2 - Function name and function parameters
 Public Function function2(ByVal strParam1 As String, ByVal strParam2 As String) As Long
+
+End Function
+
+' Retrieve stats
+' strParam1 - Desired data
+' -> requests, executions, cleanups, uptime (...)
+Public Function function3(ByVal strParam1 As String, ByVal strParam2 As String) As Long
+
+End Function
+
+' Version of interpreter
+Public Function function4(ByVal strParam1 As String, ByVal strParam2 As String) As Long
 
     Dim Buffer As String
     Dim VersionCommand As String
