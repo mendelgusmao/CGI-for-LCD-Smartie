@@ -30,7 +30,7 @@ Public Sub Start(LocalPort As Long, RemotePort As Long, Ini_File As String, Scri
 
     iniFile = Ini_File
     ScriptsPath = Scripts_Path
-
+    
     With Socket
         .CloseSck
         .Protocol = sckUDPProtocol
@@ -159,6 +159,7 @@ Public Function FormatCommand(Template As String, Interpreter As String, Script 
     
     FormatCommand = Replace(FormatCommand, "%interpreter", Interpreter)
     FormatCommand = Replace(FormatCommand, "%scripts_path", ScriptsPath)
+    FormatCommand = Replace(FormatCommand, "%bootstraps_path", ScriptsPath & "bootstraps\")
     FormatCommand = Replace(FormatCommand, "%script", Script)
     FormatCommand = Replace(FormatCommand, "%params", Params)
     
