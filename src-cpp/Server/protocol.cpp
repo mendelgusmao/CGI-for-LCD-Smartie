@@ -1,13 +1,19 @@
 #include "stdafx.h"
 #include "command.cpp"
-#include <msgpack.hpp>
+#include "boost\algorithm\string\join.hpp"
+#include "boost\algorithm\string\split.hpp"
 
 using std::string;
 using std::vector;
 using boost::lexical_cast;
+using boost::algorithm::join;
+using boost::algorithm::split;
 
-#ifndef PROCOTOL_CPP
+#ifndef PROTOCOL_CPP
 #define PROTOCOL_CPP
+
+#define PROTOCOL_HEADER "cgi4lcd"
+#define PROTOCOL_DELIMITER "|"
 
 class protocol {
 
@@ -15,29 +21,47 @@ public:
 
     static command parse(string data) {
 
-		msgpack::unpacked message;
-		msgpack::unpack(&message, data.data(), data.size());
+		vector<string> packet;
+		command cmd;
 
-        msgpack::object object = message.get();
- 
-        std::vector<command> rvec;
-        object.convert(&rvec);
+		split(packet, data, boost::is_any_of(PROTOCOL_DELIMITER));
 
-		return rvec.front();
+		if (packet.size() != 6) {
+			cmd.is_malformed = true;
+		}
+		else {
+			if (packet[0] != PROTOCOL_HEADER) {
+				cmd.is_malformed = true;
+			}
+			else {
+				cmd.executable = packet[1];
+				cmd.arguments = packet[2];
+				cmd.interval = lexical_cast<int>(packet[3]);
+				cmd.timeout = lexical_cast<int>(packet[4]);
+				cmd.is_malformed = false;
+			}
+		}
+
+		return cmd;
         
     }
 
-	static char* build(const command &cmd) {
+	static const string build(const command &cmd) {
 
-		std::vector<command> container;
+		vector<string> packet;
 
-		msgpack::sbuffer mpbuffer;
-		msgpack::pack(mpbuffer, container);
+		packet.push_back(PROTOCOL_HEADER);
+		packet.push_back(cmd.executable);
+		packet.push_back(cmd.arguments);
+		packet.push_back(lexical_cast<string>(cmd.interval));
+		packet.push_back(lexical_cast<string>(cmd.timeout));
+		packet.push_back("");
 
-		return mpbuffer.data();
+		return join(packet, PROTOCOL_DELIMITER);
+		
 	}
 
 };
 
-#endif // PROCOTOL_CPP
+#endif // PROTOCOL_CPP
 

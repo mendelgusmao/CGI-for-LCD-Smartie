@@ -29,16 +29,10 @@ public:
 			cmd = _protocol.parse(temp);
 
 			if (!cmd.is_malformed) {
-
-				cout << "well-formed packet" << endl;
-
 				_queue.add_function(cmd);
-				cmd.execute();
-
+				_queue.run_commands();
 			}
-			else {
-				cout << "malformed packet" << endl; 
-			}
+			// else: malformed packet. nothing to do
 
 			char response[max_length];
 			strcpy_s(response, cmd.response.c_str());
