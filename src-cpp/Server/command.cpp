@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <msgpack.hpp>
 
 using std::string;
 
@@ -8,25 +7,22 @@ using std::string;
 
 class command {
 public:
-	string header;
     string executable;
 	string arguments;
 	int timeout;
 	int interval;
 	int timer;
 	int cleanup_timer;
-	std::string response;
+	string response;
 	bool is_malformed;
-
-	void execute() {
-		response = line();
-	}
 
     string line() {
         return executable + " " + arguments;
     }
 
-	MSGPACK_DEFINE(header, executable, arguments, timeout, interval);
 };
 
-#endif // COMMAND_CPP
+#endif 
+
+
+
