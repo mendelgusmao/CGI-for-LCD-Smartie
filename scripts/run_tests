@@ -12,3 +12,8 @@ ruby -r $PWD/bootstraps/rb.rb $PWD/test.rb hello
 ruby -r $PWD/bootstraps/rb.rb $PWD/test.rb "say_hi#Mendel"
 ruby -r $PWD/bootstraps/rb.rb $PWD/test.rb "do_some_math#3;2;1"
 ruby -r $PWD/bootstraps/rb.rb $PWD/test.rb not_declared
+
+perl -I$PWD/bootstraps/ $PWD/test.pl hello
+perl -I$PWD/bootstraps/ $PWD/test.pl "say_hi#Mendel"
+perl -I$PWD/bootstraps/ $PWD/test.pl "do_some_math#3;2;1"
+perl -I$PWD/bootstraps/ $PWD/test.pl not_declared
