@@ -1,4 +1,4 @@
-from bootstraps.py import main
+from bootstraps import main
 
 # $dll(cgi,1,test.rb,hello)
 def hello():
