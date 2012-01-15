@@ -15,7 +15,8 @@ class server
 public:
     server(boost::asio::io_service& io_service, short port) :
         _io_service(io_service),
-        _socket(io_service, udp::endpoint(udp::v4(), port)) {
+        _socket(io_service, udp::endpoint(udp::v4(), port)),
+		_queue(io_service) {
 
         receive();
 
@@ -26,11 +27,13 @@ public:
 
 			command cmd;
 			string temp(_data);
-			cmd = _protocol.parse(temp);
+			cmd = protocol::parse(temp);
 
 			if (!cmd.is_malformed) {
-				_queue.add_function(cmd);
-				_queue.run_commands();
+				_queue.add(cmd);
+				cmd = _queue.get(cmd.line());
+				cmd.run();
+				cout << "response: '" << cmd.response << "'" << endl;
 			}
 			// else: malformed packet. nothing to do
 
@@ -76,8 +79,7 @@ public:
 
     boost::asio::io_service& _io_service;
     udp::socket _socket;
-    protocol _protocol;
-    queue _queue;
+    queue _queue;	
     udp::endpoint _sender_endpoint;
     enum { max_length = 1024 };
     char _data[max_length];

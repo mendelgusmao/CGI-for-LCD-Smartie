@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "command.cpp"
-#include "runner.cpp"
 #include <map>
 
 #ifndef QUEUE_CPP
@@ -11,31 +10,35 @@ using std::map;
 
 class queue {
 public:
-    void add_function(command &cmd) {
 
-        if (_commands.count(cmd.line()) == 0) {
-			// start timer
-		}
+	queue(boost::asio::io_service& io_service) : 
+	  _timer(io_service, boost::posix_time::seconds(1)) {
+
+		_timer.async_wait(boost::bind(&queue::run, this));
+
+	}
+
+    void add(command &cmd) {
 
 		map<string, command>::iterator it = _commands.find(cmd.line());
 
 		if (it == _commands.end()) {
             _commands[cmd.line()] = cmd;
-			std::cout << "command queued" << std::endl;
-			runner rnr;
-			rnr.run(cmd, "");
-			std::cout << "command runned" << std::endl;
-			std::cout << cmd.response << std::endl;
         }
         else {
-            _commands[cmd.line()].cleanup_timer = 0;
+			_commands[cmd.line()].cleanup_timer = 0;
         }
     }
 
-    void run_commands() {
+    void run() {
+
         map<string, command>::iterator it;
         command cmd;
-		runner rnr;
+
+		_timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
+		_timer.async_wait(boost::bind(&queue::run, this));
+
+		std::cout << "Running queue (" << _commands.size() << ")" << std::endl;
 
         for (it = _commands.begin(); it != _commands.end(); ++it) {
             cmd = it->second;
@@ -43,21 +46,37 @@ public:
             cmd.timer++;
             cmd.cleanup_timer++;
 
+			std::cout << 
+				"Command '" << cmd.line() << "'" << std::endl <<
+				"Cleanup/Timeout: " << cmd.cleanup_timer << "/" << cmd.timeout << std::endl <<
+				"Timer/Interval: " << cmd.timer << "/" << cmd.interval << std::endl <<
+				std::endl;
+
             if (cmd.cleanup_timer >= cmd.timeout) {
+				std::cout << "Erasing '" << cmd.line() << "'" << std::endl;
                 _commands.erase(it);
+				return;
             }
             else if (cmd.timer >= cmd.interval) {
-
-				rnr.run(cmd, "");
+				std::cout << "Running '" << cmd.line() << "'" << std::endl;
+				cmd.run();
                 cmd.timer = 0;
+				
 				std::cout << cmd.response << std::endl;
             }
+
+			_commands[cmd.line()] = cmd;
         }
+
     }
 
+	command get(string line) {
+		return _commands[line];
+	}
+
 private:
+	boost::asio::deadline_timer _timer;
     map<string, command> _commands;
-    // timer ...
 };
 
 #endif // QUEUE_CPP
