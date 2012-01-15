@@ -1,10 +1,10 @@
-mdlMain = 66, 93, 1222, 728, C
 mdlRuntimeInit = 22, 31, 1177, 666, C
 clsRuntimeInit = 66, 93, 1221, 728, C
-Ini = 0, 0, 0, 0, C
-Command = 0, 0, 0, 0, C
-SocketMaster = 0, 0, 0, 0, C
-Client = 22, 31, 1178, 666, C
+Ini = 44, 62, 1243, 637, 
+Client = 0, 0, 687, 945, 
 mdlSocketMaster = 0, 0, 0, 0, C
+Protocol = 22, 31, 1221, 606, 
+Command = 44, 62, 1199, 697, C
 TimerEx = 0, 0, 0, 0, C
-Protocol = 0, 0, 0, 0, C
+SocketMaster = 0, 0, 0, 0, C
+mdlMain = 0, 0, 1375, 472, Z
