@@ -38,8 +38,6 @@ Private m_lngLastLenght As Long
 Public ScriptsPath As String
 Public iniFile As String
 
-Public ExecutionTimeout As Integer
-Public ExecutionInterval As Integer
 Public minRefreshInterval As Integer
 
 Private Client As Client
@@ -77,13 +75,10 @@ Public Sub SmartieInit()
     
     ' Local and remote ports are swapped in client
     Client.Start _
-        Ini.Read(iniFile, "cgi4lcd", "remote_port", 65433), _
         Ini.Read(iniFile, "cgi4lcd", "local_port", 65432), _
         iniFile, ScriptsPath
     
-    ExecutionTimeout = Int(Ini.Read(iniFile, "smartie", "timeout", 60000))
-    ExecutionInterval = Int(Ini.Read(iniFile, "smartie", "interval", 5000))
-    minRefreshInterval = Int(Ini.Read(iniFile, "smartie", "refresh", 3000))
+    minRefreshInterval = Int(Ini.Read(iniFile, "smartie", "refresh", 3)) * 1000
    
 End Sub
 
@@ -101,14 +96,12 @@ Public Function function1(ByVal strParam1 As String, ByVal strParam2 As String) 
     Dim Buffer As String
     Dim Script As String
     Dim Parameters As String
-    Dim Command As String
-    Dim Extension As String
-    Dim Interpreter As String
     
     Script = ScriptsPath & ConvertParam(strParam1)
     Parameters = ConvertParam(strParam2)
+    Buffer = Client.Execute(Script, Parameters)
     
-    function1 = Client.Execute(Script, Parameters)
+    function1 = CreateReturn(Buffer)
     
 End Function
 
@@ -117,50 +110,12 @@ End Function
 ' strParam2 - Function name and function parameters
 Public Function function2(ByVal strParam1 As String, ByVal strParam2 As String) As Long
 
-End Function
-
-' Retrieve stats
-' strParam1 - Desired data
-' -> requests, executions, cleanups, uptime (...)
-Public Function function3(ByVal strParam1 As String, ByVal strParam2 As String) As Long
-
-End Function
-
-' Version of interpreter
-Public Function function4(ByVal strParam1 As String, ByVal strParam2 As String) As Long
-
     Dim Buffer As String
-    Dim VersionCommand As String
-    Dim Extension As String
     Dim Language As String
-    Dim Interpreter As String
     
-    Extension = LCase(strParam1)
+    Language = ConvertParam(strParam1)
+    Buffer = Client.Execute(Language, "", True)
     
-    If Not Extension Like "[a-z0-9]" Then
-        
-        Buffer = "[CGI4LCD] Invalid extension"
-        GoTo display
-        
-    End If
-    
-    Language = Ini.Read(iniFile, Extension, "language", "")
-    Interpreter = Ini.Read(iniFile, Extension, "interpreter", "")
-    
-    If Language = "" Or Dir(Interpreter, vbNormal) = "" Then
-    
-        Buffer = "[CGI4LCD] Interpreter for extension '" & Extension & "' not found"
-        GoTo display
-        
-    End If
-
-    VersionCommand = Ini.Read(iniFile, Extension, "version", "")
-    VersionCommand = Client.FormatCommand(VersionCommand, Interpreter, "", "")
-
-    Buffer = Client.Request(Command, ExecutionInterval, ExecutionTimeout)
-
-display:
-
     function2 = CreateReturn(Buffer)
 
 End Function
