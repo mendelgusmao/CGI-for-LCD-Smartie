@@ -1,4 +1,2 @@
 VBGROUP 5.0
-StartupProject=Server\CGI4LCDSmartie_Server.vbp
 Project=Plugin\CGI4LCDSmartie_Plugin.vbp
-Project=D:\devs\VB\smartie\php2\src\Test\CGI4LCDSmartie_Test.vbp
