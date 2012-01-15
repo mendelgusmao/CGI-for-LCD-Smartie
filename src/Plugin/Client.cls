@@ -26,7 +26,7 @@ Private Sub Class_Initialize()
     Set TimerUnlock = New TimerEx
 End Sub
 
-Public Sub Start(LocalPort As Long, RemotePort As Long, Ini_File As String, Scripts_Path As String)
+Public Sub Start(RemotePort As Long, Ini_File As String, Scripts_Path As String)
 
     iniFile = Ini_File
     ScriptsPath = Scripts_Path
@@ -35,9 +35,7 @@ Public Sub Start(LocalPort As Long, RemotePort As Long, Ini_File As String, Scri
         .CloseSck
         .Protocol = sckUDPProtocol
         .RemoteHost = "255.255.255.255"
-        .LocalPort = LocalPort
         .RemotePort = RemotePort
-        .Bind .LocalPort
     End With
     
     Locked = False
@@ -47,11 +45,13 @@ End Sub
 Public Function Execute(ByVal Script As String, ByVal Parameters As String, Optional Version As Boolean = False) As String
 
     Dim Buffer As String
-    Dim Command As String
+    Dim Arguments As String
     Dim Extension As String
     Dim Interpreter As String
     Dim ExecutionInterval As Integer
     Dim ExecutionTimeout As Integer
+    
+    Dim Vars As Scripting.Dictionary
     
     Extension = GetExtension(Script)
    
@@ -62,48 +62,60 @@ Public Function Execute(ByVal Script As String, ByVal Parameters As String, Opti
         
     End If
    
-    If Ini.Read(iniFile, Extension, "language", "") = "" Then
+    Interpreter = Ini.Read(iniFile, Extension, "interpreter", "")
+   
+    If Interpreter = "" Or Dir(Interpreter) = "" Then
     
         Execute = "[CGI4LCD] Interpreter for extension '" & Extension & "' not found"
         Exit Function
         
     End If
    
-    Interpreter = Ini.Read(iniFile, Extension, "interpreter", "")
-    Command = Ini.Read(iniFile, Extension, "command", "")
-    ExecutionInterval = Int(Ini.Read(iniFile, Extension, "interval", 30000))
-    ExecutionTimeout = Int(Ini.Read(iniFile, Extension, "timeout", 30000))
     
-    If Dir(Interpreter, vbNormal) = "" Then
+    ExecutionInterval = Int(Ini.Read(iniFile, "cgi4lcd", "interval", 15)) * 1000
+    ExecutionTimeout = Int(Ini.Read(iniFile, "cgi4lcd", "timeout", 60)) * 1000
+    
+    If Version Then
+    
+        Arguments = Ini.Read(iniFile, Extension, "version", "")
+    
+    Else
+    
+        Arguments = Ini.Read(iniFile, Extension, "command", "")
+    
+        If Dir(ScriptsPath & Script, vbNormal) = "" Then
+    
+            Execute = "[CGI4LCD] Script '" & Script & "' not found"
+            Exit Function
         
-        Execute = "[CGI4LCD] Interpreter not found"
-        Exit Function
+        End If
         
     End If
     
-    Script = ScriptsPath & Script
+    Set Vars = New Scripting.Dictionary
+    With Vars
+        .Add "interpreter", Interpreter
+        .Add "scripts_path", ScriptsPath
+        .Add "bootstraps_path", ScriptsPath & "bootstraps\"
+        .Add "script", Script
+        .Add "arguments", Arguments
+        .Add "'", """"
+    End With
     
-    If Dir(Script, vbNormal) = "" Then
+    Arguments = FormatCommand(Arguments, Vars)
 
-        Execute = "[CGI4LCD] Script not found"
-        Exit Function
-    
-    End If
-    
-    Command = FormatCommand(Command, Interpreter, Script, Parameters)
-
-    Execute = Me.Request(Command, ExecutionInterval, ExecutionTimeout)
+    Execute = Request(Interpreter, Arguments, ExecutionInterval, ExecutionTimeout)
    
 End Function
 
-
-Public Function Request(ByVal CommandLine As String, ByVal Interval As Integer, ByVal Timeout As Integer) As String
+Public Function Request(ByVal Interpreter As String, ByVal Arguments As String, ByVal Interval As Integer, ByVal Timeout As Integer) As String
 
     Dim RequestString As String
     Dim Command As Command
     Set Command = New Command
     
-    Command.Line = CommandLine
+    Command.Executable = Interpreter
+    Command.Arguments = Arguments
     Command.Interval = Interval
     Command.Timeout = Timeout
 
@@ -113,13 +125,13 @@ Public Function Request(ByVal CommandLine As String, ByVal Interval As Integer, 
 
     Socket.SendData RequestString
 
-    TimerUnlock.Interval = 3000
+    TimerUnlock.Interval = 1000
     TimerUnlock.Enabled = True
 
-    While Locked
-        ' Wait for data arrival
-        DoEvents
-    Wend
+    'While Locked
+    '    ' Wait for data arrival
+    '    DoEvents
+    'Wend
     
     Request = Response
 
@@ -153,17 +165,15 @@ Public Function GetExtension(File As String)
     
 End Function
 
-Public Function FormatCommand(Template As String, Interpreter As String, Script As String, Params As String)
+Public Function FormatCommand(ByVal Template As String, ByRef Vars As Scripting.Dictionary)
+    
+    Dim Variable
 
     FormatCommand = Template
-    
-    FormatCommand = Replace(FormatCommand, "%interpreter", Interpreter)
-    FormatCommand = Replace(FormatCommand, "%scripts_path", ScriptsPath)
-    FormatCommand = Replace(FormatCommand, "%bootstraps_path", ScriptsPath & "bootstraps\")
-    FormatCommand = Replace(FormatCommand, "%script", Script)
-    FormatCommand = Replace(FormatCommand, "%params", Params)
-    
-    FormatCommand = Replace(FormatCommand, "'", """")
+
+    For Each Variable In Vars
+        FormatCommand = Replace(FormatCommand, "%" & Variable, Vars.Item(Variable))
+    Next Variable
 
 End Function
 
