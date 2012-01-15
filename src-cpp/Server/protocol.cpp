@@ -36,8 +36,8 @@ public:
 			else {
 				cmd.executable = packet[1];
 				cmd.arguments = packet[2];
-				cmd.interval = lexical_cast<int>(packet[3]);
-				cmd.timeout = lexical_cast<int>(packet[4]);
+				cmd.interval = lexical_cast<unsigned int>(packet[3]);
+				cmd.timeout = lexical_cast<unsigned int>(packet[4]);
 				cmd.is_malformed = false;
 			}
 		}

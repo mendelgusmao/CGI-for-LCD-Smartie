@@ -32,9 +32,6 @@
     <ClCompile Include="server.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="runner.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="queue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
