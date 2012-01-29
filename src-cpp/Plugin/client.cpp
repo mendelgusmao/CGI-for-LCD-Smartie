@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include <boost/filesystem.hpp>
 #include "client.h"
 #include "command.cpp"
 #include "protocol.cpp"
@@ -9,14 +8,16 @@ using boost::asio::ip::udp;
 using boost::lexical_cast;
 using boost::filesystem::exists;
 
+string client::_app_path("");
 string client::_scripts_path("");
 string client::_ini_file("");
-unsigned int client::_remote_port(0);
+unsigned int client::_port(0);
 
-void client::start(unsigned int remote_port, string ini_file, string scripts_path) {
-	_remote_port = remote_port;
-	_ini_file = ini_file;
-	_scripts_path = scripts_path;
+void client::start() {
+	_app_path = utils::app_path() + "\\..\\";
+	_scripts_path = _app_path + "\\scripts\\";
+	_ini_file = _scripts_path + "cgi4lcd.ini";
+	_port = lexical_cast<unsigned int>(utils::ini_read(_ini_file, "cgi4lcd.port", "65432"));
 }
 
 string client::execute(string script, string parameters, bool version) {
@@ -57,8 +58,8 @@ string client::execute(string script, string parameters, bool version) {
 	}
 
 	vars["interpreter"] = interpreter;
-	vars["scripts_path"] = _scripts_path;
-	vars["bootstraps_path"] = _scripts_path + "bootstraps\\";
+	vars["scripts_path"] = _app_path;
+	vars["bootstraps_path"] = _app_path + "scripts\\bootstraps\\";
 	vars["script"] = script;
 	vars["arguments"] = arguments;
 	vars["'"] = "\"";
@@ -85,7 +86,7 @@ string client::request(string interpreter, string arguments, unsigned int interv
 		boost::asio::io_service io_service;
 
 		udp::resolver resolver(io_service);
-		udp::resolver::query query(udp::v4(), "127.0.0.1", lexical_cast<string>(_remote_port));
+		udp::resolver::query query(udp::v4(), "127.0.0.1", lexical_cast<string>(_port));
 		udp::endpoint receiver_endpoint = *resolver.resolve(query);
 
 		udp::socket socket(io_service);
