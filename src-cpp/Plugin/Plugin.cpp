@@ -22,7 +22,7 @@ __stdcall  GetMinRefreshInterval()
 	return 1000; // 300 ms
 }
 
-extern "C" DLLEXPORT  const char * 
+extern "C" DLLEXPORT  char * 
 __stdcall  function1(char *param1, char *param2)
 {
 	string script(param1);
