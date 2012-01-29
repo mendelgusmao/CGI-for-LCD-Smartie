@@ -32,8 +32,7 @@ public:
 			if (!cmd.is_malformed) {
 				_queue.add(cmd);
 				cmd = _queue.get(cmd.line());
-				cmd.run();
-				cout << "response: '" << cmd.response << "'" << endl;
+				cout << "Response: '" << cmd.response << "'" << endl;
 			}
 			// else: malformed packet. nothing to do
 
