@@ -56,7 +56,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Languages\CPP\boost_1_48_0;$(ProjectDir);$(SolutionDir)\Server</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Languages\CPP\boost_1_48_0;$(ProjectDir);$(SolutionDir)\Common</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>C:\WINDOWS\Temp\$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
@@ -89,10 +89,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Server\command.cpp" />
-    <ClCompile Include="..\Server\protocol.cpp" />
+    <ClCompile Include="..\Common\command.cpp" />
+    <ClCompile Include="..\Common\protocol.cpp" />
     <ClCompile Include="client.cpp" />
-    <ClCompile Include="utils.cpp" />
+    <ClCompile Include="..\Common\utils.cpp" />
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
