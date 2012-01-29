@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "command.cpp"
-#include <map>
 
 #ifndef QUEUE_CPP
 #define QUEUE_CPP
@@ -24,6 +23,7 @@ public:
 
 		if (it == _commands.end()) {
             _commands[cmd.line()] = cmd;
+			_commands[cmd.line()].run();
         }
         else {
 			_commands[cmd.line()].cleanup_timer = 0;
