@@ -2,10 +2,15 @@
    
    function _load() { 
    
+        static $content;
+        
+        if ($content)
+            return $content;
+   
         $file = end(glob("c:/program files/core temp/*.csv"));
         # change to your core temp's directory
         
-        return file_get_contents($file);
+        return $content = file_get_contents($file);
    }
    
    function _parse($index) {
