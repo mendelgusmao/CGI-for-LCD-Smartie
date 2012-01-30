@@ -12,6 +12,9 @@ public:
 	static string ini_read(const string ini_file, const string key, const string default_value) {
 
 		try {
+
+			cout << "INI File: '" << ini_file << "'" << endl;
+
 			boost::property_tree::ptree pt;
 			boost::property_tree::ini_parser::read_ini(ini_file, pt);
 			string ini_value = pt.get<string>(key);
@@ -20,6 +23,12 @@ public:
 				return default_value;
 			}
 			else {
+
+				if (ini_value.substr(0, 1) == "\"" && ini_value.substr(ini_value.size() - 1, 1) == "\"") {
+					ini_value = ini_value.substr(1);
+					ini_value = ini_value.substr(0, ini_value.size() - 1);
+				}				
+
 				return ini_value;
 			}
 		}
@@ -31,20 +40,10 @@ public:
 	static string app_path() {
 		char path[2048];
 		GetModuleFileNameA(NULL, path, 2048);
+		boost::filesystem::path p(path);
 
-		string spath(path);
-
-		return spath;
+		return p.parent_path().string();		
 	}
 
-	static string get_extension(const string filename) {
-		size_t dot_pos = filename.find_last_of(".");
-	
-		if (dot_pos == string::npos) {
-			return "";
-		}
-
-		return filename.substr(dot_pos + 1);
-	}
 };
 #endif // UTILS_CPP
