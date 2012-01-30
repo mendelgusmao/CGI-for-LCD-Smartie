@@ -14,9 +14,9 @@ string client::_ini_file("");
 unsigned int client::_port(0);
 
 void client::start() {
-	_app_path = utils::app_path() + "\\..\\";
-	_scripts_path = _app_path + "\\scripts\\";
-	_ini_file = _scripts_path + "cgi4lcd.ini";
+	_app_path = utils::app_path() + "\\..";
+	_scripts_path = _app_path + "\\scripts";
+	_ini_file = _scripts_path + "\\cgi4lcd.ini";
 	_port = lexical_cast<unsigned int>(utils::ini_read(_ini_file, "cgi4lcd.port", "65432"));
 }
 
@@ -30,7 +30,8 @@ string client::execute(string script, string parameters, bool version) {
 	string execution_timeout("");
 	map <string, string> vars;
 
-	extension = utils::get_extension(script);
+	boost::filesystem::path p(script);
+	extension = p.extension().string().substr(1);
 
 	if (extension == "") {
 		extension = utils::ini_read(_ini_file, "cgi4lcd.default", "");
@@ -40,11 +41,11 @@ string client::execute(string script, string parameters, bool version) {
 	interpreter = utils::ini_read(_ini_file, extension + ".interpreter", "");
 
 	if (interpreter == "" || !exists(interpreter)) {
-		return "[CGI4LCD] Interpreter for extension '" + extension + "' not found";
+		return "[CGI4LCD] Interpreter for extension '" + extension + "' not found (" + interpreter + ")";
 	}
 
-	execution_interval = utils::ini_read(_ini_file, "cgi4lcd.interval", "15");
-	execution_timeout = utils::ini_read(_ini_file, "cgi4lcd.timeout", "30");
+	execution_interval = utils::ini_read(_ini_file, "cgi4lcd.interval", "15000");
+	execution_timeout = utils::ini_read(_ini_file, "cgi4lcd.timeout", "30000");
 
 	if (version) {
 		arguments = utils::ini_read(_ini_file, extension + ".version", "");
@@ -52,19 +53,22 @@ string client::execute(string script, string parameters, bool version) {
 	else {
 		arguments = utils::ini_read(_ini_file, extension + ".command", "");
 
-		if (!exists(_scripts_path + script)) {
+		if (!exists(_scripts_path + "\\" + script)) {
 			return "[CGI4LCD] Script '" + script + "' not found";
 		}
 	}
 
-	vars["interpreter"] = interpreter;
-	vars["scripts_path"] = _app_path;
-	vars["bootstraps_path"] = _app_path + "scripts\\bootstraps\\";
-	vars["script"] = script;
-	vars["arguments"] = arguments;
+	interpreter = interpreter;
+
+	vars["%interpreter%"] = interpreter;
+	vars["%scripts_path%"] = _scripts_path;
+	vars["%bootstraps_path%"] = _scripts_path + "\\bootstraps";
+	vars["%script%"] = _scripts_path + "\\" + script;
+	vars["%params%"] = parameters;
 	vars["'"] = "\"";
 
 	arguments = format_command(arguments, vars);
+	interpreter = format_command(interpreter, vars);
 
 	return request(interpreter, arguments, lexical_cast<unsigned int>(execution_interval), lexical_cast<unsigned int>(execution_timeout));
 }
@@ -84,23 +88,22 @@ string client::request(string interpreter, string arguments, unsigned int interv
 	try	{
 
 		boost::asio::io_service io_service;
-
-		udp::resolver resolver(io_service);
-		udp::resolver::query query(udp::v4(), "127.0.0.1", lexical_cast<string>(_port));
-		udp::endpoint receiver_endpoint = *resolver.resolve(query);
+		udp::endpoint receiver_endpoint = udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), lexical_cast<int>(_port));
 
 		udp::socket socket(io_service);
 		socket.open(udp::v4());
 
-		const char* send_buf = protocol::build(cmd).c_str();
-		socket.send_to(boost::asio::buffer(send_buf, strlen(send_buf)), receiver_endpoint);
+		string data = protocol::build(cmd);
+		const char* send_buf = data.c_str();
+		socket.send_to(boost::asio::buffer(send_buf, data.size()), receiver_endpoint);
 
 		boost::array<char, 512> recv_buf;
 		udp::endpoint sender_endpoint;
-		size_t len = socket.receive_from(
-		boost::asio::buffer(recv_buf), sender_endpoint);
+		size_t len = socket.receive_from(boost::asio::buffer(recv_buf), sender_endpoint);
 
-		buffer = string(recv_buf.data());
+		string received(recv_buf.data(), len);
+
+		buffer += received;
 
 	}
 	catch (std::exception& e) {
@@ -111,7 +114,7 @@ string client::request(string interpreter, string arguments, unsigned int interv
 }
 
 string client::format_command(const string& command_template, const map<string, string> vars) {
-		
+
 	map<string, string>::const_iterator it;
 	string formatted_command(command_template);
 

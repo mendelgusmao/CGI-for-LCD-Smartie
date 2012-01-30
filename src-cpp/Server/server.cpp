@@ -15,7 +15,7 @@ class server
 public:
     server(boost::asio::io_service& io_service, short port) :
         _io_service(io_service),
-        _socket(io_service, udp::endpoint(udp::v4(), port)),
+        _socket(io_service, udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), port)),
 		_queue(io_service) {
 
         receive();
@@ -33,6 +33,9 @@ public:
 				_queue.add(cmd);
 				cmd = _queue.get(cmd.line());
 				cout << "Response: '" << cmd.response << "'" << endl;
+			}
+			else {
+				cout << "Received malformed request" << endl;
 			}
 			// else: malformed packet. nothing to do
 

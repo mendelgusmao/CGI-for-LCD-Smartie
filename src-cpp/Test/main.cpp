@@ -1,9 +1,14 @@
 #include "stdafx.h"
-
-#include <msgpack.hpp>
+#include "client.cpp"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-	return 0;
+	client::start();
+	cout << "Response: '" << client::execute("test.php", "hello") << "'" << endl;
+	cout << "Response: '" << client::execute("test.php", "say_hi#Mendel") << "'" << endl;
+	cout << "Response: '" << client::execute("test.php", "do_some_math#10;20;30") << "'" << endl;
+
+	string input("");
+	getline(cin, input);
 }
 
