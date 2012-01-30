@@ -43,8 +43,8 @@ public:
         for (it = _commands.begin(); it != _commands.end(); ++it) {
             cmd = it->second;
 
-            cmd.timer++;
-            cmd.cleanup_timer++;
+            cmd.timer += 1000;
+            cmd.cleanup_timer += 1000;
 
 			std::cout << 
 				"Command '" << cmd.line() << "'" << std::endl <<

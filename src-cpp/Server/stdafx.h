@@ -28,5 +28,6 @@
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
+#include <boost/filesystem.hpp>
 
 // TODO: reference additional headers your program requires here

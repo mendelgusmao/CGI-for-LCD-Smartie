@@ -52,6 +52,8 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeaderOutputFile>C:\WINDOWS\Temp\$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)\Common;$(SolutionDir)\Plugin;</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -82,8 +84,6 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Server\command.cpp" />
-    <ClCompile Include="..\Server\protocol.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
