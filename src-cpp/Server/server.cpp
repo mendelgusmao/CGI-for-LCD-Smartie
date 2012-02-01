@@ -26,16 +26,13 @@ public:
         if (!error && bytes_recvd > 0) {
 
 			command cmd;
-			string temp(_data);
+			string temp(_data, bytes_recvd);
 			cmd = protocol::parse(temp);
 
 			if (!cmd.is_malformed) {
 				_queue.add(cmd);
 				cmd = _queue.get(cmd.line());
 				cout << "Response: '" << cmd.response << "'" << endl;
-			}
-			else {
-				cout << "Received malformed request" << endl;
 			}
 			// else: malformed packet. nothing to do
 
