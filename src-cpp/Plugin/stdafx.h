@@ -13,17 +13,21 @@
 #include <cstdlib>
 #include <ctime>
 #include <iostream>
+
+#include <windows.h>
+#include <stdlib.h>
+
 #include <string>
 #include <map>
 
-#include <boost/array.hpp>
+//#include <boost/array.hpp>
 #include <boost/bind.hpp>
-#include <boost/shared_ptr.hpp>
+//#include <boost/shared_ptr.hpp>
 #include <boost/asio.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
+//#include <boost/algorithm/string/predicate.hpp>
+//#include <boost/date_time/posix_time/posix_time.hpp>
 #include <boost/property_tree/ptree.hpp>
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/filesystem.hpp>
