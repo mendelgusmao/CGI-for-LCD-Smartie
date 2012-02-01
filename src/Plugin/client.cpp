@@ -58,8 +58,6 @@ string client::execute(string script, string parameters, bool version) {
 		}
 	}
 
-	interpreter = interpreter;
-
 	vars["%interpreter%"] = interpreter;
 	vars["%scripts_path%"] = _scripts_path;
 	vars["%bootstraps_path%"] = _scripts_path + "\\bootstraps";
