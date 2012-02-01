@@ -40,7 +40,8 @@ Basically, for everything that demands fast or realtime data displaying, like gr
 INSTALLING
 ----------
 
-Download plugins and scripts folder and copy them to your LCD Smartie folder
+> * Grab the latest version from [https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags)  
+> * Copy plugins and scripts folder and to your LCD Smartie folder
 
 CONFIGURING
 -----------
