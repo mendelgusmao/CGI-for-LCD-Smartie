@@ -161,14 +161,15 @@ LANGUAGE SPECIFICS
 ------------------
 
 > ### PHP
->   To give some boost in PHP process startup, I decided to include a php.ini in scripts
->   directory. This is a stripped version that doesn't make PHP load too many extensions.
+>   To give some boost in PHP process startup, there is a stripped php.ini in scripts
+>   directory. This is a version that doesn't make PHP load too many extensions.
 >   However, if you need to load a specific extension, just uncomment the line, as you would
 >   do normally.
 
 > ### Python
 >   While PHP, Ruby and Perl allows to pass a file from the command line to be included in the
->   called script, Python doesn't. When writing a Python script, write in the first line:
+>   called script (or I don't know how to, at least), Python doesn't. When writing a Python script,
+>   put on the first line:
 
 >   `from bootstraps import main`
 
