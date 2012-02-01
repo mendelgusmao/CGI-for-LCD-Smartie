@@ -1,16 +1,67 @@
-PHP FOR LCD SMARTIE
+CGI FOR LCD SMARTIE
 
-    This document describes the basic concept and usage of PHP for LCD Smartie.
+    This document describes the basic concept and usage of CGI for LCD Smartie.
 
-    The plugin acts as a gateway between LCD Smartie and PHP. Every time it's
-    called, it executes the PHP interpreter and returns the data to LCD Smartie
-    to show on display. Optionally you can call a function wrote in a script instead
-    of executing the entire file. This feature helps you to keep your codes organized
-    in just one place.
+    CGI for LCD Smartie is designed to be a fast gateway between LCD Smartie and language 
+    interpreters such as PHP, Ruby and Python, making it easier to gather information to 
+    show on the display without the need to create new plugins.
 
-    It's made in Visual Basic 6.0 but I'm planning to port it to C++ when my knowledge allow.
+    The software is made from two parts: a server (cgi4lcd.exe) and a plugin (cgi.dll).
+    The plugin is responsible for sending the command to the server, receiving a response and
+    relaying it to LCD Smartie.
+    The server receives the command, executes the specified interpreter and stores the command 
+    and its response in a queue. At a specified time it will run the command, caching its result. 
+    When the plugin asks the server for the response of a command, it will deliver the cached 
+    result instead of executing the interpreter again.
+
+WHY PHP FOR LCD SMARTIE IS NOW CGI FOR LCD SMARTIE?
+
+    In the previous version, the plugin was responsible for executing the interpreter. This way of 
+    operation had many problems because it freezes LCD Smartie until the interpreter has finished 
+    its execution. The time between interpreter initialization and output display depends on many 
+    factors but mainly by the complexity of the script that was run.
+
+WHEN IT WILL BE USEFUL?
+
+    - If you want to gather data from databases or internet applications
+    - You want to do that in a short timespan, using your preferred programming language
+    - You don't have patience to build complex plugins using C++, Delphi or VB
+    - You are really not interested in worrying about pointers, variables and other things that strongly
+      typed languages has to bother you
+
+WHEN IT WILL NOT BE USEFUL?
+
+    - Basically, for everything that demands fast or realtime data displaying of data, like graph bars
+
+INSTALLING
+
+    Download plugins and scripts folder and copy them to your LCD Smartie folder
 
 CONFIGURING
+
+    All configuration is done by cgi4lcd.ini (avaliable in scripts folder).
+
+    The first section is [cgi4lcd] and it has the following attributes:
+    
+      - interval (numeric, milliseconds)
+	Value to tell the server of how often a command it will be executed
+
+      - timeout (numeric, milliseconds)
+	Value to tell the server of how long after the command is not requested by the
+	plugin to remove it from the queue
+
+      - port (numeric, 1-65535)
+	A numeric value representing the UDP port that will be used for the communication between
+	server and plugin
+
+      - default (string)
+	The default file extension to be considered by the plugin if it's not specified in filename
+
+      - show_window (boolean, 0/1)
+	If the value is 1, the server window will appear when it's executed, showing the queue
+	processing and incoming requests
+
+    --> continue from here
 
     The first step of configuration is to copy the directory called "scripts" to LCD Smartie
     directory. Inside are three files, main.php, test.php and coretemp.php. The first is the
@@ -95,6 +146,12 @@ ISSUES
     that contains 4 functions (monitoring of some bot applications), it was really slow and
     sometimes the screen appeared for just 1 second before the next screen. I tried to
     fix it with the stripped php.ini.
+
+TODO
+
+    - Rewrite almost every function or method using std::string to use char pointers
+    - Make the plugin run cgi4lcd.exe if it's not in execution
+    - <your suggestion here>
 
 FINALLY
 
