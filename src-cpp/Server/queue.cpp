@@ -50,7 +50,7 @@ public:
 				"Command '" << cmd.line() << "'" << std::endl <<
 				"Cleanup/Timeout: " << cmd.cleanup_timer << "/" << cmd.timeout << std::endl <<
 				"Timer/Interval: " << cmd.timer << "/" << cmd.interval << std::endl <<
-				std::endl;
+				"Cached Response: '" << cmd.response << "'" << std::endl;*/
 
             if (cmd.cleanup_timer >= cmd.timeout) {
 				std::cout << "Erasing '" << cmd.line() << "'" << std::endl;
