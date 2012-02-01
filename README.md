@@ -91,7 +91,7 @@ CONFIGURING
 > 	The absolute path to *[LCD Smartie path]*\scripts\bootstraps folder
 
 >       * %script%  
-> 	The absolute path to *[LCD Smartie path]*\scripts\<name of the script> file
+> 	The absolute path to *[LCD Smartie path]*\scripts\*[script name]*
 
 >       * %params%  
 > 	Function name or function name and parameters specified in the last argument passed to $dll
