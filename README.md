@@ -18,116 +18,117 @@ CGI FOR LCD SMARTIE 0.1-alpha
 WHY PHP FOR LCD SMARTIE IS NOW CGI FOR LCD SMARTIE?
 ---------------------------------------------------
 
-> In the previous version, the plugin was responsible for executing the interpreter. This way of 
-> operation had many problems because it freezes LCD Smartie until the interpreter has finished 
-> its execution. The time between interpreter initialization and output display depends on many 
-> factors but mainly by the complexity of the script that was run.
+> First, I wanted to not to limit the plugin to run only PHP code.
+
+> In the first version, he plugin was responsible for the execution of the interpreter.
+> Operating in this way led to a problem: LCD Smartie was freezing from the beginning to the end 
+> of the execution. Using caching and a fast protocol like UDP solved it at the cost of not
+> having quick responses.
 
 WHEN IT WILL BE USEFUL?
 -----------------------
 
-* If you want to gather data from databases or internet applications
-* You want to do that in a short timespan, using your preferred programming language
-* You don't have patience to build complex plugins using C++, Delphi or VB
-* You are really not interested in worrying about pointers, variable types, compilation and other 
-  things that strongly typed languages has to bother you
+> * If you want to show data gathered from databases or internet applications
+> * You want to do that in a short timespan, using your preferred programming language
+> * You don't have patience to build complex plugins using C++, Delphi or VB
+> * You are really not interested in worrying about pointers, variable types, compilation and other things that strongly typed languages has to bother you
 
 WHEN IT WILL NOT BE USEFUL?
 ---------------------------
 
-Basically, for everything that demands fast or realtime data displaying, like graph bars
+> Basically, for everything that demands fast or realtime data displaying, like graph bars.  
+> Believe me, the minimum time interval that LCD Smartie is allowed to get data from the plugin is 1 second and even if it was smaller, the default time interval to re-execute an interpretator is 15 seconds. Oh, are you thinking about decreasing everything to 100 ms? Only if you have a good machine configuration to support thousands of processes doing the same thing.  
+> Really, don't try it. Go to C++
 
 INSTALLING
 ----------
 
 > * Grab the latest version from [https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags)  
-> * Copy plugins and scripts folder and to your LCD Smartie folder
+> * Copy plugins and scripts folder to your LCD Smartie folder
 
 CONFIGURING
 -----------
 
-The configuration is done in cgi4lcd.ini (avaliable in scripts folder).
+> The configuration is done in cgi4lcd.ini (avaliable in scripts folder).  
 
-The first section is [cgi4lcd]. It has the following attributes:
+> The first section is [cgi4lcd]. It has the following attributes:
 
-  * interval (numeric, milliseconds)  
-    Value to tell the server of how often a command it will be executed
+>   * interval (numeric, milliseconds)  
+>     Value to tell the server of how often a command it will be executed
 
-  * timeout (numeric, milliseconds)  
-    Value to tell the server of how long after the command is not requested by the
-    plugin to remove it from the queue
+>   * timeout (numeric, milliseconds)  
+>     Value to tell the server of how long after the command is not requested by the
+>     plugin to remove it from the queue
 
-  * port (numeric, 1-65535)  
-    A numeric value representing the UDP port that will be used for the communication between
-    server and plugin
+>   * port (numeric, 1-65535)  
+>     A numeric value representing the UDP port that will be used for the communication between
+>     server and plugin
 
-  * default (text)  
-    The default file extension to be considered by the plugin if not specified in the filename passed
-    to $dll
+>   * default (text)  
+>     The default file extension to be considered by the plugin if not specified in the filename passed
+>     to $dll
 
-  * show_window (boolean, 0/1)  
-    If the value is 1, the server window will appear when it's executed, showing the queue
-    processing and incoming requests
+>   * show_window (boolean, 0-1)  
+>     If the value is 1, the server window will appear when it's executed, showing the queue
+>     processing and incoming requests
 
-The subsequent sections are named with the common file extension of the language. They have the following
-attributes:
+> The subsequent sections are named with the common file extension of the language. They have the following attributes:
 
-  * language (text)  
-    Language name for the extension. Not used right now
+>   * language (text)  
+>     Language name for the extension. Not used right now
 
-  * interpreter (text)  
-    Absolute path for the language interpreter
+>   * interpreter (text)  
+>     Absolute path for the language interpreter
 
-  * command  
-    The command line to execute the script. It has variables that are replaced when the plugin sends the
-    command to the server. They are:
+>   * command  
+>     The command line to execute the script. It has variables that are replaced when the plugin sends the
+>     command to the server. They are:
 
-      * %scripts_path%  
-	The absolute path to *[LCD Smartie path]*\scripts folder
+>       * %scripts_path%  
+> 	The absolute path to *[LCD Smartie path]*\scripts folder
 
-      * %bootstraps_path%  
-	The absolute path to *[LCD Smartie path]*\scripts\bootstraps folder
+>       * %bootstraps_path%  
+> 	The absolute path to *[LCD Smartie path]*\scripts\bootstraps folder
 
-      * %script%  
-	The absolute path to *[LCD Smartie path]*\scripts\<name of the script> file
+>       * %script%  
+> 	The absolute path to *[LCD Smartie path]*\scripts\<name of the script> file
 
-      * %params%  
-	Function name or function name and parameters specified in the last argument passed to $dll
+>       * %params%  
+> 	Function name or function name and parameters specified in the last argument passed to $dll
 
-      * %interpreter%  
-	The path specified in the property interpreter
+>       * %interpreter%  
+> 	The path specified in the property interpreter
 
-  * version  
-    Command line to get the interpreter version
+>   * version  
+>     Command line to get the interpreter version
 
-CGI4LCD comes with the basic settings to run PHP, Ruby, Python, Perl and DOS Batch scripts. You must
-only change the interpreter path and it will be ready to use.
+> CGI4LCD comes with the basic settings to run PHP, Ruby, Python, Perl and DOS Batch scripts. You must only change the interpreter path and it will be ready to use.
 
 USING
 -----
 
-There is only one working function in the plugin and it takes 2 parameters:
+> There is only one working function in the plugin and it takes 2 parameters:  
 
-* filename - mandatory. it must exist in scripts folder.  
-  The extension is optional. If not passed, the plugin will use the default extension
-  set in the section cgi4lcd of the configuration file  
-* function (optional) and arguments (separated by semicolons), also optional
+> * filename - mandatory. it must exist in scripts folder.  
+>   The extension is optional. If not passed, the plugin will use the default extension
+>   set in the section cgi4lcd of the configuration file  
+> * function (optional) and arguments (separated by semicolons), also optional  
 
 > Syntax: `$dll(cgi,1,filename[.extension],[function[#arg1;arg2;...]])`
 
-There are three possible usages for code executing:
+> There are three possible usages for code executing:
 
-* Executing a PHP file
+> * Executing a PHP file
 
 > Syntax: `$dll(cgi,1,file[.ext],)`
 
-* Executing a function of a PHP file without arguments
+> * Executing a function of a PHP file without arguments
 
 > Syntax: `$dll(cgi,1,file[.ext],function)`
 
-* Executing a function of a PHP file with arguments
+> * Executing a function of a PHP file with arguments
 
-> Syntax: `$dll(cgi,1,file[.php],function#arg1;arg2;argX)`
+> Syntax: `$dll(cgi,1,file[.ext],function#arg1;arg2;argX)`
 
 WRITING SCRIPTS
 ---------------
@@ -150,7 +151,7 @@ WRITING SCRIPTS
 
 > `[write code that outputs directly to the screen]`
 
-> The scripts directory is full of test.<extension> files that describes the basics of writing 
+> The scripts directory is full of test.*[extension]* files that describes the basics of writing 
 > functions. Try it yourself:
 
 > `$dll(cgi,1,test,hello)` -> Hello, world!  
@@ -161,16 +162,15 @@ LANGUAGE SPECIFICS
 ------------------
 
 > ### PHP
->   To give some boost in PHP process startup, there is a stripped php.ini in scripts
->   directory. This is a version that doesn't make PHP load too many extensions.
+>   To give some boost in PHP process startup, I decided to include a php.ini in scripts
+>   directory. This is a stripped version that doesn't make PHP load too many extensions.
 >   However, if you need to load a specific extension, just uncomment the line, as you would
 >   do normally.
 
 > ### Python
 >   While PHP, Ruby and Perl allows to pass a file from the command line to be included in the
->   called script (or I don't know how to, at least), Python doesn't. When writing a Python script,
->   put on the first line:
-
+>   called script, Python doesn't (or, at least, I don't know how to). When writing a Python 
+> script, put on the first line:
 >   `from bootstraps import main`
 
 ISSUES
