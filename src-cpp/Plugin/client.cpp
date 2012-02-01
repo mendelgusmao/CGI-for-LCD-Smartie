@@ -14,7 +14,7 @@ string client::_ini_file("");
 unsigned int client::_port(0);
 
 void client::start() {
-	_app_path = utils::app_path() + "\\..";
+	_app_path = utils::app_path();
 	_scripts_path = _app_path + "\\scripts";
 	_ini_file = _scripts_path + "\\cgi4lcd.ini";
 	_port = lexical_cast<unsigned int>(utils::ini_read(_ini_file, "cgi4lcd.port", "65432"));
@@ -97,17 +97,17 @@ string client::request(string interpreter, string arguments, unsigned int interv
 		const char* send_buf = data.c_str();
 		socket.send_to(boost::asio::buffer(send_buf, data.size()), receiver_endpoint);
 
-		boost::array<char, 512> recv_buf;
+		char recv_buf[1024]; 
 		udp::endpoint sender_endpoint;
 		size_t len = socket.receive_from(boost::asio::buffer(recv_buf), sender_endpoint);
 
-		string received(recv_buf.data(), len);
+		string received(recv_buf, len);
 
 		buffer += received;
 
 	}
 	catch (std::exception& e) {
-		buffer = string("[CGI4LCD] Error: ") + e.what();
+		buffer = string("[CGI4LCD] Error: ") + e.what() + " ";
 	}
 
 	return buffer;
