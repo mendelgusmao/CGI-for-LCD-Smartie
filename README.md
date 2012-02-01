@@ -187,4 +187,4 @@ TODO
 FINALLY
 -------
 
-![LCD Smartie running the world](/MendelGusmao/CGI-for-LCD-Smartie/tree/master/pics "Beaultiful, isn't it?")
+![LCD Smartie running the world](/MendelGusmao/CGI-for-LCD-Smartie/blob/master/pics/run-everything-in-the-world.jpg?raw=true "Beaultiful, isn't it?")
