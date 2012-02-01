@@ -1,6 +1,4 @@
 #include "stdafx.h"
-#include <windows.h>
-#include <stdlib.h>
 #include "client.h"
 #include "utils.cpp"
 
@@ -28,8 +26,10 @@ __stdcall  function1(char *param1, char *param2)
 	string script(param1);
 	string parameters(param2);
 
-	char* response = const_cast<char*>(client::execute(script, parameters).c_str());
-	return response;
+	char buffer[1024];
+	strcpy_s(buffer, client::execute(script, parameters).c_str());
+
+	return buffer;
 }
 
 extern "C" DLLEXPORT  char * 
@@ -38,7 +38,9 @@ __stdcall  function2(char *param1, char *param2)
 	string script(param1);
 	string parameters(param2);
 
-	char* response = const_cast<char*>(client::execute(script, parameters, true).c_str());
-	return response;
+	char buffer[1024];
+	strcpy_s(buffer, client::execute(script, parameters, true).c_str());
+
+	return buffer;
 }
     
