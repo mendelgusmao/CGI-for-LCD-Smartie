@@ -1,4 +1,4 @@
-CGI FOR LCD SMARTIE
+CGI FOR LCD SMARTIE 0.1-alpha
 
     This document describes the basic concept and usage of CGI for LCD Smartie.
 
@@ -26,8 +26,8 @@ WHEN IT WILL BE USEFUL?
     - If you want to gather data from databases or internet applications
     - You want to do that in a short timespan, using your preferred programming language
     - You don't have patience to build complex plugins using C++, Delphi or VB
-    - You are really not interested in worrying about pointers, variables and other things that strongly
-      typed languages has to bother you
+    - You are really not interested in worrying about pointers, variable types, compilation and other 
+      things that strongly typed languages has to bother you
 
 WHEN IT WILL NOT BE USEFUL?
 
@@ -54,108 +54,128 @@ CONFIGURING
 	A numeric value representing the UDP port that will be used for the communication between
 	server and plugin
 
-      - default (string)
-	The default file extension to be considered by the plugin if it's not specified in filename
+      - default (text)
+	The default file extension to be considered by the plugin if not specified in the filename passed
+	to $dll
 
       - show_window (boolean, 0/1)
 	If the value is 1, the server window will appear when it's executed, showing the queue
 	processing and incoming requests
 
-    --> continue from here
+    The subsequent sections are named with the common file extension of the language. They have the following
+    properties:
 
-    The first step of configuration is to copy the directory called "scripts" to LCD Smartie
-    directory. Inside are three files, main.php, test.php and coretemp.php. The first is the
-    most important, because it contains the code necessary to parse the incoming data from $dll
-    and perform what it was asked to do. The second is a testfile with some silly functions to
-    test if everything's OK and the third is a proof-of-concept of using core temp to register
-    data about the machine to a log, read the log with PHP and show it in the display.
+      - language (text)
+	Language name for the extension. Not used right now
 
-    The second step is to configure, setting the PHP interpreter (usually php.exe),
-    min refresh rate and timeout in scripts\php.ini:
+      - interpreter (text)
+	Absolute path for the language interpreter
 
-        [smartie]
-        interpreter="c:\php\bin\php.exe"
-        timeout=5
-        refresh=15000
+      - command
+	The command line to execute the script. It has variables that are replaced when the plugin sends the
+	command to the server. They are:
 
-    Of course, replace the path above by the path of the PHP interpreter on your machine.
+	  - %scripts_path%
+	    The absolute path to <LCD Smartie path>\scripts folder
 
-    To give some boost in PHP process startup, I decided to include a php.ini in scripts
-    directory. This is a stripped version that doesn't make PHP load too many extensions.
-    However, if you need to load a specific extension, just uncomment the line, as you would
-    do normally.
+	  - %bootstraps_path%
+	    The absolute path to <LCD Smartie path>\scripts\bootstraps folder
+
+	  - %script%
+	    The absolute path to <LCD Smartie path>\scripts\<script> file
+
+	  - %params%
+	    Function name or function name and parameters specified in the last argument passed to $dll
+
+	  - %interpreter%
+	    The path specified in the property interpreter
+
+      - version
+	Command line to get the interpreter version
+
+    CGI4LCD comes with the basic settings to run PHP, Ruby, Python, Perl and DOS Batch scripts. You must
+    only change the interpreter path and it will be ready to use.
 
 USING
 
-    There are 2 functions in the plugin.
+    There is only one working function in the plugin and it takes 2 parameters:
 
-    The first is the code executor and it has 2 parameters:
-
-        - filename (mandatory)
+        - filename - mandatory. it must exist in scripts folder.
+	  The extension is optional. If not passed, the plugin will use the default extension
+	  set in the section cgi4lcd of the configuration file
         - function (optional) and arguments (separated by semicolons), also optional
 
-        > $dll(php,1,filename[.php],[function[#arg1;arg2;...]])
-
-    * The extension ".php" in filename is optional.
-
-    The second shows the PHP version (output of php.exe -v) and has no parameters.
-
-        > $dll(php,2,,)
+        Syntax: $dll(cgi,1,filename[.extension],[function[#arg1;arg2;...]])
 
     There are three possible usages for code executing:
 
         1 - Executing a PHP file
 
-            > $dll(php,1,file[.php],)
+            > $dll(cgi,1,file[.ext],)
 
         2 - Executing a function of a PHP file without arguments
 
-            > $dll(php,1,file[.php],function)
+            > $dll(cgi,1,file[.ext],function)
 
         3 - Executing a function of a PHP file with arguments
 
-            > $dll(php,1,file[.php],function#arg1;arg2;argX)
+            > $dll(cgi,1,file[.php],function#arg1;arg2;argX)
 
 WRITING SCRIPTS
 
-    Create a .php file in scripts directory with the following lines:
+    First of all, you'll need to know what is a bootstrap. It's a piece of code responsible for
+    calling a function, retrieving its result and printing to the screen, so the server can grab
+    it and relay it to the plugin. Bootstraps are optional if your script directly outputs data 
+    but mandatory if you want to group functions in a file.
 
-    <?php
+    For now, CGI4LCD comes with bootstraps written in PHP, Ruby, Python and Perl. A Go version is
+    in the repository - but still just a concept.
 
-	// your code here
+    The script must be saved in scripts folder and has the following structure:
 
-	main();
+	<include bootstrap>
+	
+	<declare functions>
 
-    ?>
+	main(); # Execute bootstrap
 
-    Since version 0.2, there is no need to include scripts\main.php in your file and
-    doing that will cause an error.
+    or
+
+	<write code that writes directly to the screen>
+
+    The scripts directory is full of test.<extension> files that describes the basics of writing 
+    functions. Try it yourself:
+
+    $dll(cgi,1,test,hello) -> Hello, world!
+    $dll(cgi,1,test,hi#Mendel) -> Hi, Mendel
+    $dll(cgi,1,test,do_some_math#1;2;3) -> 5
+
+LANGUAGE SPECIFICS
+
+    - PHP
+      To give some boost in PHP process startup, I decided to include a php.ini in scripts
+      directory. This is a stripped version that doesn't make PHP load too many extensions.
+      However, if you need to load a specific extension, just uncomment the line, as you would
+      do normally.
+
+    - Python
+      While PHP, Ruby and Perl allows to pass a file from the command line to be included in the
+      called script, Python doesn't. When writing a Python script, write in the first line:
+  
+	  from bootstraps import main
 
 ISSUES
 
-    Due to a bug (it's not a bug, it's a feature!) of LCD Smartie, the program awaits
-    for the end of the execution of the plugin code before showing any data on the display.
-    If a programming error, race condition, infinite loop or something else causes freezing
-    of the PHP interpreter, the plugin will freeze, waiting for PHP process to terminate and
-    then, LCD Smartie will be freezing too. My idea is to implement a watchdog timer, then, in
-    case the PHP process take more time than the chosen value of timeout, it will be instantly
-    killed and the plugin will return an empty string or an error message.
-
-    I'm not sure if it's a problem of PHP interpreter, of the plugin or LCD Smartie,
-    but when using the plugin, the LCD Smartie goes slow. For a test with a script
-    that contains 4 functions (monitoring of some bot applications), it was really slow and
-    sometimes the screen appeared for just 1 second before the next screen. I tried to
-    fix it with the stripped php.ini.
+    - It works only with LCD Smartie 5.4 (I mean not with the recent 5.4.2.92b)
+    - <Your complaint here>
 
 TODO
 
-    - Rewrite almost every function or method using std::string to use char pointers
-    - Make the plugin run cgi4lcd.exe if it's not in execution
-    - <your suggestion here>
+    - Rewrite almost every function or method to use char* instead of strings
+    - Make the plugin run cgi4lcd.exe if it's not being executed
+    - <Your suggestion here>
 
 FINALLY
 
     if ($questions || $suggestions)
-        send_email("mendelsongusmao+github@gmail.com");
-
-    (Text corrections are welcome too, since english is not my native language).
+        send_email("mendelsongusmao+cgi4lcd@gmail.com");
