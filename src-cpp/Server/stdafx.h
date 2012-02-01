@@ -16,9 +16,7 @@
 #include <string>
 #include <map>
 
-#include <boost/array.hpp>
 #include <boost/bind.hpp>
-#include <boost/shared_ptr.hpp>
 #include <boost/asio.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/algorithm/string.hpp>
