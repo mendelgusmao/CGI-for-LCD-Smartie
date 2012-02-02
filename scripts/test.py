@@ -1,4 +1,4 @@
-from bootstraps import main
+from routers import main
 
 # $dll(cgi,1,test.rb,hello)
 def hello():
