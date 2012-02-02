@@ -63,7 +63,7 @@ string client::execute(string script, string parameters, bool version) {
 
     vars["%interpreter%"] = interpreter;
     vars["%scripts_path%"] = _scripts_path;
-    vars["%bootstraps_path%"] = _scripts_path + "\\bootstraps";
+    vars["%routers_path%"] = _scripts_path + "\\routers";
     vars["%script%"] = _scripts_path + "\\" + script;
     vars["%params%"] = parameters;
     vars["'"] = "\"";

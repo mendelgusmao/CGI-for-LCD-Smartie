@@ -1,7 +1,7 @@
 package main
 
 import "strconv"
-import "bootstrap"
+import "router"
 import "strings"
 import "os"
 
@@ -22,11 +22,11 @@ func do_some_math(a, b, c string) string {
 }
 
 func main() {
-  functions := new(bootstrap.Functions)
+  functions := new(router.Functions)
   
   functions.Register("hello", hello)
   functions.Register("say_hi", say_hi)
   functions.Register("do_some_math", do_some_math)
   
-  bootstrap.Main(functions)
+  router.Main(functions)
 }
