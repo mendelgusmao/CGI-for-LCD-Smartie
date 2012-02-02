@@ -19,45 +19,45 @@ public:
 
     static command parse(string data) {
 
-		vector<string> packet;
-		command cmd;
+        vector<string> packet;
+        command cmd;
 
-		split(packet, data, boost::is_any_of(PROTOCOL_DELIMITER));
+        split(packet, data, boost::is_any_of(PROTOCOL_DELIMITER));
 
-		if (packet.size() != 6) {
-			cmd.is_malformed = true;
-		}
-		else {
-			if (packet[0] != PROTOCOL_HEADER) {
-				cmd.is_malformed = true;
-			}
-			else {
-				cmd.executable = packet[1];
-				cmd.arguments = packet[2];
-				cmd.interval = lexical_cast<unsigned int>(packet[3]);
-				cmd.timeout = lexical_cast<unsigned int>(packet[4]);
-				cmd.is_malformed = false;
-			}
-		}
+        if (packet.size() != 6) {
+            cmd.is_malformed = true;
+        }
+        else {
+            if (packet[0] != PROTOCOL_HEADER) {
+                cmd.is_malformed = true;
+            }
+            else {
+                cmd.executable = packet[1];
+                cmd.arguments = packet[2];
+                cmd.interval = lexical_cast<unsigned int>(packet[3]);
+                cmd.timeout = lexical_cast<unsigned int>(packet[4]);
+                cmd.is_malformed = false;
+            }
+        }
 
-		return cmd;
+        return cmd;
         
     }
 
-	static string build(const command &cmd) { 
+    static string build(const command &cmd) { 
 
-		vector<string> packet;
+        vector<string> packet;
 
-		packet.push_back(PROTOCOL_HEADER);
-		packet.push_back(cmd.executable);
-		packet.push_back(cmd.arguments);
-		packet.push_back(lexical_cast<string>(cmd.interval));
-		packet.push_back(lexical_cast<string>(cmd.timeout));
-		packet.push_back("");
+        packet.push_back(PROTOCOL_HEADER);
+        packet.push_back(cmd.executable);
+        packet.push_back(cmd.arguments);
+        packet.push_back(lexical_cast<string>(cmd.interval));
+        packet.push_back(lexical_cast<string>(cmd.timeout));
+        packet.push_back("");
 
-		return join(packet, PROTOCOL_DELIMITER);
-		
-	}
+        return join(packet, PROTOCOL_DELIMITER);
+        
+    }
 
 };
 
