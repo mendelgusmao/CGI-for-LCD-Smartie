@@ -15,6 +15,7 @@ public:
     unsigned int cleanup_timer;
     string response;
     bool is_malformed;
+    bool is_internal;
 
     command() :
         timer(0),
