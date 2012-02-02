@@ -39,6 +39,7 @@ WHEN IT WILL NOT BE USEFUL?
 INSTALLING
 ----------
 
+> * Make sure you have .Net Framework 4
 > * Grab the latest version from [https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags)  
 > * Copy plugins and scripts folder to your LCD Smartie folder
 
