@@ -79,8 +79,8 @@ CONFIGURING
 >       * %scripts_path%  
 > 	The absolute path to *[LCD Smartie path]*\scripts folder
 
->       * %bootstraps_path%  
-> 	The absolute path to *[LCD Smartie path]*\scripts\bootstraps folder
+>       * %routers_path%  
+> 	The absolute path to *[LCD Smartie path]*\scripts\routers folder
 
 >       * %script%  
 > 	The absolute path to *[LCD Smartie path]*\scripts\*[script name]*
@@ -124,15 +124,15 @@ USING
 WRITING SCRIPTS
 ---------------
 
-> First of all, you'll need to know what is a bootstrap. It's a piece of code responsible for calling a function, retrieving its result and printing to the screen, so the server can grab it and relay it to the plugin. Bootstraps are optional if your script directly outputs data but mandatory if you want to group functions in a file.
+> First of all, you'll need to know what is a router. It's a piece of code responsible for calling a function, retrieving its result and printing to the screen, so the server can grab it and relay it to the plugin. Routers are optional if your script directly outputs data but mandatory if you want to group functions in a file.
 
-> For now, CGI4LCD comes with bootstraps written in PHP, Ruby, Python and Perl. A Go version is in the repository - but still just a concept.
+> For now, CGI4LCD comes with routers written in PHP, Ruby, Python and Perl. A Go version is in the repository - but still just a concept.
 
 > The script must be saved in scripts folder and has the following structure:
 
-> `# include bootstrap`  
+> `# include router`  
 > `# declare functions`  
-> `main(); # Execute bootstrap`  
+> `main(); # Execute router`  
 
 > or
 
@@ -152,7 +152,7 @@ LANGUAGE SPECIFICS
 
 > ### Python
 >   While PHP, Ruby and Perl allows to pass a file from the command line to be included in the called script, Python doesn't (or, at least, I don't know how to). When writing a Python script, put on the first line:  
->   `from bootstraps import main`
+>   `from routers import main`
 
 ISSUES
 ------
@@ -165,6 +165,8 @@ TODO
 
 > * Rewrite almost every function or method to use char* instead of strings
 > * Make the plugin run cgi4lcd.exe if it's not being executed
+> * Allow configuration of interval/timeout per-language, per-script and per-function
+> * Use threads instead of a server process
 > * *[Your suggestion here]*
 
 FINALLY
