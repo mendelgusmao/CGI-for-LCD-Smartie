@@ -7,7 +7,7 @@
 extern "C" DLLEXPORT  void 
 __stdcall  SmartieInit()
 {
-	client::start();
+    client::start();
 }
 
 extern "C" DLLEXPORT  void 
@@ -17,30 +17,30 @@ __stdcall  SmartieFini()
 extern "C" DLLEXPORT  int
 __stdcall  GetMinRefreshInterval()
 {
-	return 1000; // 300 ms
+    return 1000; // 300 ms
 }
 
 extern "C" DLLEXPORT  char * 
 __stdcall  function1(char *param1, char *param2)
 {
-	string script(param1);
-	string parameters(param2);
+    string script(param1);
+    string parameters(param2);
 
-	char buffer[1024];
-	strcpy_s(buffer, client::execute(script, parameters).c_str());
+    char buffer[1024];
+    strcpy_s(buffer, client::execute(script, parameters).c_str());
 
-	return buffer;
+    return buffer;
 }
 
 extern "C" DLLEXPORT  char * 
 __stdcall  function2(char *param1, char *param2)
 {
-	string script(param1);
-	string parameters(param2);
+    string script(param1);
+    string parameters(param2);
 
-	char buffer[1024];
-	strcpy_s(buffer, client::execute(script, parameters, true).c_str());
+    char buffer[1024];
+    strcpy_s(buffer, client::execute(script, parameters, true).c_str());
 
-	return buffer;
+    return buffer;
 }
     
