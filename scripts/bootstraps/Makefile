@@ -1,6 +1,6 @@
 include $(GOROOT)/src/Make.inc
 
-TARG=bootstrap
+TARG=router
 GOFILES=\
         go.go\
 
