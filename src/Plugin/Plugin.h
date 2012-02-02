@@ -13,8 +13,8 @@
 // This class is exported from the Plugin.dll
 class DEMOCPLUGIN_API CDemoCPlugin {
 public:
-	CDemoCPlugin(void);
-	// TODO: add your methods here.
+    CDemoCPlugin(void);
+    // TODO: add your methods here.
 };
 
 extern DEMOCPLUGIN_API int nDemoCPlugin;
