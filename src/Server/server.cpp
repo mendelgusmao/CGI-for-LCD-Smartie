@@ -13,6 +13,14 @@ using std::endl;
 class server
 {
 public:
+    
+    boost::asio::io_service& _io_service;
+    udp::socket _socket;
+    queue _queue;    
+    udp::endpoint _sender_endpoint;
+    enum { max_length = 1024 };
+    char _data[max_length];    
+    
     server(boost::asio::io_service& io_service, short port) :
         _io_service(io_service),
         _socket(io_service, udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), port)),
@@ -75,13 +83,6 @@ public:
         );
 
     }
-
-    boost::asio::io_service& _io_service;
-    udp::socket _socket;
-    queue _queue;    
-    udp::endpoint _sender_endpoint;
-    enum { max_length = 1024 };
-    char _data[max_length];
 
 };
 
