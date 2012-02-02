@@ -31,6 +31,10 @@ public:
             if (packet[0] != PROTOCOL_HEADER) {
                 cmd.is_malformed = true;
             }
+            else if (packet[1] == "command" && packet[2] != "")
+                cmd.is_internal = true;
+                cmd.executable = packet[1];
+                cmd.arguments = packet[2];
             else {
                 cmd.executable = packet[1];
                 cmd.arguments = packet[2];
