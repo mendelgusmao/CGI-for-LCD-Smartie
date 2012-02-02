@@ -31,11 +31,14 @@ string client::execute(string script, string parameters, bool version) {
 	map <string, string> vars;
 
 	boost::filesystem::path p(script);
-	extension = p.extension().string().substr(1);
+	extension = p.extension().string();
 
 	if (extension == "") {
 		extension = utils::ini_read(_ini_file, "cgi4lcd.default", "");
 		script += "." + extension;
+	}
+	else {
+		extension = extension.substr(1);
 	}
 
 	interpreter = utils::ini_read(_ini_file, extension + ".interpreter", "");
