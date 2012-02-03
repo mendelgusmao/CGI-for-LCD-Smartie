@@ -47,7 +47,7 @@ INSTALLING
 CONFIGURING
 -----------
 
-> The configuration is done in cgi4lcd.ini (avaliable in scripts folder).  
+> The configuration is done in cgi4lcd.ini (available in scripts folder).  
 
 > The first section is [cgi4lcd]. It has the following attributes:
 
@@ -60,21 +60,24 @@ CONFIGURING
 >   * port (numeric, 1-65535)  
 >     A numeric value representing the UDP port that will be used for the communication between server and plugin
 
->   * default (text)  
+>   * default_extension (text)  
 >     The default file extension to be considered by the plugin if not specified in the filename passed to $dll
 
 >   * show_window (boolean, 0-1)  
 >     If the value is 1, the server window will appear when it's executed, showing the queue processing and incoming requests
 
+>   * add_and_run (boolean, 0-1)  
+>     If the value is 1, the server will execute the command right after it is added to the queue. If not, the server will await the configured interval to run the command and return an empty response until it happens. 
+
 > The subsequent sections are named with the common file extension of the language. They have the following attributes:
 
 >   * language (text)  
->     Language name for the extension. Not used right now
+>     Language name relative to the extension. Not used right now
 
 >   * interpreter (text)  
->     Absolute path for the language interpreter
+>     Absolute path to the language interpreter
 
->   * command  
+>   * command (text)  
 >     The command line to execute the script. It has variables that are replaced when the plugin sends the command to the server. They are:
 
 >       * %scripts_path%  
