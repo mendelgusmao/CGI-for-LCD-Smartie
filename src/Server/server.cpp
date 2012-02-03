@@ -18,13 +18,16 @@ public:
     udp::socket _socket;
     queue _queue;    
     udp::endpoint _sender_endpoint;
+    bool _add_and_run;
     enum { max_length = 1024 };
     char _data[max_length];    
     
-    server(boost::asio::io_service& io_service, short port) :
+    server(boost::asio::io_service& io_service, short port, bool add_and_run) :
         _io_service(io_service),
         _socket(io_service, udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), port)),
-        _queue(io_service) {
+        _queue(io_service),
+        _add_and_run(add_and_run)
+        {
 
         receive();
 
