@@ -158,7 +158,6 @@ LANGUAGE SPECIFICS
 ISSUES
 ------
 
-> * It works only with LCD Smartie 5.4 (I mean not with the recent 5.4.2.92b)
 > * *[Your complaint here]*
 
 TODO
