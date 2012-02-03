@@ -163,10 +163,11 @@ ISSUES
 TODO
 ----
 
+> * Add support to Unicode strings
 > * Rewrite almost every function or method to use char* instead of strings
 > * Make the plugin run cgi4lcd.exe if it's not being executed
+> * In the future, abandon the server and begin using threads
 > * Allow configuration of interval/timeout per-language, per-script and per-function
-> * Use threads instead of a server process
 > * *[Your suggestion here]*
 
 FINALLY
