@@ -18,6 +18,9 @@ public:
     static string _scripts_path;
     static string _ini_file;
     static unsigned int _port;
+    static string _execution_interval;
+    static string _execution_timeout;
+    static string _default_extension;
 };
 
 #endif // CLIENT_CPP
