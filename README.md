@@ -33,7 +33,7 @@ WHEN IT WILL NOT BE USEFUL?
 
 > If you're happy and pleased using the other plugins  
 > Basically, for everything that demands fast or realtime data displaying, like graph bars.  
-> Believe me, the minimum time interval that LCD Smartie is allowed to get data from the plugin is 1 second and even if it was smaller, the default time interval to re-execute an interpretator is 15 seconds. Oh, are you thinking about decreasing everything to 100 ms? Only if you have a good machine configuration to support thousands of processes doing the same thing.  
+> Believe me, the minimum time interval that LCD Smartie is allowed to get data from the plugin is 1 second and even if it was smaller, the default time interval to re-execute an interpreter is 15 seconds. Oh, are you thinking about decreasing everything to 100 ms? Only if you have a good machine configuration to support thousands of processes doing the same thing.  
 > Really, don't try it. Go to C++
 
 INSTALLING
@@ -67,7 +67,7 @@ CONFIGURING
 >     If the value is 1, the server window will appear when it's executed, showing the queue processing and incoming requests
 
 >   * add_and_run (boolean, 0-1)  
->     If the value is 1, the server will execute the command right after it is added to the queue. If not, the server will await the configured interval to run the command and return an empty response until it happens. 
+>     If the value is 1, the server will execute the command right after it is added to the queue. If not, the server will await the configured interval to run the command and will be returning an empty response until it happens. 
 
 > The subsequent sections are named with the common file extension of the language. They have the following attributes:
 
