@@ -17,13 +17,17 @@ public:
 
     }
 
-    void add(command &cmd) {
+    void add(command &cmd, bool add_and_run) {
 
         map<string, command>::iterator it = _commands.find(cmd.line());
 
         if (it == _commands.end()) {
+	    cmd.response = "";
             _commands[cmd.line()] = cmd;
-            _commands[cmd.line()].run();
+	    
+	    if (add_and_run) {
+	      _commands[cmd.line()].run();
+	    }
         }
         else {
             _commands[cmd.line()].cleanup_timer = 0;
