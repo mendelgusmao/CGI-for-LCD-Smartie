@@ -100,7 +100,7 @@ CONFIGURING
 USING
 -----
 
-> There is only one working function in the plugin and it takes 2 parameters:  
+> ### function1 - Run interpreter  
 
 > * filename - mandatory. it must exist in scripts folder.  
 >   The extension is optional. If not passed, the plugin will use the default extension set in the section cgi4lcd of the configuration file  
@@ -121,6 +121,11 @@ USING
 > * Executing a function of a PHP file with arguments
 
 > Syntax: `$dll(cgi,1,file[.ext],function#arg1;arg2;argX)`
+
+> ### function2 - Gather interpreter version by extension
+> * extension - mandatory.  
+
+> Syntax: `$dll(cgi,2,[extension],)`
 
 WRITING SCRIPTS
 ---------------
