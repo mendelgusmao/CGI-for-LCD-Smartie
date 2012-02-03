@@ -12,12 +12,18 @@ string client::_app_path("");
 string client::_scripts_path("");
 string client::_ini_file("");
 unsigned int client::_port(0);
+unsigned int client::_execution_interval(0);
+unsigned int client::_execution_timeout(0);
+string client::_default_extension("");
 
 void client::start() {
     _app_path = utils::app_path();
     _scripts_path = _app_path + "\\scripts";
     _ini_file = _scripts_path + "\\cgi4lcd.ini";
     _port = lexical_cast<unsigned int>(utils::ini_read(_ini_file, "cgi4lcd.port", "65432"));
+    _execution_interval = lexical_cast<unsigned int>(utils::ini_read(_ini_file, "cgi4lcd.interval", "15000"));
+    _execution_timeout = lexical_cast<unsigned int>(utils::ini_read(_ini_file, "cgi4lcd.timeout", "30000"));
+    _default_extension = utils::ini_read(_ini_file, "cgi4lcd.default_extension", "");
 }
 
 string client::execute(string script, string parameters, bool version) {
@@ -37,8 +43,7 @@ string client::execute(string script, string parameters, bool version) {
         extension = script;
     }
     else if (extension == "") {
-        extension = utils::ini_read(_ini_file, "cgi4lcd.default", "");
-        script += "." + extension;
+        script += "." + _default_extension;
     } 
     else {
         extension = extension.substr(1);
@@ -49,10 +54,7 @@ string client::execute(string script, string parameters, bool version) {
     if (interpreter == "" || !exists(interpreter)) {
         return "[CGI4LCD] Interpreter for extension '" + extension + "' not found (" + interpreter + ")";
     }
-
-    execution_interval = utils::ini_read(_ini_file, "cgi4lcd.interval", "15000");
-    execution_timeout = utils::ini_read(_ini_file, "cgi4lcd.timeout", "30000");
-
+    
     if (version) {
         arguments = utils::ini_read(_ini_file, extension + ".version", "");
     }
@@ -74,7 +76,7 @@ string client::execute(string script, string parameters, bool version) {
     arguments = format_command(arguments, vars);
     interpreter = format_command(interpreter, vars);
 
-    return request(interpreter, arguments, lexical_cast<unsigned int>(execution_interval), lexical_cast<unsigned int>(execution_timeout));
+    return request(interpreter, arguments, _execution_interval, _execution_timeout);
 }
 
 string client::request(string interpreter, string arguments, unsigned int interval, unsigned int timeout) {
