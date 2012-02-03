@@ -44,3 +44,9 @@ __stdcall  function2(char *param1, char *param2)
     return buffer;
 }
     
+extern "C" DLLEXPORT  char * 
+__stdcall  function20(char *param1, char *param2)
+{
+    return "cgi.dll is part of CGI4LCD version 0.1 by MendelGusmao github.com/MendelGusmao";
+}
+    
