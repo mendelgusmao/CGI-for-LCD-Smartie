@@ -126,9 +126,9 @@ USING
 > Syntax: `$dll(cgi,1,file[.ext],function#arg1;arg2;argX)`
 
 > ### function2 - Gather interpreter version by extension
-> * extension - mandatory.  
+> * extension - optional. If empty, will use the default extension  
 
-> Syntax: `$dll(cgi,2,[extension],)`
+> Syntax: `$dll(cgi,2,[extension],)`  
 
 WRITING SCRIPTS
 ---------------
