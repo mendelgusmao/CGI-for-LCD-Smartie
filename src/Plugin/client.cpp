@@ -44,6 +44,7 @@ string client::execute(string script, string parameters, bool version) {
     }
     else if (extension == "") {
         script += "." + _default_extension;
+        extension = extension.substr(1);
     } 
     else {
         extension = extension.substr(1);
@@ -112,8 +113,16 @@ string client::request(string interpreter, string arguments, unsigned int interv
         buffer += received;
 
     }
+    catch (boost::system::system_error s) {
+        if (s.code().value() == 10054) {
+            buffer = "[CGI4LCD] Error: server offline or listening on another port";
+        }
+        else {
+            buffer = "[CGI4LCD] System Error: " + string(s.what()) + " ";
+        }
+    }
     catch (std::exception& e) {
-        buffer = string("[CGI4LCD] Error: ") + e.what() + " ";
+        buffer = "[CGI4LCD] Error: " + string(e.what()) + " ";
     }
 
     return buffer;
