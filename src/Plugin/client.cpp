@@ -41,10 +41,14 @@ string client::execute(string script, string parameters, bool version) {
 
     if (version) {
         extension = script;
+
+        if (extension == "") {
+            extension = _default_extension;
+        }
     }
     else if (extension == "") {
-        script += "." + _default_extension;
-        extension = extension.substr(1);
+        extension = _default_extension;
+        script += "." + extension;
     } 
     else {
         extension = extension.substr(1);
