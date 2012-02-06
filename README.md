@@ -55,8 +55,11 @@ CONFIGURING
 >     Value to tell the server of how often a command it will be executed
 
 >   * timeout (numeric, milliseconds)  
->     Value to tell the server of how long after the command is not requested anymore by the plugin to be removed from the queue
+>     Value to tell the server of how long after the command is not requested anymore by the plugin to be removed from the queue  
 
+>   * refresh (numeric, milliseconds)  
+>     Value to tell LCD Smartie how often it will request data from plugin
+  
 >   * port (numeric, 1-65535)  
 >     A numeric value representing the UDP port that will be used for the communication between server and plugin
 
