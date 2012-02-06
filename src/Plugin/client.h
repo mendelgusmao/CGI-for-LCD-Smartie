@@ -20,6 +20,7 @@ public:
     static unsigned int _port;
     static unsigned int _execution_interval;
     static unsigned int _execution_timeout;
+    static int _refresh_interval;
     static string _default_extension;
 };
 

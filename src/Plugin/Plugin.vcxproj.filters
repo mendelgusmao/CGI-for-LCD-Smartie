@@ -24,13 +24,13 @@
     <ClCompile Include="client.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Server\protocol.cpp">
+    <ClCompile Include="..\Common\command.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Server\command.cpp">
+    <ClCompile Include="..\Common\protocol.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="utils.cpp">
+    <ClCompile Include="..\Common\utils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

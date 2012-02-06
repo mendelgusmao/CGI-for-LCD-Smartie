@@ -17,7 +17,7 @@ __stdcall  SmartieFini()
 extern "C" DLLEXPORT  int
 __stdcall  GetMinRefreshInterval()
 {
-    return 1000; // 300 ms
+    return client::_refresh_interval;
 }
 
 extern "C" DLLEXPORT  char * 
