@@ -41,7 +41,7 @@ INSTALLING
 
 > * Make sure you have .Net Framework 4
 > * Make sure you have LCD Smartie 5.4 or 5.4.2.92b
-> * Grab the latest version from [https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags)  
+> * Grab the latest version (ZIP) from [https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags)  
 > * Copy plugins and scripts folder to your LCD Smartie folder
 
 CONFIGURING
