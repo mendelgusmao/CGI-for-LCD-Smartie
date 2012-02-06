@@ -14,6 +14,7 @@ string client::_ini_file("");
 unsigned int client::_port(0);
 unsigned int client::_execution_interval(0);
 unsigned int client::_execution_timeout(0);
+int client::_refresh_interval(0);
 string client::_default_extension("");
 
 void client::start() {
@@ -24,6 +25,7 @@ void client::start() {
     _execution_interval = lexical_cast<unsigned int>(utils::ini_read(_ini_file, "cgi4lcd.interval", "15000"));
     _execution_timeout = lexical_cast<unsigned int>(utils::ini_read(_ini_file, "cgi4lcd.timeout", "30000"));
     _default_extension = utils::ini_read(_ini_file, "cgi4lcd.default_extension", "");
+    _refresh_interval = lexical_cast<int>(utils::ini_read(_ini_file, "cgi4lcd.refresh", "1000"));
 }
 
 string client::execute(string script, string parameters, bool version) {
@@ -96,7 +98,7 @@ string client::request(string interpreter, string arguments, unsigned int interv
 
     string buffer("");
 
-    try    {
+    try {
 
         boost::asio::io_service io_service;
         udp::endpoint receiver_endpoint = udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), lexical_cast<int>(_port));
