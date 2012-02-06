@@ -41,7 +41,7 @@ public:
             cmd = protocol::parse(temp);
 
             if (!cmd.is_malformed) {
-                _queue.add(cmd);
+                _queue.add(cmd, _add_and_run);
                 cmd = _queue.get(cmd.line());
                 cout << "Response: '" << cmd.response << "'" << endl;
             }
