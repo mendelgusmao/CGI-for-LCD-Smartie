@@ -13,7 +13,6 @@ public:
     queue(boost::asio::io_service& io_service);
     void add(command &cmd, bool add_and_run);
     void run();
-
     command get(string line);
 
 private:
