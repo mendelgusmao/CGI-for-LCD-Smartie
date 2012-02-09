@@ -73,6 +73,6 @@ void queue::run() {
 
 }
 
-command queue::get(string line) {
+command queue::get(const string &line) {
     return _commands[line];
 }
