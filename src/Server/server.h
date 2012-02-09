@@ -1,7 +1,10 @@
 #include "stdafx.h"
+#include "queue.h"
 
 #ifndef SERVER_H
 #define SERVER_H
+
+using boost::asio::ip::udp;
 
 class server
 {
