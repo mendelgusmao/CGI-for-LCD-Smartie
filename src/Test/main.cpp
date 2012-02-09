@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "client.cpp"
+#include "client.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {

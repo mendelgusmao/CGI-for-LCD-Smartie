@@ -1,6 +1,6 @@
 #include "stdafx.h"
-#include "server.cpp"
-#include "utils.cpp"
+#include "server.h"
+#include "utils.h"
 
 int main(int argc, char* argv[]) {
 

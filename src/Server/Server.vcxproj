@@ -85,11 +85,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="..\Common\command.h" />
+    <ClInclude Include="..\Common\protocol.h" />
+    <ClInclude Include="..\Common\queue.h" />        
+    <ClInclude Include="..\Common\server.h" />            
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />  
     <ClCompile Include="..\Common\command.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="..\Common\protocol.cpp">
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\WINDOWS\Temp\$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
     </ClCompile>
