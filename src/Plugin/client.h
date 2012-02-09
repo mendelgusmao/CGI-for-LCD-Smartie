@@ -10,7 +10,7 @@ class client {
 public:
 
     static void start();
-    static string execute(string script, string parameters, bool version=false, bool version=true);
+    static string execute(string script, string parameters, bool version=false, bool do_not_queue=false);
     static string request(string interpreter, string arguments, unsigned int interval, unsigned int timeout);
     static string format_command(const string& command_template, const map<string, string> vars);
 
