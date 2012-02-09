@@ -1,11 +1,12 @@
 #include "stdafx.h"
 #include "command.cpp"
+#include "utils.cpp"
 
 #ifndef QUEUE_CPP
 #define QUEUE_CPP
 
-using std::string;
-using std::map;
+using namespace std;
+using boost::lexical_cast;
 
 class queue {
 public:
@@ -38,11 +39,16 @@ public:
 
         map<string, command>::iterator it;
         command cmd;
+        int queue_size = _commands.size();
 
         _timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
         _timer.async_wait(boost::bind(&queue::run, this));
 
-        std::cout << "Running queue (" << _commands.size() << ")" << std::endl;
+        std::cout << "Running queue (" << queue_size << ")" << std::endl;
+
+        string title(lexical_cast<string>(queue_size));
+        title = "CGI4LCD - " + title + " command" + (queue_size > 1 ? "s" : "") + " in queue";
+        SetConsoleTitle(utils::s2ws(title).c_str());
 
         for (it = _commands.begin(); it != _commands.end(); ++it) {
             cmd = it->second;
