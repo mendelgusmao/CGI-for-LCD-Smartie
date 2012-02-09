@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "queue.h"
 #include "command.h"
 #include "utils.h"

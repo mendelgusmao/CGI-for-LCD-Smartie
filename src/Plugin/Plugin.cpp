@@ -1,5 +1,6 @@
+#include "stdafx.h"
 #include "client.h"
-#include "utils.cpp"
+#include "utils.h"
 
 #define DLLEXPORT __declspec(dllexport)
 

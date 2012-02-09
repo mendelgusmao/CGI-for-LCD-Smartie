@@ -1,10 +1,10 @@
+#include "stdafx.h"
 #include "server.h"
 #include "protocol.h"
 #include "queue.h"
 #include "command.h"
 
 using namespace std;
-using boost::asio::ip::udp;
 
 server::server(boost::asio::io_service& io_service, short port, bool add_and_run) :
     _io_service(io_service),
