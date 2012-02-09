@@ -23,12 +23,12 @@ public:
         map<string, command>::iterator it = _commands.find(cmd.line());
 
         if (it == _commands.end()) {
-	    cmd.response = "";
+            cmd.response = "";
             _commands[cmd.line()] = cmd;
-	    
-	    if (add_and_run) {
-	      _commands[cmd.line()].run();
-	    }
+        
+            if (add_and_run) {
+                _commands[cmd.line()].run();
+            }
         }
         else {
             _commands[cmd.line()].cleanup_timer = 0;
