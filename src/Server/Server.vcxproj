@@ -87,8 +87,8 @@
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="..\Common\command.h" />
     <ClInclude Include="..\Common\protocol.h" />
-    <ClInclude Include="..\Common\queue.h" />        
-    <ClInclude Include="..\Common\server.h" />            
+    <ClInclude Include="queue.h" />        
+    <ClInclude Include="server.h" />            
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
