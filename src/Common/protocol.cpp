@@ -1,10 +1,11 @@
+#include "stdafx.h"
 #include "protocol.h"
 
 using boost::lexical_cast;
 using boost::algorithm::join;
 using boost::algorithm::split;
 
-static command protocol::parse(const string &data) {
+command protocol::parse(const string &data) {
 
     vector<string> packet;
     command cmd;
@@ -37,7 +38,7 @@ static command protocol::parse(const string &data) {
     
 }
 
-static string protocol::build(const command &cmd) { 
+string protocol::build(const command &cmd) { 
 
     vector<string> packet;
 
