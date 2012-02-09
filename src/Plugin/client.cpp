@@ -79,6 +79,7 @@ string client::execute(string script, string parameters, bool version) {
     vars["%script%"] = _scripts_path + "\\" + script;
     vars["%params%"] = parameters;
     vars["'"] = "\"";
+    vars["´"] = "'";
 
     arguments = format_command(arguments, vars);
     interpreter = format_command(interpreter, vars);
