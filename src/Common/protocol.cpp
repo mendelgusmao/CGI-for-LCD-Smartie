@@ -12,6 +12,7 @@ using boost::algorithm::split;
 
 #define PROTOCOL_HEADER "cgi4lcd"
 #define PROTOCOL_DELIMITER "|"
+#define PROTOCOL_EXPECTED_SIZE 7
 
 class protocol {
 
@@ -24,7 +25,7 @@ public:
 
         split(packet, data, boost::is_any_of(PROTOCOL_DELIMITER));
 
-        if (packet.size() != 6) {
+        if (packet.size() != PROTOCOL_EXPECTED_SIZE) {
             cmd.is_malformed = true;
         }
         else {
@@ -41,6 +42,7 @@ public:
                 cmd.arguments = packet[2];
                 cmd.interval = lexical_cast<unsigned int>(packet[3]);
                 cmd.timeout = lexical_cast<unsigned int>(packet[4]);
+                cmd.do_not_queue = packet[5] == "1";
                 cmd.is_malformed = false;
             }
         }
@@ -58,6 +60,7 @@ public:
         packet.push_back(cmd.arguments);
         packet.push_back(lexical_cast<string>(cmd.interval));
         packet.push_back(lexical_cast<string>(cmd.timeout));
+        packet.push_back(cmd.do_not_queue ? "1" : "0");
         packet.push_back("");
 
         return join(packet, PROTOCOL_DELIMITER);
