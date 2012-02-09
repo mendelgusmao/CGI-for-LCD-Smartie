@@ -16,6 +16,7 @@ public:
     string response;
     bool is_malformed;
     bool is_internal;
+    bool do_not_queue;
 
     command() :
         timer(0),
