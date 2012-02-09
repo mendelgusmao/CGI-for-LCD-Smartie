@@ -9,11 +9,6 @@ class client {
 
 public:
 
-    static void start();
-    static string execute(string script, string parameters, bool version=false, bool do_not_queue=false);
-    static string request(string interpreter, string arguments, unsigned int interval, unsigned int timeout, bool do_not_queue);
-    static string format_command(const string& command_template, const map<string, string> vars);
-
     static string _app_path;
     static string _scripts_path;
     static string _ini_file;
@@ -22,6 +17,12 @@ public:
     static unsigned int _execution_timeout;
     static int _refresh_interval;
     static string _default_extension;
+
+    static void start();
+    static string execute(string script, string parameters, bool version=false, bool do_not_queue=false);
+    static string request(string interpreter, string arguments, unsigned int interval, unsigned int timeout, bool do_not_queue);
+    static string format_command(const string& command_template, const map<string, string> vars);
+
 };
 
 #endif // CLIENT_CPP
