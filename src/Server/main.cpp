@@ -2,6 +2,8 @@
 #include "server.h"
 #include "utils.h"
 
+using boost::lexical_cast;
+
 int main(int argc, char* argv[]) {
 
     string ini_file(utils::app_path() + "\\..\\scripts\\cgi4lcd.ini");
