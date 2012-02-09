@@ -4,7 +4,7 @@ using boost::lexical_cast;
 using boost::algorithm::join;
 using boost::algorithm::split;
 
-static protocol::command parse(string data) {
+static command protocol::parse(string data) {
 
     vector<string> packet;
     command cmd;
