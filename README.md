@@ -1,9 +1,7 @@
 CGI FOR LCD SMARTIE 0.1-alpha
 =============================
 
-> This document describes the basic concept and usage of CGI for LCD Smartie.
-
-> CGI for LCD Smartie is designed to be a fast gateway between LCD Smartie and language 
+> CGI for LCD Smartie is designed to be a fast gateway between LCD Smartie ([http://lcdsmartie.sourceforge.net](http://lcdsmartie.sourceforge.net)) and language 
 > interpreters such as PHP, Ruby and Python, making it easier to gather information to 
 > show on the display without the need to create new plugins.
 
@@ -40,7 +38,7 @@ INSTALLING
 ----------
 
 > * Make sure you have .Net Framework 4
-> * Make sure you have LCD Smartie 5.4 or 5.4.2.92b
+> * Make sure you have LCD Smartie 5.4 or 5.4.2.92b (or grab it from [http://lcdsmartie.sourceforge.net/smartied.htm](http://lcdsmartie.sourceforge.net/smartied.htm))  
 > * Grab the latest version (ZIP) from [https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags)  
 > * Copy plugins and scripts folder to your LCD Smartie folder
 
