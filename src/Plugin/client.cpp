@@ -27,14 +27,11 @@ void client::start() {
     _refresh_interval = lexical_cast<int>(utils::ini_read(_ini_file, "cgi4lcd.refresh", "1000"));
 }
 
-string client::execute(string script, string parameters, bool version, bool do_not_queue) {
+string client::execute(string script, const string &parameters, bool version, bool do_not_queue) {
 
-    string buffer("");
     string arguments("");
     string extension("");
     string interpreter("");
-    string execution_interval("");
-    string execution_timeout("");
     map <string, string> vars;
 
     boost::filesystem::path p(script);
@@ -86,7 +83,7 @@ string client::execute(string script, string parameters, bool version, bool do_n
     return request(interpreter, arguments, _execution_interval, _execution_timeout, do_not_queue);
 }
 
-string client::request(string interpreter, string arguments, unsigned int interval, unsigned int timeout, bool do_not_queue) {
+string client::request(const string &interpreter, const string &arguments, unsigned int interval, unsigned int timeout, bool do_not_queue) {
 
     using boost::asio::ip::udp;
 
@@ -135,7 +132,7 @@ string client::request(string interpreter, string arguments, unsigned int interv
     return buffer;
 }
 
-string client::format_command(const string& command_template, const map<string, string> vars) {
+string client::format_command(const string &command_template, const map<string, string> vars) {
 
     map<string, string>::const_iterator it;
     string formatted_command(command_template);
