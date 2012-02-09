@@ -27,7 +27,29 @@ int _tmain(int argc, _TCHAR* argv[])
     Sleep(1000);
 
     cout << "Response: '" << client::execute("test", "not_implemented") << "'" << endl;
-    Sleep(1000);        
+    Sleep(1000);
+
+    int calls(0);
+    double diff(0);
+    double total_diff(0);
+
+    while (true) {
+
+        ++calls;
+
+        time_t begin, end;
+
+        time(&begin);
+        cout << "(call " << calls << ") Response: '" << client::execute("test", "do_some_math#10;20;30") << "' ";
+        time(&end);
+
+        diff = difftime(end, begin);
+        total_diff += diff;
+
+        cout << " in " << diff << " seconds (" << (total_diff / calls) << ")." << endl;
+
+        Sleep(client::_refresh_interval);
+    }
     
     string input("");
     getline(cin, input);
