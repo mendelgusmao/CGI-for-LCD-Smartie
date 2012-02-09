@@ -3,6 +3,8 @@
 #ifndef COMMAND_H
 #define COMMAND_H
 
+using namespace std;
+
 class command {
 
 public:

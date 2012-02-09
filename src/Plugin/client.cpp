@@ -1,7 +1,8 @@
+#include "stdafx.h"
 #include "client.h"
-#include "command.cpp"
-#include "protocol.cpp"
-#include "utils.cpp"
+#include "command.h"
+#include "protocol.h"
+#include "utils.h"
 
 using boost::asio::ip::udp;
 using boost::lexical_cast;
@@ -27,7 +28,7 @@ void client::start() {
     _refresh_interval = lexical_cast<int>(utils::ini_read(_ini_file, "cgi4lcd.refresh", "1000"));
 }
 
-string client::execute(string script, const string &parameters, bool version, bool do_not_queue) {
+string client::execute(string &script, const string &parameters, bool version, bool do_not_queue) {
 
     string arguments("");
     string extension("");
