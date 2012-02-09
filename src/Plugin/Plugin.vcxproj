@@ -104,6 +104,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="client.h" />
+    <ClInclude Include="..\Common\command.h" />
+    <ClInclude Include="..\Common\protocol.h" />
+    <ClInclude Include="..\Common\utils.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

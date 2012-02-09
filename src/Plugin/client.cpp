@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "client.h"
 #include "command.cpp"
 #include "protocol.cpp"
