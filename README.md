@@ -7,7 +7,7 @@ CGI FOR LCD SMARTIE 0.1-alpha
 
 > The software is made from two parts: a server (cgi4lcd.exe) and a plugin (cgi.dll).  
 > The plugin is responsible for sending the command to the server, receiving a response and relaying it to LCD Smartie.  
-> The server receives the command, executes the specified interpreter, storing the command and its response in a queue. At a specified time interval it will run the command, caching its result. When the plugin asks the server for the response of a command, it will deliver the cached result instead of executing the interpreter before the specified time interval.
+> The server receives the command, executes the specified interpreter, storing the command and its response in a queue. At a specified time interval it will run the command, caching its result. When the plugin asks the server for the response of a command, it will deliver the cached result instead of executing the interpreter before the specified time interval. Optionally, this behavior can be changed and the interpreter executed directly.
 
 WHAT HAPPENED TO PHP FOR LCD SMARTIE?
 ---------------------------------------------------
@@ -114,22 +114,28 @@ USING
 
 > There are three possible usages for code executing:
 
-> * Executing a PHP file
+> * Executing a script
 
 > Syntax: `$dll(cgi,1,file[.ext],)`
 
-> * Executing a function of a PHP file without arguments
+> * Executing a function of a script without arguments
 
 > Syntax: `$dll(cgi,1,file[.ext],function)`
 
-> * Executing a function of a PHP file with arguments
+> * Executing a function of a script with arguments
 
 > Syntax: `$dll(cgi,1,file[.ext],function#arg1;arg2;argX)`
 
-> ### function2 - Gather interpreter version by extension
+> ### function2 - Run interpreter directly, without putting the command in a queue  
+> * The same arguments of function1  
+
+> ### function3 - Gather interpreter version by extension
 > * extension - optional. If empty, will use the default extension  
 
 > Syntax: `$dll(cgi,2,[extension],)`  
+
+> ### function20 - Credits
+> * No arguments required
 
 WRITING SCRIPTS
 ---------------
@@ -183,3 +189,7 @@ FINALLY
 -------
 
 ![LCD Smartie running the world](/MendelGusmao/CGI-for-LCD-Smartie/blob/master/pics/run-everything-in-the-world.jpg?raw=true "Beaultiful, isn't it?")
+
+> * Official website of LCD Smartie: [http://lcdsmartie.org](http://lcdsmartie.org)
+> * Official CGI4LCD thread at LCD Smartie forums: [http://forums.lcdsmartie.org/viewtopic.php?f=8&t=3274](http://forums.lcdsmartie.org/viewtopic.php?f=8&t=3274)
+> * Contact the author: [mailto:mendelsongusmao+cgi4lcd@gmail.com](mailto:mendelsongusmao+cgi4lcd@gmail.com)
