@@ -41,8 +41,13 @@ public:
             cmd = protocol::parse(temp);
 
             if (!cmd.is_malformed) {
-                _queue.add(cmd, _add_and_run);
-                cmd = _queue.get(cmd.line());
+                if (cmd.do_not_queue) {
+                    cmd.run();
+                }
+                else {
+                    _queue.add(cmd, _add_and_run);
+                    cmd = _queue.get(cmd.line());
+                }
                 cout << "Response: '" << cmd.response << "'" << endl;
             }
             // else: malformed packet. nothing to do
