@@ -11,7 +11,7 @@ using boost::filesystem::exists;
 string Client::_app_path("");
 string Client::_scripts_path("");
 string Client::_ini_file("");
-unsigned int lient::_port(0);
+unsigned int Client::_port(0);
 unsigned int Client::_execution_interval(0);
 unsigned int Client::_execution_timeout(0);
 int Client::_refresh_interval(0);
