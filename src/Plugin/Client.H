@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class client {
+class Client {
 
 public:
 
@@ -25,4 +25,4 @@ public:
 
 };
 
-#endif // CLIENT_CPP
+#endif // CLIENT_H
