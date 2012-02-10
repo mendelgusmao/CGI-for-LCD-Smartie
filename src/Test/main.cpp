@@ -1,32 +1,32 @@
 #include "stdafx.h"
-#include "client.h"
+#include "Client.h"
 
 int _tmain(int argc, _TCHAR* argv[])
 {
-    client::start();
+    Client::start();
 
-    cout << "Response: '" << client::execute("test.php", "hello") << "'" << endl;
+    cout << "Response: '" << Client::execute("test.php", "hello") << "'" << endl;
     Sleep(1000);
     
-    cout << "Response: '" << client::execute("test.php", "say_hi#Mendel") << "'" << endl;
+    cout << "Response: '" << Client::execute("test.php", "say_hi#Mendel") << "'" << endl;
     Sleep(1000);
     
-    cout << "Response: '" << client::execute("test.php", "do_some_math#10;20;30") << "'" << endl;
+    cout << "Response: '" << Client::execute("test.php", "do_some_math#10;20;30") << "'" << endl;
     Sleep(1000);
 
-    cout << "Response: '" << client::execute("test.php", "not_implemented") << "'" << endl;
+    cout << "Response: '" << Client::execute("test.php", "not_implemented") << "'" << endl;
     Sleep(1000);        
     
-    cout << "Response: '" << client::execute("test", "hello") << "'" << endl;
+    cout << "Response: '" << Client::execute("test", "hello") << "'" << endl;
     Sleep(1000);
     
-    cout << "Response: '" << client::execute("test", "say_hi#Mendel") << "'" << endl;
+    cout << "Response: '" << Client::execute("test", "say_hi#Mendel") << "'" << endl;
     Sleep(1000);
     
-    cout << "Response: '" << client::execute("test", "do_some_math#10;20;30") << "'" << endl;
+    cout << "Response: '" << Client::execute("test", "do_some_math#10;20;30") << "'" << endl;
     Sleep(1000);
 
-    cout << "Response: '" << client::execute("test", "not_implemented") << "'" << endl;
+    cout << "Response: '" << Client::execute("test", "not_implemented") << "'" << endl;
     Sleep(1000);
 
     int calls(0);
@@ -40,7 +40,7 @@ int _tmain(int argc, _TCHAR* argv[])
         time_t begin, end;
 
         time(&begin);
-        cout << "(call " << calls << ") Response: '" << client::execute("test", "do_some_math#10;20;30") << "' ";
+        cout << "(call " << calls << ") Response: '" << Client::execute("test", "do_some_math#10;20;30") << "' ";
         time(&end);
 
         diff = difftime(end, begin);
@@ -48,7 +48,7 @@ int _tmain(int argc, _TCHAR* argv[])
 
         cout << " in " << diff << " seconds (" << (total_diff / calls) << ")." << endl;
 
-        Sleep(client::_refresh_interval);
+        Sleep(Client::_refresh_interval);
     }
     
     string input("");
