@@ -88,7 +88,7 @@ CONFIGURING
 > 	The absolute path to *[LCD Smartie path]*\scripts\routers folder
 
 >       * %script%  
-> 	The absolute path to *[LCD Smartie path]*\scripts\*[script name]*
+> 	The absolute path to *[LCD Smartie path]*\scripts\\*[script name]*
 
 >       * %params%  
 > 	Function name or function name and parameters specified in the last argument passed to $dll
@@ -96,10 +96,12 @@ CONFIGURING
 >       * %interpreter%  
 > 	The path specified in the property interpreter
 
+>       * Apostrophes will be replaced by quotes (INI limitation) and acute accents (´) will be replaced by apostrophes  
+
 >   * version  
 >     Command line to get the interpreter version
 
-> CGI4LCD comes with the basic settings to run PHP, Ruby, Python, Perl and DOS Batch scripts. You must only change the interpreter path and it will be ready to use.
+> CGI4LCD comes with the basic settings to run PHP, Ruby, Python and Perl scripts. You must only change the interpreter path and it will be ready to use.
 
 USING
 -----
@@ -132,7 +134,7 @@ USING
 > ### function3 - Gather interpreter version by extension
 > * extension - optional. If empty, will use the default extension  
 
-> Syntax: `$dll(cgi,2,[extension],)`  
+> Syntax: `$dll(cgi,3,[extension],)`  
 
 > ### function20 - Credits
 > * No arguments required
@@ -140,7 +142,7 @@ USING
 WRITING SCRIPTS
 ---------------
 
-> First of all, you'll need to know what is a router. It's a piece of code responsible for calling a function, retrieving its result and printing to the screen, so the server can grab it and relay it to the plugin. Routers are optional if your script directly outputs data but mandatory if you want to group functions in a file.
+> First of all, you'll need to know what is a router. It's a piece of code responsible for calling a function, retrieving its result and printing to the screen, so the server can grab and relay it to the plugin. Routers are optional if your script outputs data directly but mandatory if you want to group functions in a file.
 
 > For now, CGI4LCD comes with routers written in PHP, Ruby, Python and Perl. A Go version is in the repository - but still just a concept.
 
@@ -164,7 +166,7 @@ LANGUAGE SPECIFICS
 ------------------
 
 > ### PHP
->   To give some boost in PHP process startup, I decided to include a php.ini in scripts directory. This is a stripped version that doesn't make PHP load too many extensions. However, if you need to load a specific extension, just uncomment the line, as you would do normally.
+>   To give some boost in PHP process startup, LCD4CGI comes with a crafted php.ini in scripts directory. This is a stripped version that doesn't make PHP load too many extensions. However, if you need to load a specific extension, just uncomment the line, as you would do normally.
 
 > ### Python
 >   While PHP, Ruby and Perl allows to pass a file from the command line to be included in the called script, Python doesn't (or, at least, I don't know how to). When writing a Python script, put on the first line:  
@@ -173,12 +175,14 @@ LANGUAGE SPECIFICS
 ISSUES
 ------
 
+> * Sometimes it halts the screen when plugin requests data to the server while a command is being executed
+> * It **will** halt LCD Smartie if the server is shut down while requesting data
 > * *[Your complaint here]*
 
 TODO
 ----
 
-> * Add support to Unicode strings
+> * Add better support to Unicode strings
 > * Rewrite almost every function or method to use char* instead of strings
 > * Make the plugin run cgi4lcd.exe if it's not being executed
 > * In the future, abandon the server and begin using threads
