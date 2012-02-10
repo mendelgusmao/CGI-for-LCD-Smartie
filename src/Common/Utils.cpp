@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "utils.h"
+#include "Utils.h"
 
-string utils::ini_read(const string ini_file, const string key, const string default_value) {
+string Utils::ini_read(const string ini_file, const string key, const string default_value) {
 
     try {
 
@@ -29,7 +29,7 @@ string utils::ini_read(const string ini_file, const string key, const string def
     }
 }
 
-string utils::app_path() {
+string Utils::app_path() {
     char path[2048];
     GetModuleFileNameA(NULL, path, 2048);
     boost::filesystem::path p(path);
@@ -37,7 +37,7 @@ string utils::app_path() {
     return p.parent_path().string();        
 }
 
-wstring utils::s2ws(const string& s) { 
+wstring Utils::s2ws(const string& s) { 
     int len; 
     int slength = (int)s.length() + 1; 
     len = MultiByteToWideChar(CP_ACP, 0, s.c_str(), slength, 0, 0);  
