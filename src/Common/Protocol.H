@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "command.h"
+#include "Command.h"
 
 #ifndef PROTOCOL_H
 #define PROTOCOL_H
@@ -10,12 +10,12 @@
 
 using namespace std;
 
-class protocol {
+class Protocol {
 
 public:
 
-    static command parse(const string &data);
-    static string build(const command &cmd);
+    static Command parse(const string &data);
+    static string build(const Command &cmd);
 
 };
 

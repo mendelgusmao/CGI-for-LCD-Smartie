@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class utils {
+class Utils {
 
 public:
 
