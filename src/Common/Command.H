@@ -5,7 +5,7 @@
 
 using namespace std;
 
-class command {
+class Command {
 
 public:
 
@@ -20,7 +20,7 @@ public:
     bool is_internal;
     bool do_not_queue;
 
-    command();
+    Command();
     string line();
     void run();
 };

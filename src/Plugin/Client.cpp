@@ -1,34 +1,34 @@
 #include "stdafx.h"
-#include "client.h"
-#include "command.h"
-#include "protocol.h"
-#include "utils.h"
+#include "Client.h"
+#include "Command.h"
+#include "Protocol.h"
+#include "Utils.h"
 
 using boost::asio::ip::udp;
 using boost::lexical_cast;
 using boost::filesystem::exists;
 
-string client::_app_path("");
-string client::_scripts_path("");
-string client::_ini_file("");
-unsigned int client::_port(0);
-unsigned int client::_execution_interval(0);
-unsigned int client::_execution_timeout(0);
-int client::_refresh_interval(0);
-string client::_default_extension("");
+string Client::_app_path("");
+string Client::_scripts_path("");
+string Client::_ini_file("");
+unsigned int lient::_port(0);
+unsigned int Client::_execution_interval(0);
+unsigned int Client::_execution_timeout(0);
+int Client::_refresh_interval(0);
+string Client::_default_extension("");
 
-void client::start() {
-    _app_path = utils::app_path();
+void Client::start() {
+    _app_path = Utils::app_path();
     _scripts_path = _app_path + "\\scripts";
     _ini_file = _scripts_path + "\\cgi4lcd.ini";
-    _port = lexical_cast<unsigned int>(utils::ini_read(_ini_file, "cgi4lcd.port", "65432"));
-    _execution_interval = lexical_cast<unsigned int>(utils::ini_read(_ini_file, "cgi4lcd.interval", "15000"));
-    _execution_timeout = lexical_cast<unsigned int>(utils::ini_read(_ini_file, "cgi4lcd.timeout", "30000"));
-    _default_extension = utils::ini_read(_ini_file, "cgi4lcd.default_extension", "");
-    _refresh_interval = lexical_cast<int>(utils::ini_read(_ini_file, "cgi4lcd.refresh", "1000"));
+    _port = lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.port", "65432"));
+    _execution_interval = lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.interval", "15000"));
+    _execution_timeout = lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.timeout", "30000"));
+    _default_extension = Utils::ini_read(_ini_file, "cgi4lcd.default_extension", "");
+    _refresh_interval = lexical_cast<int>(Utils::ini_read(_ini_file, "cgi4lcd.refresh", "1000"));
 }
 
-string client::execute(string &script, const string &parameters, bool version, bool do_not_queue) {
+string Client::execute(string &script, const string &parameters, bool version, bool do_not_queue) {
 
     string arguments("");
     string extension("");
@@ -53,17 +53,17 @@ string client::execute(string &script, const string &parameters, bool version, b
         extension = extension.substr(1);
     }
 
-    interpreter = utils::ini_read(_ini_file, extension + ".interpreter", "");
+    interpreter = Utils::ini_read(_ini_file, extension + ".interpreter", "");
 
     if (interpreter == "" || !exists(interpreter)) {
         return "[CGI4LCD] Interpreter for extension '" + extension + "' not found (" + interpreter + ")";
     }
     
     if (version) {
-        arguments = utils::ini_read(_ini_file, extension + ".version", "");
+        arguments = Utils::ini_read(_ini_file, extension + ".version", "");
     }
     else {
-        arguments = utils::ini_read(_ini_file, extension + ".command", "");
+        arguments = Utils::ini_read(_ini_file, extension + ".command", "");
 
         if (!exists(_scripts_path + "\\" + script)) {
             return "[CGI4LCD] Script '" + script + "' not found";
@@ -84,11 +84,11 @@ string client::execute(string &script, const string &parameters, bool version, b
     return request(interpreter, arguments, _execution_interval, _execution_timeout, do_not_queue);
 }
 
-string client::request(const string &interpreter, const string &arguments, unsigned int interval, unsigned int timeout, bool do_not_queue) {
+string Client::request(const string &interpreter, const string &arguments, unsigned int interval, unsigned int timeout, bool do_not_queue) {
 
     using boost::asio::ip::udp;
 
-    command cmd;
+    Command cmd;
     cmd.executable = interpreter;
     cmd.arguments = arguments;
     cmd.interval = interval;
@@ -105,7 +105,7 @@ string client::request(const string &interpreter, const string &arguments, unsig
         udp::socket socket(io_service);
         socket.open(udp::v4());
 
-        string data = protocol::build(cmd);
+        string data = Protocol::build(cmd);
         const char* send_buf = data.c_str();
         socket.send_to(boost::asio::buffer(send_buf, data.size()), receiver_endpoint);
 
@@ -133,7 +133,7 @@ string client::request(const string &interpreter, const string &arguments, unsig
     return buffer;
 }
 
-string client::format_command(const string &command_template, const map<string, string> vars) {
+string Client::format_command(const string &command_template, const map<string, string> vars) {
 
     map<string, string>::const_iterator it;
     string formatted_command(command_template);

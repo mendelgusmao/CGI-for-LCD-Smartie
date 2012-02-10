@@ -92,10 +92,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Common\command.cpp" />
-    <ClCompile Include="..\Common\protocol.cpp" />
-    <ClCompile Include="client.cpp" />
-    <ClCompile Include="..\Common\utils.cpp" />
+    <ClCompile Include="..\Common\Command.cpp" />
+    <ClCompile Include="..\Common\Protocol.cpp" />
+    <ClCompile Include="Client.cpp" />
+    <ClCompile Include="..\Common\Utils.cpp" />
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -103,10 +103,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="client.h" />
-    <ClInclude Include="..\Common\command.h" />
-    <ClInclude Include="..\Common\protocol.h" />
-    <ClInclude Include="..\Common\utils.h" />
+    <ClInclude Include="Client.h" />
+    <ClInclude Include="..\Common\Command.h" />
+    <ClInclude Include="..\Common\Protocol.h" />
+    <ClInclude Include="..\Common\Utils.h" />
     <ClInclude Include="Plugin.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>

@@ -1,18 +1,18 @@
 #include "stdafx.h"
-#include "command.h"
+#include "Command.h"
 
 using std::string;
 
-command::command() :
+Command::Command() :
     timer(0),
     cleanup_timer(0)
 {}
 
-string command::line() {
+string Command::line() {
     return executable + " " + arguments;
 }
 
-void command::run() {
+void Command::run() {
 
     char psBuffer[128];
     FILE *iopipe;

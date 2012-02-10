@@ -1,20 +1,20 @@
 #include "stdafx.h"
-#include "queue.h"
-#include "command.h"
-#include "utils.h"
+#include "Queue.h"
+#include "Command.h"
+#include "Utils.h"
 
 using boost::lexical_cast;
 
-queue::queue(boost::asio::io_service& io_service) : 
+Queue::Queue(boost::asio::io_service& io_service) : 
   _timer(io_service, boost::posix_time::seconds(1)) {
 
-    _timer.async_wait(boost::bind(&queue::run, this));
+    _timer.async_wait(boost::bind(&Queue::run, this));
 
 }
 
-void queue::add(command &cmd, bool add_and_run) {
+void Queue::add(Command &cmd, bool add_and_run) {
 
-    map<string, command>::iterator it = _commands.find(cmd.line());
+    map<string, Command>::iterator it = _commands.find(cmd.line());
 
     if (it == _commands.end()) {
         cmd.response = "";
@@ -29,20 +29,20 @@ void queue::add(command &cmd, bool add_and_run) {
     }
 }
 
-void queue::run() {
+void Queue::run() {
 
-    map<string, command>::iterator it;
-    command cmd;
+    map<string, Command>::iterator it;
+    Command cmd;
     int queue_size = _commands.size();
 
     _timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
-    _timer.async_wait(boost::bind(&queue::run, this));
+    _timer.async_wait(boost::bind(&Queue::run, this));
 
     std::cout << "Running queue (" << queue_size << ")" << std::endl;
 
     string title(lexical_cast<string>(queue_size));
     title = "CGI4LCD - " + title + " command" + (queue_size > 1 ? "s" : "") + " in queue";
-    SetConsoleTitle(utils::s2ws(title).c_str());
+    SetConsoleTitle(Utils::s2ws(title).c_str());
 
     for (it = _commands.begin(); it != _commands.end(); ++it) {
         cmd = it->second;
@@ -74,6 +74,6 @@ void queue::run() {
 
 }
 
-command queue::get(const string &line) {
+Command Queue::get(const string &line) {
     return _commands[line];
 }

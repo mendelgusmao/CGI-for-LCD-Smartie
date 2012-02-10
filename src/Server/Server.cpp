@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include "server.h"
-#include "protocol.h"
-#include "queue.h"
-#include "command.h"
+#include "Server.h"
+#include "Protocol.h"
+#include "Queue.h"
+#include "Command.h"
 
 using namespace std;
 
-server::server(boost::asio::io_service& io_service, short port, bool add_and_run) :
+Server::Server(boost::asio::io_service& io_service, short port, bool add_and_run) :
     _io_service(io_service),
     _socket(io_service, udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), port)),
     _queue(io_service),
@@ -17,12 +17,12 @@ server::server(boost::asio::io_service& io_service, short port, bool add_and_run
 
 }
 
-void server::handle_receive_from(const boost::system::error_code& error, size_t bytes_recvd) {
+void Server::handle_receive_from(const boost::system::error_code& error, size_t bytes_recvd) {
     if (!error && bytes_recvd > 0) {
 
-        command cmd;
+        Command cmd;
         string temp(_data, bytes_recvd);
-        cmd = protocol::parse(temp);
+        cmd = Protocol::parse(temp);
 
         if (!cmd.is_malformed) {
             if (cmd.do_not_queue) {
@@ -43,7 +43,7 @@ void server::handle_receive_from(const boost::system::error_code& error, size_t 
             boost::asio::buffer(response, cmd.response.size()), 
             _sender_endpoint,
             boost::bind(
-                &server::handle_send_to, 
+                &Server::handle_send_to, 
                 this,
                 boost::asio::placeholders::error,
                 boost::asio::placeholders::bytes_transferred
@@ -55,17 +55,17 @@ void server::handle_receive_from(const boost::system::error_code& error, size_t 
     }
 }
 
-void server::handle_send_to(const boost::system::error_code& error, size_t bytes_sent) {
+void Server::handle_send_to(const boost::system::error_code& error, size_t bytes_sent) {
     receive();
 }
 
-void server::receive() {
+void Server::receive() {
 
     _socket.async_receive_from(
         boost::asio::buffer(_data, max_length), 
         _sender_endpoint,
         boost::bind(
-            &server::handle_receive_from, 
+            &Server::handle_receive_from, 
             this,
             boost::asio::placeholders::error,
             boost::asio::placeholders::bytes_transferred

@@ -1,24 +1,24 @@
 #include "stdafx.h"
-#include "command.h"
+#include "Command.h"
 
 #ifndef QUEUE_H
 #define QUEUE_H
 
 using namespace std;
 
-class queue {
+class Queue {
 
 public:
 
-    queue(boost::asio::io_service& io_service);
-    void add(command &cmd, bool add_and_run);
+    Queue(boost::asio::io_service& io_service);
+    void add(Command &cmd, bool add_and_run);
     void run();
-    command get(const string& line);
+    Command get(const string& line);
 
 private:
 
     boost::asio::deadline_timer _timer;
-    map<string, command> _commands;
+    map<string, Command> _commands;
     
 };
 
