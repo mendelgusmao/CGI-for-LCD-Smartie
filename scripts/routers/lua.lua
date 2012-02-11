@@ -1,12 +1,28 @@
+require("string")
+
 function main()
 
-    params = split(arg[1], "#")
-	func_name = params[0]
+    split = function(str, sep)
+        arr = {}
+        j = 1
+
+        if str == nil then str = "" end
+
+        for i in str:gmatch("[^" .. sep .. "]+") do
+            arr[j] = i
+            j = j + 1
+        end
+
+        return arr
+    end
+
+    local params = split(arg[1], "#")
+	local func_name = params[1]
 
     if func_name ~= "" then
-    	func = _G[func_name]
+    	local func = _G[func_name]
     	if func then
-    		print(func(split(params[1], ";")))
+    		print(func(unpack(split(params[2], ";"))))
     	else
     		print("[CGI4LCD] Function '" .. func_name .. "' not found\n")
     	end
