@@ -21,7 +21,7 @@ function main()
 
     if func_name ~= "" then
     	local func = _G[func_name]
-    	if func then
+    	if func and type(func) == "function" then
     		print(func(unpack(split(params[2], ";"))))
     	else
     		print("[CGI4LCD] Function '" .. func_name .. "' not found\n")
