@@ -162,6 +162,13 @@ WRITING SCRIPTS
 > `$dll(cgi,1,test,hi#Mendel)` -> Hi, Mendel  
 > `$dll(cgi,1,test,do_some_math#1;2;3)` -> 5  
 
+BUNDLED LANGUAGES (ROUTERS + BASIC CONFIGURATION)
+-------------------------------------------------
+
+> ### PHP · PYTHON · RUBY · PERL · LUA  
+
+> Or... Write your own. I'll be glad to add your contribution to the project
+
 LANGUAGE SPECIFICS
 ------------------
 
@@ -169,7 +176,8 @@ LANGUAGE SPECIFICS
 >   To give some boost in PHP process startup, LCD4CGI comes with a crafted php.ini in scripts directory. This is a stripped version that doesn't make PHP load too many extensions. However, if you need to load a specific extension, just uncomment the line, as you would do normally.
 
 > ### Python
->   While PHP, Ruby and Perl allows to pass a file from the command line to be included in the called script, Python doesn't (or, at least, I don't know how to). When writing a Python script, put on the first line:  
+>   While PHP (e.g.) allows to pass a file from the command line to be included in the called script, Python doesn't (or, at least, I don't know how to). When writing a Python script, put on the first line:  
+
 >   `from routers import main`
 
 ISSUES
