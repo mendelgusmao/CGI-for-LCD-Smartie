@@ -180,6 +180,9 @@ LANGUAGE SPECIFICS
 
 >   `from routers import main`
 
+> ### Lua
+>   The interpreter can't load a module parameter by its full path using the "-l" command line. Copy ** *[LCD Smartie installation dir]*\scripts\router\lua.lua** must be copied to *[Lua installation dir]*\lua before using CGI4LCD with lua.
+
 ISSUES
 ------
 
