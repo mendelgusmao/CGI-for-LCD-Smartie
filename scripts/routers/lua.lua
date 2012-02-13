@@ -1,3 +1,5 @@
+-- Copy this file to <Lua installation dir>\lua if you want to use CGI4LCD with Lua
+
 function main()
 
     split = function(str, sep)
