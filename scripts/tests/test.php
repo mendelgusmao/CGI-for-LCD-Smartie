@@ -14,9 +14,7 @@
     function do_some_math ($a, $b, $c) {
         return ($a * $b + $c) . "\n";
     }
-
+    
     main();
-
-    echo "this can't be shown";
 
 ?>
