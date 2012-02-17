@@ -8,7 +8,7 @@
 
         if ($function = $params[0])
             die(
-                function_exists($function)?
+                (string) function_exists($function)?
                     call_user_func_array(
                         $function,
                         1 == count($params)?
