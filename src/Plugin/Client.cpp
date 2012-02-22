@@ -70,9 +70,12 @@ string Client::execute(string &script, const string &parameters, bool version, b
         }
     }
 
+    script = boost::ireplace_all_copy(script, "/", "\\");
+
     vars["%interpreter%"] = interpreter;
     vars["%scripts_path%"] = _scripts_path;
     vars["%routers_path%"] = _scripts_path + "\\routers";
+    vars["%router%"] = _scripts_path + "\\routers\\" + extension + "." + extension;
     vars["%script%"] = _scripts_path + "\\" + script;
     vars["%params%"] = parameters;
     vars["'"] = "\"";
