@@ -38,11 +38,13 @@ void Queue::run() {
     _timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
     _timer.async_wait(boost::bind(&Queue::run, this));
 
-    std::cout << "Running queue (" << queue_size << ")" << std::endl;
+#ifdef DEBUG
+    echo("Running queue (" << queue_size << ")");
 
     string title(lexical_cast<string>(queue_size));
     title = "CGI4LCD - " + title + " command" + (queue_size > 1 ? "s" : "") + " in queue";
     SetConsoleTitle(Utils::s2ws(title).c_str());
+#endif
 
     for (it = _commands.begin(); it != _commands.end(); ++it) {
         cmd = it->second;
@@ -50,23 +52,25 @@ void Queue::run() {
         cmd.timer += 1000;
         cmd.cleanup_timer += 1000;
 
-        std::cout << 
-            "Command '" << cmd.line() << "'" << std::endl <<
-            "Cleanup/Timeout: " << cmd.cleanup_timer << "/" << cmd.timeout << std::endl <<
-            "Timer/Interval: " << cmd.timer << "/" << cmd.interval << std::endl <<
-            "Cached Response: '" << cmd.response << "'" << std::endl;
+        echo("Command '" << cmd.line() << "'");
+        echo("Cleanup/Timeout: " << cmd.cleanup_timer << "/" << cmd.timeout);
+        echo("Timer/Interval: " << cmd.timer << "/" << cmd.interval);
+        echo("Cached Response: '" << cmd.response << "'");
 
         if (cmd.cleanup_timer >= cmd.timeout) {
-            std::cout << "Erasing '" << cmd.line() << "'" << std::endl;
+            echo("Erasing '" << cmd.line() << "'");
+
             _commands.erase(it);
             return;
         }
         else if (cmd.timer >= cmd.interval) {
-            std::cout << "Running '" << cmd.line() << "'" << std::endl;
+            echo("Running '" << cmd.line() << "'");
+
             cmd.run();
             cmd.timer = 0;
-            
-            std::cout << cmd.response << std::endl;
+
+            echo(cmd.response);
+
         }
 
         _commands[cmd.line()] = cmd;
