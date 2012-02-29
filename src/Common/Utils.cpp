@@ -5,7 +5,7 @@ string Utils::ini_read(const string ini_file, const string key, const string def
 
     try {
 
-        cout << "INI File: '" << ini_file << "'" << endl;
+        echo("INI File: '" << ini_file << "'");
 
         boost::property_tree::ptree pt;
         boost::property_tree::ini_parser::read_ini(ini_file, pt);
