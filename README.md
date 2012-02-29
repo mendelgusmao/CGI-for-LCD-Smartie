@@ -41,6 +41,7 @@ INSTALLING
 > * Make sure you have LCD Smartie 5.4 or 5.4.2.92b (or grab it from [http://lcdsmartie.sourceforge.net/smartied.htm](http://lcdsmartie.sourceforge.net/smartied.htm))  
 > * Grab the latest version (ZIP) from [https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags)  
 > * Copy plugins and scripts folder to your LCD Smartie folder
+> * Boost >= 1.48 if you want to have fun compiling yourself the project
 
 CONFIGURING
 -----------
