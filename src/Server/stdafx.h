@@ -28,4 +28,10 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/filesystem.hpp>
 
+#ifdef DEBUG
+#define echo(str) std::cout << str << std::endl;
+#else
+#define echo(str)
+#endif
+
 // TODO: reference additional headers your program requires here
