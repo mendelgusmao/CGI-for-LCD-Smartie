@@ -32,7 +32,8 @@ void Server::handle_receive_from(const boost::system::error_code& error, size_t 
                 _queue.add(cmd, _add_and_run);
                 cmd = _queue.get(cmd.line());
             }
-            cout << "Response: '" << cmd.response << "'" << endl;
+
+            echo("Response: '" << cmd.response << "'");
         }
         // else: malformed packet. nothing to do
 
