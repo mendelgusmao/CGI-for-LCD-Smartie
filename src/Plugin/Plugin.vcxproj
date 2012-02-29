@@ -47,6 +47,9 @@
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cgi</TargetName>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\Languages\CPP\boost_1_48_0;$(SolutionDir)\Common;$(ProjectDir)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib;C:\Languages\CPP\boost_1_48_0\stage\lib;</LibraryPath>
+    <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    </CustomBuildAfterTargets>
+    <CustomBuildBeforeTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -71,6 +74,9 @@
       <ImportLibrary>$(OutDir)cgi.lib</ImportLibrary>
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
+    <PostBuildEvent>
+      <Command>upx -9 $(TargetPath)</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
