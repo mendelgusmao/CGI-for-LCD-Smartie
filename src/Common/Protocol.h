@@ -6,7 +6,7 @@
 
 #define PROTOCOL_HEADER "cgi4lcd"
 #define PROTOCOL_DELIMITER "|"
-#define PROTOCOL_EXPECTED_SIZE 7
+#define PROTOCOL_EXPECTED_SIZE 8
 
 using namespace std;
 

@@ -6,11 +6,10 @@
 
 using namespace std;
 
-Server::Server(boost::asio::io_service& io_service, short port, bool add_and_run) :
+Server::Server(boost::asio::io_service& io_service, short port) :
     _io_service(io_service),
     _socket(io_service, udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), port)),
-    _queue(io_service),
-    _add_and_run(add_and_run)
+    _queue(io_service)
     {
 
     receive();
@@ -29,7 +28,7 @@ void Server::handle_receive_from(const boost::system::error_code& error, size_t 
                 cmd.run();
             }
             else {
-                _queue.add(cmd, _add_and_run);
+                _queue.add(cmd);
                 cmd = _queue.get(cmd.line());
             }
 

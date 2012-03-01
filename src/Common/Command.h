@@ -19,6 +19,7 @@ public:
     bool is_malformed;
     bool is_internal;
     bool do_not_queue;
+    bool add_and_run;
 
     Command();
     string line();
