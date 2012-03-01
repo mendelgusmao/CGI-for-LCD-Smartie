@@ -17,6 +17,7 @@ public:
     static unsigned int _execution_timeout;
     static int _refresh_interval;
     static string _default_extension;
+    static bool _add_and_run;
 
     static void start();
     static string execute(string script, const string &parameters, bool version=false, bool do_not_queue=false);
