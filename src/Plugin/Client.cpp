@@ -28,7 +28,7 @@ void Client::start() {
     _refresh_interval = lexical_cast<int>(Utils::ini_read(_ini_file, "cgi4lcd.refresh", "1000"));
 }
 
-string Client::execute(string &script, const string &parameters, bool version, bool do_not_queue) {
+string Client::execute(string script, const string &parameters, bool version, bool do_not_queue) {
 
     string arguments("");
     string extension("");
