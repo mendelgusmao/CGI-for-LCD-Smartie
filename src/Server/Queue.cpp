@@ -12,7 +12,7 @@ Queue::Queue(boost::asio::io_service& io_service) :
 
 }
 
-void Queue::add(Command &cmd, bool add_and_run) {
+void Queue::add(Command &cmd) {
 
     map<string, Command>::iterator it = _commands.find(cmd.line());
 
@@ -20,7 +20,7 @@ void Queue::add(Command &cmd, bool add_and_run) {
         cmd.response = "";
         _commands[cmd.line()] = cmd;
     
-        if (add_and_run) {
+        if (cmd.add_and_run) {
             _commands[cmd.line()].run();
         }
     }
