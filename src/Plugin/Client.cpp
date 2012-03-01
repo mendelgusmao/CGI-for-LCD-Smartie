@@ -16,6 +16,7 @@ unsigned int Client::_execution_interval(0);
 unsigned int Client::_execution_timeout(0);
 int Client::_refresh_interval(0);
 string Client::_default_extension("");
+bool Client::_add_and_run(false);
 
 void Client::start() {
     _app_path = Utils::app_path();
@@ -26,6 +27,7 @@ void Client::start() {
     _execution_timeout = lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.timeout", "30000"));
     _default_extension = Utils::ini_read(_ini_file, "cgi4lcd.default_extension", "");
     _refresh_interval = lexical_cast<int>(Utils::ini_read(_ini_file, "cgi4lcd.refresh", "1000"));
+    _add_and_run = Utils::ini_read(_ini_file, "cgi4lcd.add_and_run", "1") == "1";
 }
 
 string Client::execute(string script, const string &parameters, bool version, bool do_not_queue) {
@@ -97,6 +99,7 @@ string Client::request(const string &interpreter, const string &arguments, unsig
     cmd.interval = interval;
     cmd.timeout = timeout;
     cmd.do_not_queue = do_not_queue;
+    cmd.add_and_run = _add_and_run;
 
     string buffer("");
 
