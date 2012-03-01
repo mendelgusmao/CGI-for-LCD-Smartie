@@ -30,6 +30,7 @@ Command Protocol::parse(const string &data) {
             cmd.interval = lexical_cast<unsigned int>(packet[3]);
             cmd.timeout = lexical_cast<unsigned int>(packet[4]);
             cmd.do_not_queue = packet[5] == "1";
+            cmd.add_and_run = packet[6] == "1";
             cmd.is_malformed = false;
         }
     }
@@ -48,6 +49,7 @@ string Protocol::build(const Command &cmd) {
     packet.push_back(lexical_cast<string>(cmd.interval));
     packet.push_back(lexical_cast<string>(cmd.timeout));
     packet.push_back(cmd.do_not_queue ? "1" : "0");
+    packet.push_back(cmd.add_and_run ? "1" : "0");
     packet.push_back("");
 
     return join(packet, PROTOCOL_DELIMITER);
