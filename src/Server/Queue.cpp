@@ -18,14 +18,13 @@ void Queue::add(Command &cmd) {
 
     if (it == _commands.end()) {
         cmd.response = "";
+        time(&cmd.last_request);
+
         _commands[cmd.line()] = cmd;
     
         if (cmd.add_and_run) {
             _commands[cmd.line()].run();
         }
-    }
-    else {
-        _commands[cmd.line()].cleanup_timer = 0;
     }
 }
 
@@ -33,12 +32,12 @@ void Queue::run() {
 
     map<string, Command>::iterator it;
     Command cmd;
-    int queue_size = _commands.size();
 
     _timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
     _timer.async_wait(boost::bind(&Queue::run, this));
 
 #ifdef DEBUG
+    int queue_size = _commands.size();    
     echo("Running queue (" << queue_size << ")");
 
     string title(lexical_cast<string>(queue_size));
@@ -49,25 +48,25 @@ void Queue::run() {
     for (it = _commands.begin(); it != _commands.end(); ++it) {
         cmd = it->second;
 
-        cmd.timer += 1000;
-        cmd.cleanup_timer += 1000;
+        time_t now;
+        time(&now);
 
         echo("Command '" << cmd.line() << "'");
-        echo("Cleanup/Timeout: " << cmd.cleanup_timer << "/" << cmd.timeout);
-        echo("Timer/Interval: " << cmd.timer << "/" << cmd.interval);
+        echo("Cleanup Time: " << cmd.last_request << " + " << cmd.timeout);
+        echo("Next Execution: " << cmd.last_execution << " + " << cmd.interval);
         echo("Cached Response: '" << cmd.response << "'");
 
-        if (cmd.cleanup_timer >= cmd.timeout) {
+        if (now >= cmd.last_request + cmd.timeout) {
             echo("Erasing '" << cmd.line() << "'");
 
             _commands.erase(it);
             return;
         }
-        else if (cmd.timer >= cmd.interval) {
+        else if (now >= cmd.last_execution + cmd.interval) {
             echo("Running '" << cmd.line() << "'");
 
             cmd.run();
-            cmd.timer = 0;
+            time(&cmd.last_execution);
 
             echo(cmd.response);
 
