@@ -15,16 +15,21 @@ Queue::Queue(boost::asio::io_service& io_service) :
 void Queue::add(Command &cmd) {
 
     map<string, Command>::iterator it = _commands.find(cmd.line());
+    time_t now;
+    time(&now);
 
     if (it == _commands.end()) {
         cmd.response = "";
-        time(&cmd.last_request);
+        cmd.last_request = now;
 
         _commands[cmd.line()] = cmd;
     
         if (cmd.add_and_run) {
             _commands[cmd.line()].run();
         }
+    }
+    else {
+        _commands[cmd.line()].last_request = now;
     }
 }
 
