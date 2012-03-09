@@ -42,6 +42,7 @@ void Queue::run() {
     _timer.async_wait(boost::bind(&Queue::run, this));
 
 #ifdef DEBUG
+    int queue_size = _commands.size();
     echo("Running queue (" << queue_size << ")");
 
     string title(lexical_cast<string>(queue_size));
