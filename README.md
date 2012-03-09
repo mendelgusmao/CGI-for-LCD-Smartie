@@ -50,13 +50,13 @@ CONFIGURING
 
 > The first section is [cgi4lcd]. It has the following attributes:
 
->   * interval (numeric, milliseconds)  
+>   * interval (numeric, seconds)  
 >     Value to tell the server of how often a command it will be executed
 
->   * timeout (numeric, milliseconds)  
+>   * timeout (numeric, seconds)  
 >     Value to tell the server of how long after the command is not requested anymore by the plugin to be removed from the queue  
 
->   * refresh (numeric, milliseconds)  
+>   * refresh (numeric, seconds)  
 >     Value to tell LCD Smartie how often it will request data from plugin
   
 >   * port (numeric, 1-65535)  
@@ -64,9 +64,6 @@ CONFIGURING
 
 >   * default_extension (text)  
 >     The default file extension to be considered by the plugin if not specified in the filename passed to $dll
-
->   * show_window (boolean, 0-1)  
->     If the value is 1, the server window will appear when it's executed, showing the queue processing and incoming requests
 
 >   * add_and_run (boolean, 0-1)  
 >     If the value is 1, the server will execute the command right after it is added to the queue. If not, the server will await the configured interval to run the command and will be returning an empty response until it happens. 
@@ -102,7 +99,7 @@ CONFIGURING
 >   * version  
 >     Command line to get the interpreter version
 
-> CGI4LCD comes with the basic settings to run PHP, Ruby, Python and Perl scripts. You must only change the interpreter path and it will be ready to use.
+> CGI4LCD comes with the basic settings to run PHP, Ruby, Python, Lua and Perl scripts. You must only change the interpreter path and it will be ready to use.
 
 USING
 -----
@@ -168,7 +165,7 @@ BUNDLED LANGUAGES (ROUTERS + BASIC CONFIGURATION)
 
 > ### PHP · PYTHON · RUBY · PERL · LUA  
 
-> Or... Write your own. I'll be glad to add your contribution to the project
+> Or... Write your own. I'll be glad to add your contribution to the project. 
 
 LANGUAGE SPECIFICS
 ------------------
@@ -182,7 +179,7 @@ LANGUAGE SPECIFICS
 >   `from routers import main`
 
 > ### Lua
->   The interpreter can't load a module by its full path using the "-l" command line parameter. Copy **[*LCD Smartie installation dir*]\scripts\router\lua.lua** to *[Lua installation dir]*\lua before using CGI4LCD with lua.
+>   The interpreter can't load a module by its full path using the "-l" command line parameter. Copy **[*LCD Smartie installation dir*]\scripts\router\lua.lua** to *[Lua installation dir]*\lua before using CGI4LCD with Lua.
 
 > ### Perl
 >   The interpreter can't load a module by its full path. Instead, the path to routers directory is passed using "-I" parameter. When writing a Perl script, put on the first line:  
@@ -202,7 +199,7 @@ TODO
 > * Add better support to Unicode strings
 > * Rewrite almost every function or method to use char* instead of strings
 > * Make the plugin run cgi4lcd.exe if it's not being executed
-> * In the future, abandon the server and begin using threads
+> * In the future, drop the server-client architecture and make the plugin use threads to do the server work
 > * Allow configuration of interval/timeout per-language, per-script and per-function
 > * *[Your suggestion here]*
 
