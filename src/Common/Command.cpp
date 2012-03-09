@@ -3,10 +3,10 @@
 
 using std::string;
 
-Command::Command() :
-    timer(0),
-    cleanup_timer(0)
-{}
+Command::Command() {
+    time(&last_execution);
+    time(&last_request);
+}
 
 string Command::line() {
     return executable + " " + arguments;
