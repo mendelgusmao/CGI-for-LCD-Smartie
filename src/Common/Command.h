@@ -13,8 +13,8 @@ public:
     string arguments;
     unsigned int timeout;
     unsigned int interval;
-    unsigned int timer;
-    unsigned int cleanup_timer;
+    time_t last_execution;
+    time_t last_request;
     string response;
     bool is_malformed;
     bool is_internal;
