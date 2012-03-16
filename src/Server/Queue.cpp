@@ -65,7 +65,7 @@ void Queue::run() {
             echo("Erasing '" << cmd.line() << "'");
 
             _commands.erase(it);
-            return;
+            continue;
         }
         else if (now >= cmd.last_execution + cmd.interval) {
             echo("Running '" << cmd.line() << "'");
