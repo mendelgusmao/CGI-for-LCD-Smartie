@@ -2,45 +2,42 @@ udp = require("dgram");
 
 Queue = function() {
 
-  this.commands = [];
+  this.commands = {};
 
   this.add = function(command) {
 
     var now = new Date().valueOf();
 
-    if (typeof commands[command.line()] == "undefined") {
-      commands[command.line()].response = "";
-      commands[command.line()].last_request = now;
+    if (typeof this.commands[command.line()] == "undefined") {
+      command.response = "";
+      command.last_request = now;
 
-      commands[command.line()] = command;
+      this.commands[command.line()] = command;
 
-      if (commands[command.line()].add_and_run) {
-        commands[command.line()].run();
+      if (this.commands[command.line()].add_and_run) {
+        this.commands[command.line()].run();
       }
 
     }
     else {
-      commands[cmd.line()].last_request = now;
+      this.commands[cmd.line()].last_request = now;
     }
 
   };
 
   this.run = function() {
 
-    console.log("Processing " + this.commands.size + " commands");
-
-    for (line in commands) {
+    for (line in this.commands) {
       var now = new Date().valueOf();
 
-      if (now >= commands[line].last_request + command.timeout) {
+      if (now >= this.commands[line].last_request + command.timeout) {
         console.log("Erasing '" + line + "'");
-        delete commands[line];
+        delete this.commands[line];
       }
-      else if (now >= commands[line].last_execution + command.interval) {
+      else if (now >= this.commands[line].last_execution + command.interval) {
         console.log("Running '" + line + "'");
-        commands[line].run();
-        commands[line].last_execution = new Date().valueOf();
-        console.log("Response: '" + commands[line].response);
+        this.commands[line].run();
+        console.log("Response: '" + this.commands[line].response);
       }
 
     }
@@ -48,12 +45,13 @@ Queue = function() {
   }
 
   this.get = function(command) {
-    return commands[command.line()];
+    return this.commands[command.line()];
   }
 
 }
 
 Command = function() {
+
   this.executable = "";
   this.arguments = "";
   this.timeout = 0;
@@ -72,6 +70,7 @@ Command = function() {
 
   this.run = function() {
     this.response = "Running now: '" + this.line() + "'";
+    this.last_execution = new Date().valueOf();
   };
 
 };
@@ -92,21 +91,21 @@ Protocol = function() {
     }
     else {
       if (message[0] != this.protocol_header) {
-        cmd.is_malformed = true;
+        command.is_malformed = true;
       }
-      else if (packet[1] == "command" && packet[2] != "") {
+      else if (message[1] == "command" && message[2] != "") {
         command.is_internal = true;
-        command.executable = packet[1];
-        command.arguments = packet[2];
+        command.executable = message[1];
+        command.arguments = message[2];
       }
       else {
-        cmd.executable = packet[1];
-        cmd.arguments = packet[2];
-        cmd.interval = parseInt(packet[3]);
-        cmd.timeout = parseInt(packet[4]);
-        cmd.do_not_queue = packet[5] == "1";
-        cmd.add_and_run = packet[6] == "1";
-        cmd.is_malformed = false;
+        command.executable = message[1];
+        command.arguments = message[2];
+        command.interval = parseInt(message[3]);
+        command.timeout = parseInt(message[4]);
+        command.do_not_queue = message[5] == "1";
+        command.add_and_run = message[6] == "1";
+        command.is_malformed = false;
       }        
     }
 
@@ -116,11 +115,11 @@ Protocol = function() {
 }
 
 var server = udp.createSocket("udp4");
-var queue = new Queue;
+var queue = new Queue();
 var protocol = new Protocol;
 
 server.on("message", function (data, rinfo) {
-  command = protocol.parse(data);
+  command = protocol.parse(data.toString());
 
   if (!command.is_malformed) {
     if (command.do_not_queue) {
@@ -130,6 +129,9 @@ server.on("message", function (data, rinfo) {
       queue.add(command);
       command = queue.get(command);
     }
+  }
+  else {
+    console.log("malformed command");  
   }
 
   var message = new Buffer(command.response);
