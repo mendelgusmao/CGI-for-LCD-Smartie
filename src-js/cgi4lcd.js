@@ -1,16 +1,18 @@
-udp = require("dgram");
+var udp = require("dgram");
+var exec = require('child_process').exec;
 
 Queue = function() {
 
   this.commands = {};
 
+  this.now = function() {
+    return new Date().valueOf() / 1000;
+  };
+
   this.add = function(command) {
 
-    var now = new Date().valueOf();
-
     if (typeof this.commands[command.line()] == "undefined") {
-      command.response = "";
-      command.last_request = now;
+      command.last_request = this.now();
 
       this.commands[command.line()] = command;
 
@@ -20,7 +22,7 @@ Queue = function() {
 
     }
     else {
-      this.commands[cmd.line()].last_request = now;
+      this.commands[command.line()].last_request = this.now();
     }
 
   };
@@ -28,16 +30,13 @@ Queue = function() {
   this.run = function() {
 
     for (line in this.commands) {
-      var now = new Date().valueOf();
 
-      if (now >= this.commands[line].last_request + command.timeout) {
-        console.log("Erasing '" + line + "'");
+      if (this.now() >= this.commands[line].last_request + this.commands[line].timeout) {
         delete this.commands[line];
       }
-      else if (now >= this.commands[line].last_execution + command.interval) {
-        console.log("Running '" + line + "'");
+      else if (this.now() >= this.commands[line].last_execution + this.commands[line].interval) {
         this.commands[line].run();
-        console.log("Response: '" + this.commands[line].response);
+        this.commands[line].last_execution = this.now();
       }
 
     }
@@ -69,8 +68,12 @@ Command = function() {
   };
 
   this.run = function() {
-    this.response = "Running now: '" + this.line() + "'";
-    this.last_execution = new Date().valueOf();
+    var _this = this;
+    exec(this.line(), function(error, stdout, stderr) {
+      if (error == null) {
+        _this.response = stdout;
+      }
+    });
   };
 
 };
@@ -119,7 +122,8 @@ var queue = new Queue();
 var protocol = new Protocol;
 
 server.on("message", function (data, rinfo) {
-  command = protocol.parse(data.toString());
+
+  var command = protocol.parse(data.toString());
 
   if (!command.is_malformed) {
     if (command.do_not_queue) {
@@ -130,14 +134,16 @@ server.on("message", function (data, rinfo) {
       command = queue.get(command);
     }
   }
-  else {
-    console.log("malformed command");  
-  }
+
+  if (command.response == "") {
+    command.response = "-"
+  };
 
   var message = new Buffer(command.response);
+
   server.send(message, 0, message.length, rinfo.port, rinfo.address);
 
 });
 
-setInterval(queue.run, 1000);
+setInterval(function() { queue.run(); }, 1000);
 server.bind(65432);
