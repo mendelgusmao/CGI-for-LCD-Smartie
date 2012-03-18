@@ -75,7 +75,7 @@
       <TargetMachine>MachineX86</TargetMachine>
     </Link>
     <PostBuildEvent>
-      <Command>upx -9 $(TargetPath)</Command>
+      <Command>upx -9 $(TargetPath) &amp; copy "$(TargetPath)" "$(SolutionDir)\..\plugins\"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
