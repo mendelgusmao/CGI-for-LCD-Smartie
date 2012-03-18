@@ -163,7 +163,7 @@ WRITING SCRIPTS
 BUNDLED LANGUAGES (ROUTERS + BASIC CONFIGURATION)
 -------------------------------------------------
 
-> ### PHP · PYTHON · RUBY · PERL · LUA  
+> ### PHP · PYTHON · RUBY · PERL · LUA · JAVASCRIPT  
 
 > Or... Write your own. I'll be glad to add your contribution to the project. 
 
@@ -171,7 +171,7 @@ LANGUAGE SPECIFICS
 ------------------
 
 > ### PHP
->   To give some boost in PHP process startup, LCD4CGI comes with a crafted php.ini in scripts directory. This is a stripped version that doesn't make PHP load too many extensions. However, if you need to load a specific extension, just uncomment the line, as you would do normally.
+>   To give some boost in PHP process startup, write a crafted php.ini. This must a stripped version that doesn't make PHP load too many extensions.  
 
 > ### Python
 >   While PHP (e.g.) allows to pass a file from the command line to be included in the called script, Python doesn't (or, at least, I don't know how to). When writing a Python script, put on the first line:  
@@ -184,7 +184,12 @@ LANGUAGE SPECIFICS
 > ### Perl
 >   The interpreter can't load a module by its full path. Instead, the path to routers directory is passed using "-I" parameter. When writing a Perl script, put on the first line:  
 
->   `require("pl.pl")`
+>   `require("pl.pl")`  
+
+> ### JavaScript (using [node.js](http://nodejs.org))
+>   The interpreter doesn't provide a way to specify a path or a module to be loaded before the script to be run, so, put on the first line of your script:  
+
+>   `require("..\routers\js.js")`  
 
 ISSUES
 ------
