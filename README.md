@@ -189,7 +189,7 @@ LANGUAGE SPECIFICS
 > ### JavaScript (using [node.js](http://nodejs.org))
 >   The interpreter doesn't provide a way to specify a path or a module to be loaded before the script to be run, so, put on the first line of your script:  
 
->   `require("..\routers\js.js")`  
+>   `require("routers\js.js")`  
 
 ISSUES
 ------
