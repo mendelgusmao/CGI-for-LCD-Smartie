@@ -2,6 +2,7 @@
 #include "Queue.h"
 #include "Command.h"
 #include "Utils.h"
+#include <boost/thread.hpp>
 
 using boost::lexical_cast;
 
@@ -70,11 +71,10 @@ void Queue::run() {
         else if (now >= cmd.last_execution + cmd.interval) {
             echo("Running '" << cmd.line() << "'");
 
-            cmd.run();
+            boost::thread runner(boost::bind(&Command::run, cmd));
             time(&cmd.last_execution);
 
             echo(cmd.response);
-
         }
 
         _commands[cmd.line()] = cmd;
