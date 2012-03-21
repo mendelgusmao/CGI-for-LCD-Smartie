@@ -20,10 +20,10 @@ public:
     bool is_internal;
     bool do_not_queue;
     bool add_and_run;
+    bool is_running; 
 
     Command();
     string line();
-    void run();
 };
 
 #endif // COMMAND_H

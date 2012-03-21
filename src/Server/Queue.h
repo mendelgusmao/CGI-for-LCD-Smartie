@@ -12,7 +12,8 @@ public:
 
     Queue(boost::asio::io_service& io_service);
     void add(Command &cmd);
-    void run();
+    void process();
+    void run(Command &command);
     Command get(const string& line);
 
 private:
