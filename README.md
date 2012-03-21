@@ -66,7 +66,10 @@ CONFIGURING
 >     The default file extension to be considered by the plugin if not specified in the filename passed to $dll
 
 >   * add_and_run (boolean, 0-1)  
->     If the value is 1, the server will execute the command right after it is added to the queue. If not, the server will await the configured interval to run the command and will be returning an empty response until it happens. 
+>     If the value is 1, the server will execute the command right after it is added to the queue. If not, the server will await the configured interval to run the command and will be returning an empty response until it happens.
+
+>   * max_threads (numeric)  
+>     The maximum number of commands that can be run simultaneously
 
 > The subsequent sections are named with the common file extension of the language. They have the following attributes:
 
