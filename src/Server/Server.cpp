@@ -6,10 +6,10 @@
 
 using namespace std;
 
-Server::Server(boost::asio::io_service& io_service, short port) :
+Server::Server(boost::asio::io_service& io_service, short port, unsigned int max_threads) :
     _io_service(io_service),
     _socket(io_service, udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), port)),
-    _queue(io_service)
+    _queue(io_service, max_threads)
     {
 
     receive();
