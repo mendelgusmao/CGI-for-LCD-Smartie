@@ -5,8 +5,10 @@
 
 using boost::lexical_cast;
 
-Queue::Queue(boost::asio::io_service& io_service) : 
-  _timer(io_service, boost::posix_time::seconds(1)) {
+Queue::Queue(boost::asio::io_service& io_service, unsigned int max_threads) : 
+  _timer(io_service, boost::posix_time::seconds(1)),
+  _max_threads(max_threads),
+  _running_threads(0) {
 
     _timer.async_wait(boost::bind(&Queue::process, this));
 
@@ -67,7 +69,7 @@ void Queue::process() {
             _commands.erase(it);
             break;
         }
-        else if (cmd.is_running == false && now >= cmd.last_execution + cmd.interval) {
+        else if (_running_threads < _max_threads && cmd.is_running == false && now >= cmd.last_execution + cmd.interval) {
             boost::thread runner(boost::bind(&Queue::run, this, cmd));
         }
 
@@ -86,6 +88,8 @@ void Queue::run(Command &command) {
     FILE *iopipe;
 
     echo("Running '" << command.line() << "'");
+
+    ++_running_threads;
 
     if (!command.do_not_queue) {
         _commands[command.line()].is_running = true;
@@ -116,4 +120,6 @@ void Queue::run(Command &command) {
         _commands[command.line()].is_running = false;
         _commands[command.line()] = command;
     }
+
+    --_running_threads;
 }
