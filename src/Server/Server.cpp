@@ -24,15 +24,15 @@ void Server::handle_receive_from(const boost::system::error_code& error, size_t 
         cmd = Protocol::parse(temp);
 
         if (!cmd.is_malformed) {
+
             if (cmd.do_not_queue) {
-                cmd.run();
+                _queue.run(cmd);
             }
             else {
                 _queue.add(cmd);
                 cmd = _queue.get(cmd.line());
             }
 
-            echo("Response: '" << cmd.response << "'");
         }
         // else: malformed packet. nothing to do
 
