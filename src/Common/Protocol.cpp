@@ -8,48 +8,48 @@ using boost::algorithm::split;
 Command Protocol::parse(const string &data) {
 
     vector<string> packet;
-    Command cmd;
+    Command command;
 
     split(packet, data, boost::is_any_of(PROTOCOL_DELIMITER));
 
     if (packet.size() != PROTOCOL_EXPECTED_SIZE) {
-        cmd.is_malformed = true;
+        command.is_malformed = true;
     }
     else {
         if (packet[0] != PROTOCOL_HEADER) {
-            cmd.is_malformed = true;
+            command.is_malformed = true;
         }
         else if (packet[1] == "command" && packet[2] != "") {
-            cmd.is_internal = true;
-            cmd.executable = packet[1];
-            cmd.arguments = packet[2];
+            command.is_internal = true;
+            command.executable = packet[2];
+            command.arguments = packet[3];
         }
         else {
-            cmd.executable = packet[1];
-            cmd.arguments = packet[2];
-            cmd.interval = lexical_cast<unsigned int>(packet[3]);
-            cmd.timeout = lexical_cast<unsigned int>(packet[4]);
-            cmd.do_not_queue = packet[5] == "1";
-            cmd.add_and_run = packet[6] == "1";
-            cmd.is_malformed = false;
+            command.executable = packet[1];
+            command.arguments = packet[2];
+            command.interval = lexical_cast<unsigned int>(packet[3]);
+            command.timeout = lexical_cast<unsigned int>(packet[4]);
+            command.do_not_queue = packet[5] == "1";
+            command.add_and_run = packet[6] == "1";
+            command.is_malformed = false;
         }
     }
 
-    return cmd;
+    return command;
     
 }
 
-string Protocol::build(const Command &cmd) { 
+string Protocol::build(const Command &command) { 
 
     vector<string> packet;
 
     packet.push_back(PROTOCOL_HEADER);
-    packet.push_back(cmd.executable);
-    packet.push_back(cmd.arguments);
-    packet.push_back(lexical_cast<string>(cmd.interval));
-    packet.push_back(lexical_cast<string>(cmd.timeout));
-    packet.push_back(cmd.do_not_queue ? "1" : "0");
-    packet.push_back(cmd.add_and_run ? "1" : "0");
+    packet.push_back(command.executable);
+    packet.push_back(command.arguments);
+    packet.push_back(lexical_cast<string>(command.interval));
+    packet.push_back(lexical_cast<string>(command.timeout));
+    packet.push_back(command.do_not_queue ? "1" : "0");
+    packet.push_back(command.add_and_run ? "1" : "0");
     packet.push_back("");
 
     return join(packet, PROTOCOL_DELIMITER);

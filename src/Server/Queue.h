@@ -11,7 +11,7 @@ class Queue {
 public:
 
     Queue(boost::asio::io_service& io_service, unsigned int max_threads);
-    void add(Command &cmd);
+    void add(Command &command);
     void process();
     void run(Command &command);
     Command get(const string& line);

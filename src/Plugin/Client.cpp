@@ -93,13 +93,13 @@ string Client::request(const string &interpreter, const string &arguments, unsig
 
     using boost::asio::ip::udp;
 
-    Command cmd;
-    cmd.executable = interpreter;
-    cmd.arguments = arguments;
-    cmd.interval = interval;
-    cmd.timeout = timeout;
-    cmd.do_not_queue = do_not_queue;
-    cmd.add_and_run = _add_and_run;
+    Command command;
+    command.executable = interpreter;
+    command.arguments = arguments;
+    command.interval = interval;
+    command.timeout = timeout;
+    command.do_not_queue = do_not_queue;
+    command.add_and_run = _add_and_run;
 
     string buffer("");
 
@@ -111,7 +111,7 @@ string Client::request(const string &interpreter, const string &arguments, unsig
         udp::socket socket(io_service);
         socket.open(udp::v4());
 
-        string data = Protocol::build(cmd);
+        string data = Protocol::build(command);
         const char* send_buf = data.c_str();
         socket.send_to(boost::asio::buffer(send_buf, data.size()), receiver_endpoint);
 
