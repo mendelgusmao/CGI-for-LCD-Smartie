@@ -110,7 +110,6 @@ void Queue::run(Command &command) {
         }
 
         _pclose(iopipe);
-        time(&command.last_execution);
         command.response = response;
     }
 
@@ -118,7 +117,8 @@ void Queue::run(Command &command) {
 
     if (!command.do_not_queue) {
         _commands[command.line()].is_running = false;
-        _commands[command.line()] = command;
+        _commands[command.line()].response = command.response;
+        time(&_commands[command.line()].last_execution);
     }
 
     --_running_threads;
