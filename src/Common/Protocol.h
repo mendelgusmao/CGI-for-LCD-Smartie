@@ -15,7 +15,7 @@ class Protocol {
 public:
 
     static Command parse(const string &data);
-    static string build(const Command &cmd);
+    static string build(const Command &command);
 
 };
 
