@@ -6,10 +6,10 @@
 
 using namespace std;
 
-Server::Server(boost::asio::io_service& io_service, short port) :
+Server::Server(boost::asio::io_service& io_service, short port, unsigned int max_threads) :
     _io_service(io_service),
     _socket(io_service, udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), port)),
-    _queue(io_service)
+    _queue(io_service, max_threads)
     {
 
     receive();
@@ -19,28 +19,28 @@ Server::Server(boost::asio::io_service& io_service, short port) :
 void Server::handle_receive_from(const boost::system::error_code& error, size_t bytes_recvd) {
     if (!error && bytes_recvd > 0) {
 
-        Command cmd;
+        Command command;
         string temp(_data, bytes_recvd);
-        cmd = Protocol::parse(temp);
+        command = Protocol::parse(temp);
 
-        if (!cmd.is_malformed) {
-            if (cmd.do_not_queue) {
-                cmd.run();
+        if (!command.is_malformed) {
+
+            if (command.do_not_queue) {
+                _queue.run(command);
             }
             else {
-                _queue.add(cmd);
-                cmd = _queue.get(cmd.line());
+                _queue.add(command);
+                command = _queue.get(command.line());
             }
 
-            echo("Response: '" << cmd.response << "'");
         }
         // else: malformed packet. nothing to do
 
         char response[max_length];
-        strcpy_s(response, cmd.response.c_str());
+        strcpy_s(response, command.response.c_str());
 
         _socket.async_send_to(
-            boost::asio::buffer(response, cmd.response.size()), 
+            boost::asio::buffer(response, command.response.size()), 
             _sender_endpoint,
             boost::bind(
                 &Server::handle_send_to, 
