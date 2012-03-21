@@ -2,14 +2,13 @@
 #include "Queue.h"
 #include "Command.h"
 #include "Utils.h"
-#include <boost/thread.hpp>
 
 using boost::lexical_cast;
 
 Queue::Queue(boost::asio::io_service& io_service) : 
   _timer(io_service, boost::posix_time::seconds(1)) {
 
-    _timer.async_wait(boost::bind(&Queue::run, this));
+    _timer.async_wait(boost::bind(&Queue::process, this));
 
 }
 
@@ -26,7 +25,7 @@ void Queue::add(Command &cmd) {
         _commands[cmd.line()] = cmd;
     
         if (cmd.add_and_run) {
-            _commands[cmd.line()].run();
+            run(cmd);
         }
     }
     else {
@@ -34,13 +33,13 @@ void Queue::add(Command &cmd) {
     }
 }
 
-void Queue::run() {
+void Queue::process() {
 
     map<string, Command>::iterator it;
     Command cmd;
 
     _timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
-    _timer.async_wait(boost::bind(&Queue::run, this));
+    _timer.async_wait(boost::bind(&Queue::process, this));
 
 #ifdef DEBUG
     int queue_size = _commands.size();
@@ -66,15 +65,10 @@ void Queue::run() {
             echo("Erasing '" << cmd.line() << "'");
 
             _commands.erase(it);
-            continue;
+            break;
         }
-        else if (now >= cmd.last_execution + cmd.interval) {
-            echo("Running '" << cmd.line() << "'");
-
-            boost::thread runner(boost::bind(&Command::run, cmd));
-            time(&cmd.last_execution);
-
-            echo(cmd.response);
+        else if (cmd.is_running == false && now >= cmd.last_execution + cmd.interval) {
+            boost::thread runner(boost::bind(&Queue::run, this, cmd));
         }
 
         _commands[cmd.line()] = cmd;
@@ -84,4 +78,42 @@ void Queue::run() {
 
 Command Queue::get(const string &line) {
     return _commands[line];
+}
+
+void Queue::run(Command &command) {
+
+    char psBuffer[128];
+    FILE *iopipe;
+
+    echo("Running '" << command.line() << "'");
+
+    if (!command.do_not_queue) {
+        _commands[command.line()].is_running = true;
+    }
+
+    iopipe = _popen(command.line().c_str(), "r");
+
+    if (iopipe == NULL) {
+        command.response = "[CGI4LCD] Error running...";
+    }
+    else {
+        string response = "";
+
+        while(!feof(iopipe)) {
+            if(fgets(psBuffer, 128, iopipe) != NULL) {
+                response += string(psBuffer);
+            }
+        }
+
+        _pclose(iopipe);
+        time(&command.last_execution);
+        command.response = response;
+    }
+
+    echo("Runner response: '" << command.response << "'");
+
+    if (!command.do_not_queue) {
+        _commands[command.line()].is_running = false;
+        _commands[command.line()] = command;
+    }
 }

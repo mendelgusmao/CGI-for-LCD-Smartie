@@ -27,6 +27,7 @@
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/split.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/thread.hpp>
 
 #ifdef DEBUG
 #define echo(str) std::cout << str << std::endl;
