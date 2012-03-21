@@ -1,4 +1,4 @@
-CGI FOR LCD SMARTIE 0.1-alpha
+CGI FOR LCD SMARTIE 0.2-alpha
 =============================
 
 > CGI for LCD Smartie is designed to be a fast gateway between LCD Smartie ([http://lcdsmartie.sourceforge.net](http://lcdsmartie.sourceforge.net)) and language 
