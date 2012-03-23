@@ -37,7 +37,7 @@ void Queue::add(Command &command) {
 
 void Queue::process() {
 
-    map<string, Command>::iterator it;
+    map<string, Command>::iterator it = _commands.begin();
     Command command;
 
     _timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
@@ -45,6 +45,7 @@ void Queue::process() {
 
 #ifdef DEBUG
     int queue_size = _commands.size();
+    Utils::cls();
     echo("Running queue (" << queue_size << ")");
 
     string title(lexical_cast<string>(queue_size));
@@ -52,28 +53,33 @@ void Queue::process() {
     SetConsoleTitle(Utils::s2ws(title).c_str());
 #endif
 
-    for (it = _commands.begin(); it != _commands.end(); ++it) {
+    while (it != _commands.end()) {
         command = it->second;
 
         time_t now;
         time(&now);
 
-        echo("Command '" << command.line() << "'");
+#ifndef FULL_DEBUG
+        echo("Command '" << command.line().substr(command.line().size() - 40) << "' === '" << command.response << "'");
+#else
+        echo("Command '" << command.line().substr(command.line().size() - 40) << "'");
         echo("Cleanup Time: " << command.last_request << " + " << command.timeout);
         echo("Next Execution: " << command.last_execution << " + " << command.interval);
         echo("Cached Response: '" << command.response << "'");
+#endif
 
         if (now >= command.last_request + command.timeout) {
-            echo("Erasing '" << command.line() << "'");
+            echo("Erasing '" << command.shortline() << "'");
 
-            _commands.erase(it);
-            break;
+            _commands.erase(it++);
+            continue;
         }
         else if (_running_threads < _max_threads && command.is_running == false && now >= command.last_execution + command.interval) {
             boost::thread runner(boost::bind(&Queue::run, this, command));
         }
 
         _commands[command.line()] = command;
+        ++it;
     }
 
 }
@@ -87,7 +93,9 @@ void Queue::run(Command &command) {
     char psBuffer[128];
     FILE *iopipe;
 
-    echo("Running '" << command.line() << "'");
+#ifdef DEBUG_RUNS
+    echo("Running '" << command.shortline() << "'");
+#endif
 
     ++_running_threads;
 
@@ -113,9 +121,19 @@ void Queue::run(Command &command) {
         command.response = response;
     }
 
+#ifdef DEBUG_RUNS
     echo("Runner response: '" << command.response << "'");
+#endif
+
+    map<string, Command>::iterator it = _commands.find(command.line());
 
     if (!command.do_not_queue) {
+
+        if (it == _commands.end()) {
+            _commands[command.line()] = command;
+            time(&_commands[command.line()].last_request);
+        }
+
         _commands[command.line()].is_running = false;
         _commands[command.line()].response = command.response;
         time(&_commands[command.line()].last_execution);
