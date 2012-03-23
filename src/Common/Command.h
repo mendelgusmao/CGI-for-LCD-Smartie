@@ -24,6 +24,7 @@ public:
 
     Command();
     string line();
+    string shortline();
 };
 
 #endif // COMMAND_H
