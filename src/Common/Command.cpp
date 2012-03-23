@@ -13,3 +13,11 @@ string Command::line() {
     return executable + " " + arguments;
 }
 
+string Command::shortline() {
+    if (line().size() > 50) {
+        return line().substr(line().size() - 40);
+    }
+    else {
+        return line();
+    }
+}

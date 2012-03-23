@@ -17,11 +17,10 @@ public:
     static unsigned int _execution_timeout;
     static int _refresh_interval;
     static string _default_extension;
-    static bool _add_and_run;
 
     static void start();
-    static string execute(string script, const string &parameters, bool version=false, bool do_not_queue=false);
-    static string request(const string &interpreter, const string &arguments, unsigned int interval, unsigned int timeout, bool do_not_queue);
+    static string execute(string script, const string &parameters, bool version=false, bool do_not_queue=false, bool add_and_run=true);
+    static string request(const string &interpreter, const string &arguments, unsigned int interval, unsigned int timeout, bool do_not_queue, bool add_and_run);
     static string format_command(const string &command_template, const map<string, string> vars);
 
 };
