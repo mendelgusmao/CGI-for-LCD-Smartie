@@ -39,7 +39,7 @@ INSTALLING
 
 > * Make sure you have .Net Framework 4
 > * Make sure you have LCD Smartie 5.4 or 5.4.2.92b (or grab it from [http://lcdsmartie.sourceforge.net/smartied.htm](http://lcdsmartie.sourceforge.net/smartied.htm))  
-> * Grab the latest version (ZIP) from [https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/tags)  
+> * Grab the latest version (ZIP) from [https://github.com/MendelGusmao/CGI-for-LCD-Smartie/downloads](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/downloads)  
 > * Copy plugins and scripts folder to your LCD Smartie folder
 > * Boost >= 1.48 if you want to have fun compiling yourself the project
 
@@ -192,7 +192,7 @@ LANGUAGE SPECIFICS
 > ### JavaScript (using [node.js](http://nodejs.org))
 >   The interpreter doesn't provide a way to specify a path or a module to be loaded before the script to be run, so, put on the first line of your script:  
 
->   `require("..\routers\js.js")`  
+>   `require("routers\js.js")`  
 
 ISSUES
 ------
@@ -213,8 +213,6 @@ TODO
 
 FINALLY
 -------
-
-![LCD Smartie running the world](/MendelGusmao/CGI-for-LCD-Smartie/blob/master/pics/run-everything-in-the-world.jpg?raw=true "Beaultiful, isn't it?")
 
 > * Official website of LCD Smartie: [http://lcdsmartie.org](http://lcdsmartie.org)
 > * Official CGI4LCD thread at LCD Smartie forums: [http://forums.lcdsmartie.org/viewtopic.php?f=8&t=3274](http://forums.lcdsmartie.org/viewtopic.php?f=8&t=3274)
