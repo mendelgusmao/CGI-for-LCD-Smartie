@@ -39,13 +39,25 @@ __stdcall  function2(char *param1, char *param2)
     string parameters(param2);
 
     char buffer[1024];
-    strcpy_s(buffer, Client::execute(script, parameters, false, true).c_str());
+    strcpy_s(buffer, Client::execute(script, parameters, false, false, false).c_str());
 
     return buffer;
 }
 
 extern "C" DLLEXPORT  char * 
 __stdcall  function3(char *param1, char *param2)
+{
+    string script(param1);
+    string parameters(param2);
+
+    char buffer[1024];
+    strcpy_s(buffer, Client::execute(script, parameters, false, true).c_str());
+
+    return buffer;
+}
+
+extern "C" DLLEXPORT  char * 
+__stdcall  function4(char *param1, char *param2)
 {
     string script(param1);
     string parameters(param2);

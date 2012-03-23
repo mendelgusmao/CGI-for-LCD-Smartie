@@ -16,7 +16,6 @@ unsigned int Client::_execution_interval(0);
 unsigned int Client::_execution_timeout(0);
 int Client::_refresh_interval(0);
 string Client::_default_extension("");
-bool Client::_add_and_run(false);
 
 void Client::start() {
     _app_path = Utils::app_path();
@@ -27,10 +26,9 @@ void Client::start() {
     _execution_timeout = lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.timeout", "30000"));
     _default_extension = Utils::ini_read(_ini_file, "cgi4lcd.default_extension", "");
     _refresh_interval = lexical_cast<int>(Utils::ini_read(_ini_file, "cgi4lcd.refresh", "1000"));
-    _add_and_run = Utils::ini_read(_ini_file, "cgi4lcd.add_and_run", "1") == "1";
 }
 
-string Client::execute(string script, const string &parameters, bool version, bool do_not_queue) {
+string Client::execute(string script, const string &parameters, bool version, bool do_not_queue, bool add_and_run) {
 
     string arguments("");
     string extension("");
@@ -86,10 +84,10 @@ string Client::execute(string script, const string &parameters, bool version, bo
     arguments = format_command(arguments, vars);
     interpreter = format_command(interpreter, vars);
 
-    return request(interpreter, arguments, _execution_interval, _execution_timeout, do_not_queue);
+    return request(interpreter, arguments, _execution_interval, _execution_timeout, do_not_queue, add_and_run);
 }
 
-string Client::request(const string &interpreter, const string &arguments, unsigned int interval, unsigned int timeout, bool do_not_queue) {
+string Client::request(const string &interpreter, const string &arguments, unsigned int interval, unsigned int timeout, bool do_not_queue, bool add_and_run) {
 
     using boost::asio::ip::udp;
 
@@ -99,7 +97,7 @@ string Client::request(const string &interpreter, const string &arguments, unsig
     command.interval = interval;
     command.timeout = timeout;
     command.do_not_queue = do_not_queue;
-    command.add_and_run = _add_and_run;
+    command.add_and_run = add_and_run;
 
     string buffer("");
 
