@@ -9,7 +9,7 @@ Worker worker;
 extern "C" DLLEXPORT  void 
 __stdcall  SmartieInit()
 {
-    boost::thread worker_thread(boost::bind(&Worker::start, &worker);
+    boost::thread worker_thread(boost::bind(&Worker::start, &worker));
 }
 
 extern "C" DLLEXPORT  void 
