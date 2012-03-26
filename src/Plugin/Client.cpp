@@ -1,27 +1,10 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "Command.h"
-#include "Protocol.h"
 #include "Utils.h"
 
-using boost::asio::ip::udp;
 using boost::lexical_cast;
 using boost::filesystem::exists;
-
-/*
-    string _app_path;
-    string _scripts_path;
-    string _ini_file;
-    unsigned int _execution_interval;
-    unsigned int _execution_timeout;
-    int _refresh_interval;
-    string _default_extension;
-    unsigned int _max_threads;
-    unsigned int _running_threads;
-    boost::asio::io_service _io_service;
-    boost::asio::deadline_timer _timer;
-    map<string, Command> _commands;
-*/
 
 Client::Client() :
     _app_path(Utils::app_path()),
@@ -34,10 +17,6 @@ Client::Client() :
     _max_threads(lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.max_threads", "4"))),
     _running_threads(0)
 {}
-
-void Client::start() {
-    boost::asio::io_service &io_service(boost::asio::io_service);
-}
 
 string Client::execute(string script, const string &parameters, bool version, bool do_not_queue, bool add_and_run) {
 
