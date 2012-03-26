@@ -8,15 +8,35 @@ using boost::asio::ip::udp;
 using boost::lexical_cast;
 using boost::filesystem::exists;
 
+/*
+    string _app_path;
+    string _scripts_path;
+    string _ini_file;
+    unsigned int _execution_interval;
+    unsigned int _execution_timeout;
+    int _refresh_interval;
+    string _default_extension;
+    unsigned int _max_threads;
+    unsigned int _running_threads;
+    boost::asio::io_service _io_service;
+    boost::asio::deadline_timer _timer;
+    map<string, Command> _commands;
+*/
+
+Client::Client() :
+    _app_path(Utils::app_path()),
+    _scripts_path(_app_path + "\\scripts"),
+    _ini_file(_scripts_path + "\\cgi4lcd.ini"),
+    _execution_interval(lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.interval", "15000"))),
+    _execution_timeout(lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.timeout", "30000"))),
+    _refresh_interval(lexical_cast<int>(Utils::ini_read(_ini_file, "cgi4lcd.refresh", "1000"))),
+    _default_extension(Utils::ini_read(_ini_file, "cgi4lcd.default_extension", "")),
+    _max_threads(lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.max_threads", "4"))),
+    _running_threads(0)
+{}
+
 void Client::start() {
-    _app_path = Utils::app_path();
-    _scripts_path = _app_path + "\\scripts";
-    _ini_file = _scripts_path + "\\cgi4lcd.ini";
-    _port = lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.port", "65432"));
-    _execution_interval = lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.interval", "15000"));
-    _execution_timeout = lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.timeout", "30000"));
-    _default_extension = Utils::ini_read(_ini_file, "cgi4lcd.default_extension", "");
-    _refresh_interval = lexical_cast<int>(Utils::ini_read(_ini_file, "cgi4lcd.refresh", "1000"));
+    boost::asio::io_service &io_service(boost::asio::io_service);
 }
 
 string Client::execute(string script, const string &parameters, bool version, bool do_not_queue, bool add_and_run) {
@@ -75,57 +95,17 @@ string Client::execute(string script, const string &parameters, bool version, bo
     arguments = format_command(arguments, vars);
     interpreter = format_command(interpreter, vars);
 
-    return request(interpreter, arguments, _execution_interval, _execution_timeout, do_not_queue, add_and_run);
-}
-
-string Client::request(const string &interpreter, const string &arguments, unsigned int interval, unsigned int timeout, bool do_not_queue, bool add_and_run) {
-
-    using boost::asio::ip::udp;
-
     Command command;
     command.executable = interpreter;
     command.arguments = arguments;
-    command.interval = interval;
-    command.timeout = timeout;
+    command.interval = _execution_interval;
+    command.timeout = _execution_timeout;
     command.do_not_queue = do_not_queue;
     command.add_and_run = add_and_run;
 
-    string buffer("");
+    add(command);
 
-    try {
-
-        boost::asio::io_service io_service;
-        udp::endpoint receiver_endpoint = udp::endpoint(boost::asio::ip::address::from_string("127.0.0.1"), lexical_cast<int>(_port));
-
-        udp::socket socket(io_service);
-        socket.open(udp::v4());
-
-        string data = Protocol::build(command);
-        const char* send_buf = data.c_str();
-        socket.send_to(boost::asio::buffer(send_buf, data.size()), receiver_endpoint);
-
-        char recv_buf[1024]; 
-        udp::endpoint sender_endpoint;
-        size_t len = socket.receive_from(boost::asio::buffer(recv_buf), sender_endpoint);
-
-        string received(recv_buf, len);
-
-        buffer += received;
-
-    }
-    catch (boost::system::system_error s) {
-        if (s.code().value() == 10054) {
-            buffer = "[CGI4LCD] Error: server offline or listening on another port";
-        }
-        else {
-            buffer = "[CGI4LCD] System Error: " + string(s.what()) + " ";
-        }
-    }
-    catch (std::exception& e) {
-        buffer = "[CGI4LCD] Error: " + string(e.what()) + " ";
-    }
-
-    return buffer;
+    return _commands[command.line()].response;
 }
 
 string Client::format_command(const string &command_template, const map<string, string> vars) {
@@ -138,4 +118,128 @@ string Client::format_command(const string &command_template, const map<string, 
     }
 
     return formatted_command;
+}
+
+void Client::add(Command &command) {
+
+    map<string, Command>::iterator it = _commands.find(command.line());
+    time_t now;
+    time(&now);
+
+    if (it == _commands.end()) {
+        command.response = "";
+        command.last_request = now;
+
+        _commands[command.line()] = command;
+    
+        if (command.add_and_run) {
+            run(command);
+        }
+    }
+    else {
+        _commands[command.line()].last_request = now;
+    }
+}
+
+void Client::process() {
+
+    map<string, Command>::iterator it = _commands.begin();
+    Command command;
+
+#ifdef DEBUG
+    int queue_size = _commands.size();
+    Utils::cls();
+    echo("Running queue (" << queue_size << ")");
+
+    string title(lexical_cast<string>(queue_size));
+    title = "CGI4LCD - " + title + " command" + (queue_size > 1 ? "s" : "") + " in queue";
+    SetConsoleTitle(Utils::s2ws(title).c_str());
+#endif
+
+    while (it != _commands.end()) {
+        command = it->second;
+
+        time_t now;
+        time(&now);
+
+#ifndef FULL_DEBUG
+        echo("Command '" << command.line().substr(command.line().size() - 40) << "' === '" << command.response << "'");
+#else
+        echo("Command '" << command.line().substr(command.line().size() - 40) << "'");
+        echo("Cleanup Time: " << command.last_request << " + " << command.timeout);
+        echo("Next Execution: " << command.last_execution << " + " << command.interval);
+        echo("Cached Response: '" << command.response << "'");
+#endif
+
+        if (now >= command.last_request + command.timeout) {
+            echo("Erasing '" << command.shortline() << "'");
+
+            _commands.erase(it++);
+            continue;
+        }
+        else if (_running_threads < _max_threads && command.is_running == false && now >= command.last_execution + command.interval) {
+            boost::thread runner(boost::bind(&Client::run, this, command));
+        }
+
+        _commands[command.line()] = command;
+        ++it;
+    }
+
+    Sleep(1);
+    process();
+
+}
+
+void Client::run(Command &command) {
+
+    char psBuffer[128];
+    FILE *iopipe;
+
+#ifdef DEBUG_RUNS
+    echo("Running '" << command.shortline() << "'");
+#endif
+
+    ++_running_threads;
+
+    if (!command.do_not_queue) {
+        _commands[command.line()].is_running = true;
+    }
+
+    iopipe = _popen(command.line().c_str(), "r");
+
+    if (iopipe == NULL) {
+        command.response = "[CGI4LCD] Error running...";
+    }
+    else {
+        string response = "";
+
+        while(!feof(iopipe)) {
+            if(fgets(psBuffer, 128, iopipe) != NULL) {
+                response += string(psBuffer);
+            }
+        }
+
+        _pclose(iopipe);
+        command.response = response;
+    }
+
+#ifdef DEBUG_RUNS
+    echo("Runner response: '" << command.response << "'");
+#endif
+
+    map<string, Command>::iterator it = _commands.find(command.line());
+
+    if (!command.do_not_queue) {
+
+        if (it == _commands.end()) {
+            _commands[command.line()] = command;
+            time(&_commands[command.line()].last_request);
+        }
+
+        _commands[command.line()].is_running = false;
+        _commands[command.line()].response = command.response;
+        time(&_commands[command.line()].last_execution);
+    }
+
+    --_running_threads;
 }

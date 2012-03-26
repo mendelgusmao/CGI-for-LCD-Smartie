@@ -8,11 +8,8 @@ using boost::lexical_cast;
 Queue::Queue(boost::asio::io_service& io_service, unsigned int max_threads) : 
   _timer(io_service, boost::posix_time::seconds(1)),
   _max_threads(max_threads),
-  _running_threads(0) {
-
-    _timer.async_wait(boost::bind(&Queue::process, this));
-
-}
+  _running_threads(0) 
+{}
 
 void Queue::add(Command &command) {
 
@@ -39,9 +36,6 @@ void Queue::process() {
 
     map<string, Command>::iterator it = _commands.begin();
     Command command;
-
-    _timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
-    _timer.async_wait(boost::bind(&Queue::process, this));
 
 #ifdef DEBUG
     int queue_size = _commands.size();
@@ -81,6 +75,9 @@ void Queue::process() {
         _commands[command.line()] = command;
         ++it;
     }
+
+    _timer.expires_at(_timer.expires_at() + boost::posix_time::seconds(1));
+    _timer.async_wait(boost::bind(&Queue::process, this));
 
 }
 
