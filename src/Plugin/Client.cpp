@@ -132,34 +132,13 @@ void Client::process(const boost::system::error_code& /*e*/, boost::asio::deadli
     map<string, Command>::iterator it = _commands.begin();
     Command command;
 
-#ifdef DEBUG
-    int queue_size = _commands.size();
-    Utils::cls();
-    echo("Running queue (" << queue_size << ")");
-
-    string title(lexical_cast<string>(queue_size));
-    title = "CGI4LCD - " + title + " command" + (queue_size > 1 ? "s" : "") + " in queue";
-    SetConsoleTitle(Utils::s2ws(title).c_str());
-#endif
-
     while (it != _commands.end()) {
         command = it->second;
 
         time_t now;
         time(&now);
 
-#ifndef FULL_DEBUG
-        echo("Command '" << command.line().substr(command.line().size() - 40) << "' === '" << command.response << "'");
-#else
-        echo("Command '" << command.line().substr(command.line().size() - 40) << "'");
-        echo("Cleanup Time: " << command.last_request << " + " << command.timeout);
-        echo("Next Execution: " << command.last_execution << " + " << command.interval);
-        echo("Cached Response: '" << command.response << "'");
-#endif
-
         if (now >= command.last_request + command.timeout) {
-            echo("Erasing '" << command.shortline() << "'");
-
             _commands.erase(it++);
             continue;
         }
@@ -180,11 +159,7 @@ void Client::run(Command &command) {
 
     char psBuffer[128];
     FILE *iopipe;
-
-#ifdef DEBUG_RUNS
-    echo("Running '" << command.shortline() << "'");
-#endif
-
+    
     ++_running_threads;
 
     if (!command.do_not_queue) {
@@ -208,10 +183,6 @@ void Client::run(Command &command) {
         _pclose(iopipe);
         command.response = response;
     }
-
-#ifdef DEBUG_RUNS
-    echo("Runner response: '" << command.response << "'");
-#endif
 
     map<string, Command>::iterator it = _commands.find(command.line());
 

@@ -32,6 +32,4 @@
 #include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 
-#define echo(str)
-
 // TODO: reference additional headers your program requires here
