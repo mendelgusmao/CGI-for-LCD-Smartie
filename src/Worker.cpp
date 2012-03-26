@@ -1,12 +1,12 @@
 #include "stdafx.h"
-#include "Client.h"
+#include "Worker.h"
 #include "Command.h"
 #include "Utils.h"
 
 using boost::lexical_cast;
 using boost::filesystem::exists;
 
-Client::Client() :
+Worker::Worker() :
     _app_path(Utils::app_path()),
     _scripts_path(_app_path + "\\scripts"),
     _ini_file(_scripts_path + "\\cgi4lcd.ini"),
@@ -18,14 +18,14 @@ Client::Client() :
     _running_threads(0)
 {}
 
-void Client::start() {
+void Worker::start() {
     boost::asio::io_service io_service;
     boost::asio::deadline_timer timer(io_service, boost::posix_time::seconds(1));
-    timer.async_wait(boost::bind(&Client::process, this, boost::asio::placeholders::error, &timer));
+    timer.async_wait(boost::bind(&Worker::process, this, boost::asio::placeholders::error, &timer));
     io_service.run();
 }
 
-string Client::execute(string script, const string &parameters, bool version, bool do_not_queue, bool add_and_run) {
+string Worker::execute(string script, const string &parameters, bool version, bool do_not_queue, bool add_and_run) {
 
     string arguments("");
     string extension("");
@@ -94,7 +94,7 @@ string Client::execute(string script, const string &parameters, bool version, bo
     return _commands[command.line()].response;
 }
 
-string Client::format_command(const string &command_template, const map<string, string> vars) {
+string Worker::format_command(const string &command_template, const map<string, string> vars) {
 
     map<string, string>::const_iterator it;
     string formatted_command(command_template);
@@ -106,7 +106,7 @@ string Client::format_command(const string &command_template, const map<string, 
     return formatted_command;
 }
 
-void Client::add(Command &command) {
+void Worker::add(Command &command) {
 
     map<string, Command>::iterator it = _commands.find(command.line());
     time_t now;
@@ -127,7 +127,7 @@ void Client::add(Command &command) {
     }
 }
 
-void Client::process(const boost::system::error_code& /*e*/, boost::asio::deadline_timer *timer) {
+void Worker::process(const boost::system::error_code& /*e*/, boost::asio::deadline_timer *timer) {
 
     map<string, Command>::iterator it = _commands.begin();
     Command command;
@@ -143,7 +143,7 @@ void Client::process(const boost::system::error_code& /*e*/, boost::asio::deadli
             continue;
         }
         else if (_running_threads < _max_threads && command.is_running == false && now >= command.last_execution + command.interval) {
-            boost::thread runner(boost::bind(&Client::run, this, command));
+            boost::thread runner(boost::bind(&Worker::run, this, command));
         }
 
         _commands[command.line()] = command;
@@ -151,11 +151,11 @@ void Client::process(const boost::system::error_code& /*e*/, boost::asio::deadli
     }
 
     timer->expires_at(timer->expires_at() + boost::posix_time::seconds(1));
-    timer->async_wait(boost::bind(&Client::process, this, boost::asio::placeholders::error, timer));
+    timer->async_wait(boost::bind(&Worker::process, this, boost::asio::placeholders::error, timer));
 
 }
 
-void Client::run(Command &command) {
+void Worker::run(Command &command) {
 
     char psBuffer[128];
     FILE *iopipe;
