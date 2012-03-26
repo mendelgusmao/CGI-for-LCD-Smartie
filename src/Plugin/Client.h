@@ -9,19 +9,19 @@ class Client {
 
 public:
 
-    static string _app_path;
-    static string _scripts_path;
-    static string _ini_file;
-    static unsigned int _port;
-    static unsigned int _execution_interval;
-    static unsigned int _execution_timeout;
-    static int _refresh_interval;
-    static string _default_extension;
+    string _app_path;
+    string _scripts_path;
+    string _ini_file;
+    unsigned int _port;
+    unsigned int _execution_interval;
+    unsigned int _execution_timeout;
+    int _refresh_interval;
+    string _default_extension;
 
-    static void start();
-    static string execute(string script, const string &parameters, bool version=false, bool do_not_queue=false, bool add_and_run=true);
-    static string request(const string &interpreter, const string &arguments, unsigned int interval, unsigned int timeout, bool do_not_queue, bool add_and_run);
-    static string format_command(const string &command_template, const map<string, string> vars);
+    void start();
+    string execute(string script, const string &parameters, bool version=false, bool do_not_queue=false, bool add_and_run=true);
+    string request(const string &interpreter, const string &arguments, unsigned int interval, unsigned int timeout, bool do_not_queue, bool add_and_run);
+    string format_command(const string &command_template, const map<string, string> vars);
 
 };
 
