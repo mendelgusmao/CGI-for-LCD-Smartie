@@ -32,7 +32,7 @@ INSTALLING
 > * Make sure you have LCD Smartie 5.4 or 5.4.2.92b (or grab it from [lcdsmartie.sourceforge.net](http://lcdsmartie.sourceforge.net/smartied.htm)).  
 > * Grab the latest version of CGI4LCD from [downloads](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/downloads).    
 > * Copy plugins and scripts directory to your LCD Smartie directory.  
-> * Boost >= 1.47 ([boost.org](http://boost.org)) and UPX ([upx.sourceforge.net](http://upx.sourceforge.net)) if you want to have some fun compiling the project by yourself.  
+> * Boost >= 1.47 ([boost.org](http://boost.org) / pre-compiled: [boostpro.com](http://www.boostpro.com/download/)) and UPX ([upx.sourceforge.net](http://upx.sourceforge.net)) if you want to have some fun compiling the project by yourself.  
 
 CONFIGURING
 -----------
