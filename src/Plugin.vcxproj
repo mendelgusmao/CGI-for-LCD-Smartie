@@ -100,7 +100,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Command.cpp" />
-    <ClCompile Include="Client.cpp" />
+    <ClCompile Include="Worker.cpp" />
     <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="stdafx.cpp">
@@ -109,7 +109,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Client.h" />
+    <ClInclude Include="Worker.h" />
     <ClInclude Include="Command.h" />
     <ClInclude Include="Utils.h" />
     <ClInclude Include="Plugin.h" />

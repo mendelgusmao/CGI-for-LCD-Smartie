@@ -1,12 +1,12 @@
 #include "stdafx.h"
 #include "Command.h"
 
-#ifndef CLIENT_H
-#define CLIENT_H
+#ifndef WORKER_H
+#define WORKER_H
 
 using namespace std;
 
-class Client {
+class Worker {
 
 public:
 
@@ -21,7 +21,7 @@ public:
     unsigned int _running_threads;
     map<string, Command> _commands;
 
-    Client();
+    Worker();
     void start();
     string execute(string script, const string &parameters, bool version=false, bool do_not_queue=false, bool add_and_run=true);
     string format_command(const string &command_template, const map<string, string> vars);
@@ -32,4 +32,4 @@ public:
 
 };
 
-#endif // CLIENT_H
+#endif // WORKER_H
