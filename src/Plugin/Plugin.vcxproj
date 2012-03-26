@@ -42,10 +42,10 @@
     <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</OutDir>
     <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Release\</IntDir>
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\Languages\CPP\boost_1_48_0;$(SolutionDir)\Common;</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\Languages\CPP\boost_1_48_0;</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib;C:\Languages\CPP\boost_1_48_0\stage\lib;</LibraryPath>
     <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cgi2</TargetName>
-    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\Languages\CPP\boost_1_47;$(SolutionDir)\Common;$(ProjectDir)</IncludePath>
+    <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\Languages\CPP\boost_1_47;$(ProjectDir)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib;C:\Languages\CPP\boost_1_47\lib;</LibraryPath>
     <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     </CustomBuildAfterTargets>
@@ -62,7 +62,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Languages\CPP\boost_1_48_0;$(ProjectDir);$(SolutionDir)\Common</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Languages\CPP\boost_1_48_0;$(ProjectDir);</AdditionalIncludeDirectories>
       <PrecompiledHeaderOutputFile>C:\WINDOWS\Temp\$(IntDir)$(TargetName).pch</PrecompiledHeaderOutputFile>
       <DisableSpecificWarnings>
       </DisableSpecificWarnings>
@@ -86,7 +86,7 @@
       <PrecompiledHeader>Use</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>C:\Languages\CPP\boost_1_47;$(ProjectDir);$(SolutionDir)\Common</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Languages\CPP\boost_1_47;$(ProjectDir);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
@@ -99,9 +99,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Common\Command.cpp" />
+    <ClCompile Include="Command.cpp" />
     <ClCompile Include="Client.cpp" />
-    <ClCompile Include="..\Common\Utils.cpp" />
+    <ClCompile Include="Utils.cpp" />
     <ClCompile Include="Plugin.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -110,8 +110,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Client.h" />
-    <ClInclude Include="..\Common\Command.h" />
-    <ClInclude Include="..\Common\Utils.h" />
+    <ClInclude Include="Command.h" />
+    <ClInclude Include="Utils.h" />
     <ClInclude Include="Plugin.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
