@@ -27,13 +27,7 @@
     <ClCompile Include="..\Common\Command.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Common\Protocol.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Common\Utils.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Queue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,16 +41,10 @@
     <ClInclude Include="..\Common\Command.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Common\Protocol.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Common\Utils.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Plugin.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
