@@ -8,15 +8,6 @@ using boost::asio::ip::udp;
 using boost::lexical_cast;
 using boost::filesystem::exists;
 
-string Client::_app_path("");
-string Client::_scripts_path("");
-string Client::_ini_file("");
-unsigned int Client::_port(0);
-unsigned int Client::_execution_interval(0);
-unsigned int Client::_execution_timeout(0);
-int Client::_refresh_interval(0);
-string Client::_default_extension("");
-
 void Client::start() {
     _app_path = Utils::app_path();
     _scripts_path = _app_path + "\\scripts";
