@@ -44,7 +44,7 @@
     <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\Languages\CPP\boost_1_48_0;$(SolutionDir)\Common;</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib;C:\Languages\CPP\boost_1_48_0\stage\lib;</LibraryPath>
-    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cgi</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">cgi2</TargetName>
     <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;C:\Languages\CPP\boost_1_48_0;$(SolutionDir)\Common;$(ProjectDir)</IncludePath>
     <LibraryPath Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib;C:\Languages\CPP\boost_1_48_0\stage\lib;</LibraryPath>
     <CustomBuildAfterTargets Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -67,7 +67,7 @@
       </DisableSpecificWarnings>
     </ClCompile>
     <Link>
-      <OutputFile>$(OutDir)cgi.dll</OutputFile>
+      <OutputFile>$(OutDir)$(TargetName)$(TargetExt)</OutputFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProgramDatabaseFile>$(OutDir)Plugin.pdb</ProgramDatabaseFile>
       <SubSystem>Windows</SubSystem>
@@ -103,6 +103,7 @@
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="..\Common\Utils.cpp" />
     <ClCompile Include="Plugin.cpp" />
+    <ClCompile Include="Queue.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
@@ -114,6 +115,7 @@
     <ClInclude Include="..\Common\Protocol.h" />
     <ClInclude Include="..\Common\Utils.h" />
     <ClInclude Include="Plugin.h" />
+    <ClInclude Include="Queue.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

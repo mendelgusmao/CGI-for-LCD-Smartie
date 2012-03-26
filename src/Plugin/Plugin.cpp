@@ -4,10 +4,12 @@
 
 #define DLLEXPORT __declspec(dllexport)
 
+Client client;
+
 extern "C" DLLEXPORT  void 
 __stdcall  SmartieInit()
 {
-    Client::start();
+    boost::thread worker(boost::bind(&Client::process, client));
 }
 
 extern "C" DLLEXPORT  void 
@@ -17,7 +19,7 @@ __stdcall  SmartieFini()
 extern "C" DLLEXPORT  int
 __stdcall  GetMinRefreshInterval()
 {
-    return Client::_refresh_interval;
+    return client._refresh_interval;
 }
 
 extern "C" DLLEXPORT  char * 
@@ -27,7 +29,7 @@ __stdcall  function1(char *param1, char *param2)
     string parameters(param2);
 
     char buffer[1024];
-    strcpy_s(buffer, Client::execute(script, parameters).c_str());
+    strcpy_s(buffer, client.execute(script, parameters).c_str());
 
     return buffer;
 }
@@ -39,7 +41,7 @@ __stdcall  function2(char *param1, char *param2)
     string parameters(param2);
 
     char buffer[1024];
-    strcpy_s(buffer, Client::execute(script, parameters, false, false, false).c_str());
+    strcpy_s(buffer, client.execute(script, parameters, false, false, false).c_str());
 
     return buffer;
 }
@@ -51,7 +53,7 @@ __stdcall  function3(char *param1, char *param2)
     string parameters(param2);
 
     char buffer[1024];
-    strcpy_s(buffer, Client::execute(script, parameters, false, true).c_str());
+    strcpy_s(buffer, client.execute(script, parameters, false, true).c_str());
 
     return buffer;
 }
@@ -63,7 +65,7 @@ __stdcall  function4(char *param1, char *param2)
     string parameters(param2);
 
     char buffer[1024];
-    strcpy_s(buffer, Client::execute(script, parameters, true).c_str());
+    strcpy_s(buffer, client.execute(script, parameters, true).c_str());
 
     return buffer;
 }
