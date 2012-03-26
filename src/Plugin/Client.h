@@ -26,7 +26,7 @@ public:
     string execute(string script, const string &parameters, bool version=false, bool do_not_queue=false, bool add_and_run=true);
     string format_command(const string &command_template, const map<string, string> vars);
     void add(Command &command);
-    void process();
+    void process(const boost::system::error_code& /*e*/, boost::asio::deadline_timer *timer);
     void run(Command &command);
     Command get(const string& line);
 

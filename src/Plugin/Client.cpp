@@ -18,6 +18,13 @@ Client::Client() :
     _running_threads(0)
 {}
 
+void Client::start() {
+    boost::asio::io_service io_service;
+    boost::asio::deadline_timer timer(io_service, boost::posix_time::seconds(1));
+    timer.async_wait(boost::bind(&Client::process, this, boost::asio::placeholders::error, &timer));
+    io_service.run();
+}
+
 string Client::execute(string script, const string &parameters, bool version, bool do_not_queue, bool add_and_run) {
 
     string arguments("");
@@ -120,7 +127,7 @@ void Client::add(Command &command) {
     }
 }
 
-void Client::process() {
+void Client::process(const boost::system::error_code& /*e*/, boost::asio::deadline_timer *timer) {
 
     map<string, Command>::iterator it = _commands.begin();
     Command command;
@@ -164,8 +171,8 @@ void Client::process() {
         ++it;
     }
 
-    Sleep(1);
-    process();
+    timer->expires_at(timer->expires_at() + boost::posix_time::seconds(1));
+    timer->async_wait(boost::bind(&Client::process, this, boost::asio::placeholders::error, timer));
 
 }
 
