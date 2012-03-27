@@ -157,38 +157,25 @@ void Worker::process(const boost::system::error_code& /*e*/, boost::asio::deadli
 
 void Worker::run(Command &command) {
 
-    char psBuffer[128];
-    FILE *iopipe;
-    
     ++_running_threads;
 
     if (!command.do_not_queue) {
         _commands[command.line()].is_running = true;
     }
 
-    iopipe = _popen(command.line().c_str(), "r");
+    QProcess process;
+    QString interpreter = QString::fromStdString(command.line().c_str());
+    QString response;
 
-    if (iopipe == NULL) {
-        command.response = "[CGI4LCD] Error running...";
-    }
-    else {
-        string response = "";
+    process.start(interpreter);
+    process.waitForFinished(-1);
 
-        while(!feof(iopipe)) {
-            if(fgets(psBuffer, 128, iopipe) != NULL) {
-                response += string(psBuffer);
-            }
-        }
+    response = process.readAllStandardOutput();
 
-        _pclose(iopipe);
-        command.response = response;
-    }
-
-    map<string, Command>::iterator it = _commands.find(command.line());
+    command.response = response.toStdString();
 
     if (!command.do_not_queue) {
-
-        if (it == _commands.end()) {
+        if (_commands.find(command.line()) == _commands.end()) {
             _commands[command.line()] = command;
             time(&_commands[command.line()].last_request);
         }
