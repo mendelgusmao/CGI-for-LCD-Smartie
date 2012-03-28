@@ -27,6 +27,4 @@
 #include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 
-#include <qt/qprocess.h>
-
 // TODO: reference additional headers your program requires here
