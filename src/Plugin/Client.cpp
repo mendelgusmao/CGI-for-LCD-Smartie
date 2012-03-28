@@ -25,7 +25,7 @@ void Client::start() {
     _execution_interval = lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.interval", "15000"));
     _execution_timeout = lexical_cast<unsigned int>(Utils::ini_read(_ini_file, "cgi4lcd.timeout", "30000"));
     _default_extension = Utils::ini_read(_ini_file, "cgi4lcd.default_extension", "");
-    _refresh_interval = lexical_cast<int>(Utils::ini_read(_ini_file, "cgi4lcd.refresh", "1000"));
+    _refresh_interval = lexical_cast<int>(Utils::ini_read(_ini_file, "cgi4lcd.refresh", "1")) * 1000;
 }
 
 string Client::execute(string script, const string &parameters, bool version, bool do_not_queue, bool add_and_run) {
