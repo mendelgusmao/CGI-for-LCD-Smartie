@@ -108,11 +108,10 @@ string Worker::format_command(const string &command_template, const map<string, 
 
 void Worker::add(Command &command) {
 
-    map<string, Command>::iterator it = _commands.find(command.line());
     time_t now;
     time(&now);
 
-    if (it == _commands.end()) {
+    if (_commands.find(command.line()) == _commands.end()) {
         command.response = "";
         command.last_request = now;
 
@@ -157,7 +156,7 @@ void Worker::process(const boost::system::error_code& /*e*/, boost::asio::deadli
 
 void Worker::run(Command &command) {
 
-    char buffer[128];
+    char buffer[C4L_BUFFER_SIZE];
     FILE *iopipe;
     
     ++_running_threads;
@@ -175,7 +174,7 @@ void Worker::run(Command &command) {
         string response = "";
 
         while(!feof(iopipe)) {
-            if(fgets(buffer, 128, iopipe) != NULL) {
+            if(fgets(buffer, C4L_BUFFER_SIZE, iopipe) != NULL) {
                 response += string(buffer);
             }
         }
@@ -184,11 +183,9 @@ void Worker::run(Command &command) {
         command.response = response;
     }
 
-    map<string, Command>::iterator it = _commands.find(command.line());
-
     if (!command.do_not_queue) {
 
-        if (it == _commands.end()) {
+        if (_commands.find(command.line()) == _commands.end()) {
             _commands[command.line()] = command;
             time(&_commands[command.line()].last_request);
         }
@@ -196,6 +193,7 @@ void Worker::run(Command &command) {
         _commands[command.line()].is_running = false;
         _commands[command.line()].response = command.response;
         time(&_commands[command.line()].last_execution);
+
     }
 
     --_running_threads;

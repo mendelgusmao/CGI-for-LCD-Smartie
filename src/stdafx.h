@@ -27,4 +27,6 @@
 #include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
 
+#define C4L_BUFFER_SIZE 4096
+
 // TODO: reference additional headers your program requires here
