@@ -6,7 +6,7 @@ CGI FOR LCD SMARTIE 0.3-alpha
 HOW IT WORKS?
 -------------
 
-> CGI4LCD has a queue of commands. These commands are injected when the proper call to $dll(cgi,...) is made. At a specified time interval a command is executed and its response is stored. When LCD Smartie sends the same command to CGI4LCD, the plugin sends back the cached response instead of executing the interpreter again. Also, there is a timeout value that dictates the moment of removal of a command if it is not being requested anymore.  
+> CGI4LCD has a queue of commands. These commands are injected when the proper call to $dll(cgi,...) is made. At a specified time interval a command is executed and its response is stored. When LCD Smartie asks CGI4LCD for a previously sent command, the plugin sends back the cached response instead of executing the interpreter again. Also, there is a timeout value that dictates the moment of removal of a command if it is not being requested anymore.  
 
 WHEN IT WILL BE USEFUL?
 -----------------------
@@ -28,11 +28,11 @@ WHEN IT WILL NOT BE USEFUL?
 INSTALLING
 ----------
 
-> * Make sure you have .Net Framework 4.  
+> * Make sure you have .Net Framework 4. (Althought I'm sure the code doesn't need it and can be compilable even without it)  
 > * Make sure you have LCD Smartie 5.4 or 5.4.2.92b (or grab it from [lcdsmartie.sourceforge.net](http://lcdsmartie.sourceforge.net/smartied.htm)).  
 > * Grab the latest version of CGI4LCD from [downloads](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/downloads).    
 > * Copy plugins and scripts directory to your LCD Smartie directory.  
-> * Boost >= 1.47 ([boost.org](http://boost.org) / pre-compiled: [boostpro.com](http://www.boostpro.com/download/)) and UPX ([upx.sourceforge.net](http://upx.sourceforge.net)) if you want to have some fun compiling the project by yourself.  
+> * Boost >= 1.47 ([boost.org](http://boost.org) / pre-compiled: [boostpro.com](http://www.boostpro.com/download/)) if you want to have some fun compiling the project by yourself.  
 
 CONFIGURING
 -----------
@@ -92,7 +92,7 @@ CONFIGURING
 USING
 -----
 
-> ### function1 - Executes interpreter  
+> ### function1 - Places the command in the queue and executes interpreter  
 
 > * filename - mandatory. it must exist in scripts directory.  
 >   The extension is optional. If not passed, the plugin will use the default extension set in the section *[cgi4lcd]* of the configuration file.  
