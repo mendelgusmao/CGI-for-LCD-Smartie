@@ -88,10 +88,15 @@ string Worker::execute(string script, const string &parameters, bool version, bo
     command.timeout = _execution_timeout;
     command.do_not_queue = do_not_queue;
     command.add_and_run = add_and_run;
-
-    add(command);
-
-    return _commands[command.line()].response;
+    
+    if (command.do_not_queue) {
+        run(command);
+        return command.response;
+    }
+    else {
+        add(command);
+        return _commands[command.line()].response;
+    }
 }
 
 string Worker::format_command(const string &command_template, const map<string, string> vars) {
@@ -155,7 +160,7 @@ void Worker::process(const boost::system::error_code& /*e*/, boost::asio::deadli
 }
 
 void Worker::run(Command &command) {
-    
+
     ++_running_threads;
 
     if (!command.do_not_queue) {
@@ -208,6 +213,7 @@ void Worker::run(Command &command) {
                     }
                     else {
                         if (::GetLastError() == ERROR_BROKEN_PIPE) {
+                            response = "[CGI4LCD] Error running '" + command.shortline() + "': Broken pipe";
                             break;
                         }
                         else {
@@ -242,8 +248,10 @@ void Worker::run(Command &command) {
         _commands[command.line()].response = command.response;
         time(&_commands[command.line()].last_execution);
 
+
     }
 
     --_running_threads;
+
 }
 
