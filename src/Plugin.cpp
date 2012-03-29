@@ -22,6 +22,7 @@ __stdcall  GetMinRefreshInterval()
     return worker._refresh_interval;
 }
 
+// Places in the queue and execute
 extern "C" DLLEXPORT  char * 
 __stdcall  function1(char *param1, char *param2)
 {
@@ -34,6 +35,7 @@ __stdcall  function1(char *param1, char *param2)
     return buffer;
 }
 
+// Places in the queue without executing
 extern "C" DLLEXPORT  char * 
 __stdcall  function2(char *param1, char *param2)
 {
@@ -46,6 +48,7 @@ __stdcall  function2(char *param1, char *param2)
     return buffer;
 }
 
+// Executes without placing in the queue
 extern "C" DLLEXPORT  char * 
 __stdcall  function3(char *param1, char *param2)
 {
@@ -58,6 +61,7 @@ __stdcall  function3(char *param1, char *param2)
     return buffer;
 }
 
+// Retrieves interpreter version
 extern "C" DLLEXPORT  char * 
 __stdcall  function4(char *param1, char *param2)
 {
