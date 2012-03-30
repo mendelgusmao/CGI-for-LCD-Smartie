@@ -28,7 +28,7 @@ WHEN IT WILL NOT BE USEFUL?
 INSTALLING
 ----------
 
-> * Make sure you have .Net Framework 4. (Althought I'm sure the code doesn't need it and can be compilable even without it)  
+> * Make sure you have .Net Framework 3.5 [microsoft.com](https://www.microsoft.com/download/en/details.aspx?id=22).
 > * Make sure you have LCD Smartie 5.4 or 5.4.2.92b (or grab it from [lcdsmartie.sourceforge.net](http://lcdsmartie.sourceforge.net/smartied.htm)).  
 > * Grab the latest version of CGI4LCD from [downloads](https://github.com/MendelGusmao/CGI-for-LCD-Smartie/downloads).    
 > * Copy plugins and scripts directory to your LCD Smartie directory.  
