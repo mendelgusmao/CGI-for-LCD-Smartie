@@ -57,10 +57,10 @@ string Worker::execute(string script, const string &parameters, bool version, bo
     }
     
     if (version) {
-        arguments = Utils::ini_read(_ini_file, extension + ".version", "");
+        arguments = Utils::ini_read(_ini_file, extension + ".version", "-v");
     }
     else {
-        arguments = Utils::ini_read(_ini_file, extension + ".command", "");
+        arguments = Utils::ini_read(_ini_file, extension + ".command", "'%script%' '%params%'");
 
         if (!exists(_scripts_path + "\\" + script)) {
             return "[CGI4LCD] Script '" + script + "' not found";
