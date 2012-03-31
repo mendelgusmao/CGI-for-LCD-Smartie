@@ -15,8 +15,7 @@ string Utils::ini_read(const string ini_file, const string key, const string def
         else {
 
             if (ini_value.substr(0, 1) == "\"" && ini_value.substr(ini_value.size() - 1, 1) == "\"") {
-                ini_value = ini_value.substr(1);
-                ini_value = ini_value.substr(0, ini_value.size() - 1);
+                ini_value = ini_value.substr(1, ini_value.size() - 2);
             }                
 
             return ini_value;
