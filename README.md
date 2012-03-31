@@ -82,10 +82,8 @@ CONFIGURING
 >       * %interpreter%  
 > 	The path specified in the property interpreter
 
->       * Due to INI limitation, apostrophes will be replaced by quotes and acute accents (´) will be replaced by apostrophes  
-
 >   * version  
->     Command line to get the interpreter version
+>     Command line parameters to get the interpreter version
 
 > CGI4LCD comes with the basic settings to run PHP, Ruby, Python, Lua and Perl scripts. You must only change the interpreter path and it will be ready to use.
 

@@ -75,8 +75,6 @@ string Worker::execute(string script, const string &parameters, bool version, bo
     vars["%router%"] = _scripts_path + "\\routers\\" + extension + "." + extension;
     vars["%script%"] = _scripts_path + "\\" + script;
     vars["%params%"] = parameters;
-    vars["'"] = "\"";
-    vars["´"] = "'";
 
     arguments = format_command(arguments, vars);
     interpreter = format_command(interpreter, vars);
