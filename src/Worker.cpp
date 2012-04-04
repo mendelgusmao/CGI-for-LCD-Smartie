@@ -148,7 +148,6 @@ void Worker::process(const boost::system::error_code& /*e*/, boost::asio::deadli
             boost::thread runner(boost::bind(&Worker::run, this, command));
         }
 
-        _commands[command.line()] = command;
         ++it;
     }
 
