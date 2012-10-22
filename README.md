@@ -6,7 +6,7 @@ CGI FOR LCD SMARTIE 0.3-alpha
 DOWNLOAD
 -------------
 
-Latest release is [cgi4lcd-0.3-alpha2](https://github.com/downloads/MendelGusmao/CGI-for-LCD-Smartie/cgi4lcd-0.3-alpha2.zip)
+Latest release is [cgi4lcd-0.3-alpha2](/downloads/MendelGusmao/CGI-for-LCD-Smartie/cgi4lcd-0.3-alpha2.zip)
 
 HOW IT WORKS?
 -------------
