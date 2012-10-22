@@ -1,12 +1,12 @@
 CGI FOR LCD SMARTIE 0.3-alpha
 =============================
 
+> CGI for LCD Smartie is a plugin designed to be a fast gateway between LCD Smartie ([lcdsmartie.sourceforge.net](http://lcdsmartie.sourceforge.net)) and language interpreters such as PHP, Ruby or Python, making it easier to gather information to show on the display without the need to develop complex plugins.
+
 DOWNLOAD
 -------------
 
 Latest release is [cgi4lcd-0.3-alpha2](https://github.com/downloads/MendelGusmao/CGI-for-LCD-Smartie/cgi4lcd-0.3-alpha2.zip)
-
-> CGI for LCD Smartie is a plugin designed to be a fast gateway between LCD Smartie ([lcdsmartie.sourceforge.net](http://lcdsmartie.sourceforge.net)) and language interpreters such as PHP, Ruby or Python, making it easier to gather information to show on the display without the need to develop complex plugins.
 
 HOW IT WORKS?
 -------------
