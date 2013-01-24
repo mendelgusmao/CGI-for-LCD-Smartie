@@ -18,6 +18,11 @@ Worker::Worker() :
     _running_threads(0)
 {}
 
+Worker& Worker::instance() {
+    static Worker worker;
+    return worker;
+}
+
 void Worker::start() {
     boost::asio::io_service io_service;
     boost::asio::deadline_timer timer(io_service, boost::posix_time::seconds(1));

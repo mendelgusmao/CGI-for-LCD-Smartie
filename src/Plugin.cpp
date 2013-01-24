@@ -4,12 +4,10 @@
 
 #define DLLEXPORT __declspec(dllexport)
 
-Worker worker;
-
 extern "C" DLLEXPORT  void 
 __stdcall  SmartieInit()
 {
-    boost::thread worker_thread(boost::bind(&Worker::start, &worker));
+    boost::thread worker_thread(boost::bind(&Worker::start, &Worker::instance()));
 }
 
 extern "C" DLLEXPORT  void 
@@ -19,7 +17,7 @@ __stdcall  SmartieFini()
 extern "C" DLLEXPORT  int
 __stdcall  GetMinRefreshInterval()
 {
-    return worker._refresh_interval;
+    return Worker::instance()._refresh_interval;
 }
 
 // Places in the queue and execute
@@ -30,7 +28,7 @@ __stdcall  function1(char *param1, char *param2)
     string parameters(param2);
 
     char buffer[C4L_BUFFER_SIZE];
-    strcpy_s(buffer, worker.execute(script, parameters).c_str());
+    strcpy_s(buffer, Worker::instance().execute(script, parameters).c_str());
 
     return buffer;
 }
@@ -43,7 +41,7 @@ __stdcall  function2(char *param1, char *param2)
     string parameters(param2);
 
     char buffer[C4L_BUFFER_SIZE];
-    strcpy_s(buffer, worker.execute(script, parameters, false, false, false).c_str());
+    strcpy_s(buffer, Worker::instance().execute(script, parameters, false, false, false).c_str());
 
     return buffer;
 }
@@ -56,7 +54,7 @@ __stdcall  function3(char *param1, char *param2)
     string parameters(param2);
 
     char buffer[C4L_BUFFER_SIZE];
-    strcpy_s(buffer, worker.execute(script, parameters, false, true).c_str());
+    strcpy_s(buffer, Worker::instance().execute(script, parameters, false, true).c_str());
 
     return buffer;
 }
@@ -69,7 +67,7 @@ __stdcall  function4(char *param1, char *param2)
     string parameters(param2);
 
     char buffer[C4L_BUFFER_SIZE];
-    strcpy_s(buffer, worker.execute(script, parameters, true).c_str());
+    strcpy_s(buffer, Worker::instance().execute(script, parameters, true).c_str());
 
     return buffer;
 }

@@ -22,6 +22,7 @@ public:
     map<string, Command> _commands;
 
     Worker();
+    static Worker& Worker::instance();
     void start();
     string execute(string script, const string &parameters, bool version=false, bool do_not_queue=false, bool add_and_run=true);
     string format_command(const string &command_template, const map<string, string> vars);
