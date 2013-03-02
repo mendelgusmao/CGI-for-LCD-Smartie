@@ -26,6 +26,7 @@
 #include <boost/property_tree/ini_parser.hpp>
 #include <boost/filesystem.hpp>
 #include <boost/thread.hpp>
+#include <boost/thread/mutex.hpp>
 
 #define C4L_BUFFER_SIZE 4096
 

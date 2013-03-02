@@ -20,6 +20,7 @@ public:
     unsigned int _max_threads;
     unsigned int _running_threads;
     map<string, Command> _commands;
+    boost::mutex _running_threads_mutex;
 
     Worker();
     static Worker& Worker::instance();

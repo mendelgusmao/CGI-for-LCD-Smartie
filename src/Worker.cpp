@@ -163,7 +163,9 @@ void Worker::process(const boost::system::error_code& /*e*/, boost::asio::deadli
 
 void Worker::run(Command &command) {
 
+    _running_threads_mutex.lock();
     ++_running_threads;
+    _running_threads_mutex.unlock();
 
     if (!command.do_not_queue) {
         _commands[command.line()].is_running = true;
@@ -240,7 +242,6 @@ void Worker::run(Command &command) {
     command.response = response;
 
     if (!command.do_not_queue) {
-
         if (_commands.find(command.line()) == _commands.end()) {
             _commands[command.line()] = command;
             time(&_commands[command.line()].last_request);
@@ -249,11 +250,11 @@ void Worker::run(Command &command) {
         _commands[command.line()].is_running = false;
         _commands[command.line()].response = command.response;
         time(&_commands[command.line()].last_execution);
-
-
     }
 
+    _running_threads_mutex.lock();
     --_running_threads;
+    _running_threads_mutex.unlock();
 
 }
 
