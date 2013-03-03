@@ -171,75 +171,7 @@ void Worker::run(Command &command) {
         _commands[command.line()].is_running = true;
     }
 
-    HANDLE hReadPipe;
-    HANDLE hWritePipe;
-    SECURITY_ATTRIBUTES sa;
-    sa.nLength = sizeof(sa);
-    sa.lpSecurityDescriptor = NULL;
-    sa.bInheritHandle = TRUE;
-    string response("");
-
-    // Right usage of CreateProcess based on https://github.com/HeliumProject/Helium/blob/2fbbc93654e748c92f7ff9f607c966292fd5877a/Platform/Windows/Process.cpp
-
-    if (!CreatePipe(&hReadPipe, &hWritePipe, &sa, 0)) {
-        response = "[CGI4LCD] Error running '" + command.shortline() + "': Couldn't create pipes";
-    }
-    else {
-
-        STARTUPINFO si;
-        memset(&si, 0, sizeof(si));
-        si.cb = sizeof(si);
-        si.dwFlags = STARTF_USESHOWWINDOW | STARTF_USESTDHANDLES;
-        si.wShowWindow = 0;
-        si.hStdOutput = hWritePipe;
-        si.hStdError = hWritePipe;
-
-        PROCESS_INFORMATION pi;
-        memset(&pi, 0, sizeof(pi));
-
-        if (!CreateProcess(NULL, (LPSTR) command.line().c_str(), NULL, NULL, TRUE, CREATE_NO_WINDOW, NULL, NULL, &si, &pi)) {
-            ::CloseHandle(hReadPipe);
-            ::CloseHandle(hWritePipe);
-            response = "[CGI4LCD] Error running '" + command.shortline() + "': Couldn't create process";
-        }
-        else {
-            ::CloseHandle(hWritePipe);
-
-            char buffer[80];
-            unsigned long count;
-            stringstream stream;
-            BOOL success = TRUE;
-
-            do {
-                while (success = ReadFile(hReadPipe, buffer, sizeof(buffer), &count, NULL)) {
-                    if (success) {
-                        stream.write(buffer, count);
-                    }
-                    else {
-                        if (::GetLastError() == ERROR_BROKEN_PIPE) {
-                            response = "[CGI4LCD] Error running '" + command.shortline() + "': Broken pipe";
-                            break;
-                        }
-                        else {
-                            return;
-                        }
-                    }
-                }
-            } while(success && count);
-
-            ::CloseHandle(hReadPipe);
-
-            response = stream.str();
-
-            DWORD result = 0;
-            BOOL codeResult = ::GetExitCodeProcess(pi.hProcess, &result);
-
-            ::CloseHandle(pi.hProcess);
-            ::CloseHandle(pi.hThread);
-        }
-    }
-
-    command.response = response;
+    command.response = Utils::run(command.line(), command.shortline());
 
     if (!command.do_not_queue) {
         if (_commands.find(command.line()) == _commands.end()) {
